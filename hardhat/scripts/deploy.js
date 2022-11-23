@@ -9,6 +9,7 @@ async function main() {
     console.log('HelloWorld is deployed');
 }
 
+// Catch error
 main().catch((error) => {
     console.log(error);
     process.exitCode = 1;
