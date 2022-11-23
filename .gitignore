@@ -11,6 +11,10 @@ build
 # Testing
 coverage
 
+# Cache
+.cache
+cache
+
 # Env
 .env
 .env.local
