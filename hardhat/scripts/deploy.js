@@ -1,15 +1,16 @@
 const hre = require('hardhat');
+require('dotenv').config();
 
 async function main() {
-    const HelloWorld = await hre.ethers.getContractFactory('HelloWorld');
-    const helloWorld = await HelloWorld.deploy();
+  const HelloWorld = await hre.ethers.getContractFactory('HelloWorld');
+  const helloWorld = await HelloWorld.deploy();
 
-    await helloWorld.deployed();
+  await helloWorld.deployed();
 
-    console.log('HelloWorld is deployed');
+  console.log('HelloWorld is deployed');
 }
 
 main().catch((error) => {
-    console.log(error);
-    process.exitCode = 1;
+  console.log(error);
+  process.exitCode = 1;
 });
