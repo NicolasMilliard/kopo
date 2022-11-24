@@ -5,6 +5,10 @@ node_modules
 .pnp
 .pnp.js
 
+# Dev
+.next
+build-info
+
 # Production
 build
 
