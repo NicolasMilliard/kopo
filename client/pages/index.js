@@ -7,7 +7,7 @@ const Index = () => {
 
   return (
     <>
-      <h1>Welcome to Kopo</h1>
+      <h1 className='text-3xl font-bold underline'>Welcome to Kopo</h1>
       <WagmiTest />
       <ContractTest />
     </>
