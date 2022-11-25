@@ -12,6 +12,10 @@ module.exports = {
   defaultNetwork: 'hardhat',
   networks: {
     hardhat: { chainId: 1337 },
+    localhost: { chainId: 1337, url: 'http://localhost:8545' },
+  },
+  mocha: {
+    parallel: true,
   },
   gasReporter: {
     enabled: true,

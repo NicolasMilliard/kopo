@@ -3,7 +3,7 @@ require('dotenv').config();
 
 async function main() {
   const HelloWorld = await hre.ethers.getContractFactory('HelloWorld');
-  const helloWorld = await HelloWorld.deploy();
+  const helloWorld = await HelloWorld.deploy('Hello World!');
 
   await helloWorld.deployed();
 
