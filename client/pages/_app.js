@@ -4,7 +4,10 @@ import { getDefaultProvider } from 'ethers';
 import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 
-const { chains, provider } = configureChains([chain.goerli, chain.polygon], [publicProvider()]);
+const { chains, provider } = configureChains(
+  [chain.localhost, chain.hardhat, chain.goerli, chain.polygon],
+  [publicProvider()],
+);
 
 const { connectors } = getDefaultWallets({
   appName: 'Kopo',
