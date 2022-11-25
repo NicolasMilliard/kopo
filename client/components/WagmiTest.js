@@ -9,7 +9,7 @@ let WagmiTest = () => {
   });
   const { disconnect } = useDisconnect();
 
-  return <ConnectButton />;
+  return <ConnectButton showBalance={false} />;
 };
 
 export default WagmiTest;
