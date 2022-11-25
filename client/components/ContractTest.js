@@ -9,7 +9,6 @@ const WagmiTestRead = () => {
     ...helloContract,
     functionName: 'getMessage',
     watch: true,
-    cacheOnBlock: true,
   });
 
   useEffect(() => {
