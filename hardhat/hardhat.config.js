@@ -5,9 +5,30 @@ require('hardhat-gas-reporter');
 require('solidity-coverage');
 require('@nomiclabs/hardhat-etherscan');
 
+/**
+ * Display the list of accounts.
+ * @dev hh accounts
+ */
+task('accounts', 'Prints the list of accounts', async () => {
+  const accounts = await ethers.getSigners();
+
+  for (const account of accounts) {
+    const balance = await ethers.provider.getBalance(account.address);
+    console.log(`- ${account.address}: ${ethers.utils.formatEther(balance)} ETH`);
+  }
+});
+
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
-  solidity: '0.8.17',
+  solidity: {
+    version: '0.8.17',
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
+    },
+  },
   paths: {
     sources: './contracts',
     artifacts: '../client/artifacts',
@@ -16,6 +37,11 @@ module.exports = {
   networks: {
     hardhat: {
       chainId: 1337,
+      accounts: {
+        mnemonic: process.env.WALLET_DEV_MNEMONIC,
+        accountsBalance: '1000000000000000000000',
+        count: 10,
+      },
     },
     localhost: {
       chainId: 1337,
@@ -23,12 +49,7 @@ module.exports = {
     },
     mumbai: {
       url: process.env.MUMBAI_ENDPOINT,
-      accounts: [
-        process.env.ACCOUNT1,
-        process.env.ACCOUNT2,
-        process.env.ACCOUNT3,
-        process.env.ACCOUNT4,
-      ],
+      accounts: [process.env.DEPLOY_KEY_MUMBAI],
       gas: 2100000,
       gasPrice: 8000000000,
     },
@@ -38,12 +59,7 @@ module.exports = {
     enabled: true,
     currency: 'USD',
   },
-  settings: {
-    optimizer: {
-      enabled: true,
-      runs: 200,
-    },
-  },
+
   etherscan: {
     apiKey: {
       polygon: process.env.POLYGONSCAN_KEY,
