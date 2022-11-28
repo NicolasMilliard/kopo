@@ -5,6 +5,9 @@ node_modules
 .pnp
 .pnp.js
 
+# Smart Contracts artifacts
+client/artifacts
+
 # Dev
 .next
 build-info
