@@ -12,6 +12,7 @@
     "solidity-coverage": "^0.8.2"
   },
   "dependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^2.0.0"
+    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+    "@openzeppelin/contracts-upgradeable": "^4.8.0"
   }
 }
