@@ -65,7 +65,7 @@ contract KopoRolesManager {
 
   /// @notice Add the role ADMIN to an address
   /// @param _address can't be address(0) and can't already be an ADMIN address
-  function setRoleAdmin(address _address) external isZeroAddress(_address) isActiveAdmin {
+  function setRoleAdmin(address _address) external isActiveAdmin isZeroAddress(_address) {
     require(users[_address].rolesList != rolesList.ADMIN, 'This address is already an admin');
 
     users[_address].rolesList = rolesList.ADMIN;
@@ -77,6 +77,7 @@ contract KopoRolesManager {
   /// @dev This function is called when a user update his profile (by default a user is BENEFICIAIRE)
   /// @param _role is the updated role the user wants
   function updateUserRole(uint256 _role) external isNotBlacklisted {
+    require(users[msg.sender].rolesList != rolesList(_role), 'Your address has already this role');
     require(_role < 4, "You can't update to this role");
 
     rolesList previousRole = users[msg.sender].rolesList;
