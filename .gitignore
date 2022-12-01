@@ -17,6 +17,7 @@ build
 
 # Testing
 coverage
+hardhat/coverage.json
 
 # Cache
 .cache
