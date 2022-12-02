@@ -1,20 +1,20 @@
 const hre = require('hardhat');
 
-const folderFactoryContractAddress = "0x...";
-// const folderContractAddress = "0x...";
-const rolesContractAddress = "0x...";
-
 const main = async () => {
-  const KopoAddressProvider = await hre.ethers.getContractFactory('KopoAddressProvider');
+  // Contracts addresses
+  const kopoFolderFactoryContractAddress = "0x1284294ddBD4Fe3D675741c306F2B6Eaa4d6D9A9";
+  const kopoRolesContractAddress = "0x1284294ddBD4Fe3D675741c306F2B6Eaa4d6D9A9";
 
-  const kopoAddressProvider = await hre.upgrades.deployProxy(KopoAddressProvider, [folderFactoryContractAddress, folderContractAddress, rolesContractAddress], {
-    initializer: "initialize",
-  });
-  await kopoAddressProvider.deployed();
-  console.log(`KopoAddressProvider is deployed: ${addressProvider.address}`);
+  const KopoAddressProvider = await hre.ethers.getContractFactory("KopoAddressProvider");
+  console.log("Deploying KopoAddressProvider, ProxyAdmin, and then Proxy...");
+
+  const proxy = await hre.upgrades.deployProxy(KopoAddressProvider, [kopoFolderFactoryContractAddress, kopoRolesContractAddress], { initializer: 'initialize' });
+  console.log(`Proxy of KopoAddressProvider deployed to: ${proxy.address}`);
 }
 
-main().catch((error) => {
-  console.log(error);
-  process.exitCode = 1;
-});
+main()
+  .then(() => process.exit(0))
+  .catch(error => {
+    console.error(error)
+    process.exit(1)
+  })

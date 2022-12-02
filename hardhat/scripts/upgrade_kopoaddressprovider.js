@@ -1,15 +1,16 @@
-const hre = require('hardhat');
-
-const kopoAddressProviderContractAddress = "0x...";
-
 const main = async () => {
-  const KopoAddressProviderUpgrade = await hre.ethers.getContractFactory('KopoAddressProviderV2');
+  // Contracts addresses
+  const KopoAddressProviderContractAddress = "0xA56f1A7b95D5C2E01A97fE6c17103822cc191E0E";
 
-  await hre.upgrades.upgradeProxy(kopoAddressProviderContractAddress, KopoAddressProviderUpgrade);
-  console.log('KopoAddressProviderUpgrade upgraded');
+  const KopoAddressProviderV2 = await ethers.getContractFactory("KopoAddressProvider_testonly");
+
+  const proxy = await upgrades.upgradeProxy(KopoAddressProviderContractAddress, KopoAddressProviderV2);
+  console.log(`Your upgraded proxy id done! Proxy address: ${proxy.address}`);
 }
 
-main().catch((error) => {
-  console.log(error);
-  process.exitCode = 1;
-});
+main()
+  .then(() => process.exit(0))
+  .catch(error => {
+    console.error(error)
+    process.exit(1)
+  })
