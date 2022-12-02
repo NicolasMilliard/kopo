@@ -7,7 +7,6 @@ describe('Testing KopoRolesManager...', async () => {
   let _owner;
   let _admin;
   let _user;
-  let _userNotVerified;
   let _userBlacklisted;
 
   beforeEach(async () => {
@@ -15,7 +14,7 @@ describe('Testing KopoRolesManager...', async () => {
     const kopoRolesManager = await hre.ethers.getContractFactory('KopoRolesManager');
     kopoRolesManagerContract = await kopoRolesManager.deploy();
     await kopoRolesManagerContract.deployed();
-    [_owner, _admin, _user, _userNotVerified, _userBlacklisted] = await hre.ethers.getSigners();
+    [_owner, _admin, _user, _userBlacklisted] = await hre.ethers.getSigners();
   });
 
   describe('\n✨ CONTEXT: Deploy contract\n', async () => {
