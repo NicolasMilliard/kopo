@@ -11,7 +11,7 @@ const main = async () => {
   const KopoRolesManager = await hre.ethers.getContractFactory('KopoRolesManager');
   const kopoRolesManager = await KopoRolesManager.deploy();
   await kopoRolesManager.deployed();
-  // console.log(`HelloWorld is deployed: ${helloWorld.address}`);
+  console.log(`kopoRolesManager is deployed: ${kopoRolesManager.address}`);
 
   /* Checking balance again */
   balance = await deployer.getBalance();
