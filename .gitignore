@@ -4,6 +4,7 @@
 node_modules
 .pnp
 .pnp.js
+hardhat/.openzeppelin
 
 # Smart Contracts artifacts
 client/artifacts
