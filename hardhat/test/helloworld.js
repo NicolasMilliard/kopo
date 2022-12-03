@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const hre = require('hardhat');
 
-describe('Voting Contract', () => {
+describe('Hello World Contract', () => {
   beforeEach(async () => {
     const constructorMessage = 'Hello from constructor';
     const helloContractFactory = await hre.ethers.getContractFactory('HelloWorld');
