@@ -4,6 +4,10 @@
 node_modules
 .pnp
 .pnp.js
+hardhat/.openzeppelin
+
+# Smart Contracts artifacts
+client/artifacts
 
 # Dev
 .next
@@ -14,6 +18,7 @@ build
 
 # Testing
 coverage
+hardhat/coverage.json
 
 # Cache
 .cache
