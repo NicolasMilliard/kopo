@@ -21,14 +21,27 @@ describe('KopoFolderHandler Contract', () => {
    * Testing the folder factory.
    */
   describe('Factory', async () => {
-    it('create a new contract with the proper event.', async () => {
+    it('create a new folder contract with the proper event.', async () => {
       await expect(kopoFolderFactoryContract.createFolder()).to.emit(
         kopoFolderFactoryContract,
         'NewFolder',
       );
     });
 
-    it('forbid unregistered users from deploying a new contract (POV: hacker).', async () => {
+    it('create a new folder contract with a specific nonce.', async () => {
+      const nonce = 1;
+      await expect(kopoFolderFactoryContract.createFolderWithNonce(nonce)).to.emit(
+        kopoFolderFactoryContract,
+        'NewFolder',
+      );
+    });
+
+    it('batch create a new folder contracts.', async () => {
+      const amount = 21;
+      await kopoFolderFactoryContract.batchCreateFolders(amount);
+    });
+
+    it('forbids unregistered users from deploying a new contract (POV: hacker).', async () => {
       await expect(kopoFolderFactoryContract.connect(hacker).createFolder()).to.be.revertedWith(
         'not allowed',
       );
@@ -38,7 +51,7 @@ describe('KopoFolderHandler Contract', () => {
      * Test that the new deployed contract really creates an NFT and
      * sets the proper owner.
      */
-    describe('NFT & Owner', async () => {
+    describe('Owner & Folder Id', async () => {
       let kopoFolderContract;
       let address;
 
@@ -48,13 +61,9 @@ describe('KopoFolderHandler Contract', () => {
       beforeEach(async () => {
         const tx = await kopoFolderFactoryContract.createFolder();
         let receipt = await tx.wait();
-        address = receipt.events[3].args._contract;
+        address = receipt.events[2].args._contract;
         const kopoFolderContractFactory = await hre.ethers.getContractFactory('KopoFolderHandler');
         kopoFolderContract = await kopoFolderContractFactory.attach(address);
-      });
-
-      it('mint a new NFT when creating a new contract.', async () => {
-        expect(await kopoFolderContract.balanceOf(owner.address)).to.be.equal(1);
       });
 
       it('sets the correct owner when creating a new contract.', async () => {
