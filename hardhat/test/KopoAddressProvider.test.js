@@ -3,7 +3,7 @@ const hre = require('hardhat');
 
 describe('📚 Testing KopoAddressProvider...', async () => {
   // Variables used through all tests
-  const folderFactoryContractAddress = "0x1284294ddBD4Fe3D675741c306F2B6Eaa4d6D9A9";
+  const folderFactoryContractAddress = '0x1284294ddBD4Fe3D675741c306F2B6Eaa4d6D9A9';
   let kopoAddressProviderProxy;
   let testingNewContractAddress;
   // const zeroAddress = hre.ethers.constants.AddressZero;
@@ -29,24 +29,32 @@ describe('📚 Testing KopoAddressProvider...', async () => {
   // Testing KopoAddressProvider
   describe('\n📕 DEPLOY CONTRACT FAILED\n', async () => {
     it('should revert: folderFactoryContractAddress is not a contract', async () => {
-      const KopoAddressProvider = await hre.ethers.getContractFactory("KopoAddressProvider");
+      const KopoAddressProvider = await hre.ethers.getContractFactory('KopoAddressProvider');
 
-      const receipt = hre.upgrades.deployProxy(KopoAddressProvider, [zeroAddress, kopoRolesContractAddress], { initializer: 'initialize' });
-      await expect(receipt).to.be.revertedWith("_folderFactoryContractAddress is not a contract");
+      const receipt = hre.upgrades.deployProxy(KopoAddressProvider, [zeroAddress, kopoRolesContractAddress], {
+        initializer: 'initialize',
+      });
+      await expect(receipt).to.be.revertedWith('_folderFactoryContractAddress is not a contract');
     });
 
     it('should revert: kopoRolesContractAddress is not a contract', async () => {
-      const KopoAddressProvider = await hre.ethers.getContractFactory("KopoAddressProvider");
+      const KopoAddressProvider = await hre.ethers.getContractFactory('KopoAddressProvider');
 
-      const receipt = hre.upgrades.deployProxy(KopoAddressProvider, [folderFactoryContractAddress, zeroAddress], { initializer: 'initialize' });
-      await expect(receipt).to.be.revertedWith("_rolesContractAddress is not a contract");
+      const receipt = hre.upgrades.deployProxy(KopoAddressProvider, [folderFactoryContractAddress, zeroAddress], {
+        initializer: 'initialize',
+      });
+      await expect(receipt).to.be.revertedWith('_rolesContractAddress is not a contract');
     });
   });
 
   describe('\n📗 DEPLOY CONTRACT', async () => {
     beforeEach(async () => {
-      const KopoAddressProvider = await hre.ethers.getContractFactory("KopoAddressProvider");
-      kopoAddressProviderProxy = await hre.upgrades.deployProxy(KopoAddressProvider, [folderFactoryContractAddress, kopoRolesContractAddress], { initializer: 'initialize' });
+      const KopoAddressProvider = await hre.ethers.getContractFactory('KopoAddressProvider');
+      kopoAddressProviderProxy = await hre.upgrades.deployProxy(
+        KopoAddressProvider,
+        [folderFactoryContractAddress, kopoRolesContractAddress],
+        { initializer: 'initialize' },
+      );
       [_owner, _user] = await hre.ethers.getSigners();
     });
 
@@ -72,14 +80,16 @@ describe('📚 Testing KopoAddressProvider...', async () => {
 
       it('should revert: initialize can be call only once (POV _owner)', async () => {
         const receipt = kopoAddressProviderProxy.initialize(folderFactoryContractAddress, kopoRolesContractAddress);
-        await expect(receipt).to.be.revertedWith("Initializable: contract is already initialized");
+        await expect(receipt).to.be.revertedWith('Initializable: contract is already initialized');
       });
     });
 
     describe('\n✨ CONTEXT: Test setFolderFactoryContractAddress\n', async () => {
       it('should update folderFactoryContractAddress (POV _owner)', async () => {
         // Update folderFactoryContractAddress
-        await kopoAddressProviderProxy.setFolderFactoryContractAddress(testingNewContractAddress, { from: _owner.address });
+        await kopoAddressProviderProxy.setFolderFactoryContractAddress(testingNewContractAddress, {
+          from: _owner.address,
+        });
 
         // Get folderFactoryContractAddress
         const receipt = (await kopoAddressProviderProxy.folderFactoryContractAddress()).toString();
@@ -88,22 +98,23 @@ describe('📚 Testing KopoAddressProvider...', async () => {
 
       it('should revert: caller is not the owner (POV _user)', async () => {
         // Update folderFactoryContractAddress
-        const receipt = kopoAddressProviderProxy.connect(_user).setFolderFactoryContractAddress(testingNewContractAddress, { from: _user.address });
-        await expect(receipt).to.be.revertedWith("Ownable: caller is not the owner");
+        const receipt = kopoAddressProviderProxy
+          .connect(_user)
+          .setFolderFactoryContractAddress(testingNewContractAddress, { from: _user.address });
+        await expect(receipt).to.be.revertedWith('Ownable: caller is not the owner');
       });
 
       it('should revert: new contract address is not a contract (POV _owner)', async () => {
         // Update folderFactoryContractAddress
         const receipt = kopoAddressProviderProxy.setFolderFactoryContractAddress(zeroAddress, { from: _owner.address });
-        await expect(receipt).to.be.revertedWith("_contractAddress is not a contract");
+        await expect(receipt).to.be.revertedWith('_contractAddress is not a contract');
       });
 
       it('should emit kopoFolderFactoryContractUpdated event (POV _owner)', async () => {
         // kopoFolderFactoryContractUpdated event is correctly emit
-        await expect(kopoAddressProviderProxy.setFolderFactoryContractAddress(testingNewContractAddress, { from: _owner.address })).to.emit(
-          kopoAddressProviderProxy,
-          'folderFactoryContractUpdated',
-        );
+        await expect(
+          kopoAddressProviderProxy.setFolderFactoryContractAddress(testingNewContractAddress, { from: _owner.address }),
+        ).to.emit(kopoAddressProviderProxy, 'folderFactoryContractUpdated');
       });
     });
 
@@ -119,22 +130,23 @@ describe('📚 Testing KopoAddressProvider...', async () => {
 
       it('should revert: caller is not the owner (POV _user)', async () => {
         // Update kopoRolesContractAddress
-        const receipt = kopoAddressProviderProxy.connect(_user).setRolesContractAddress(testingNewContractAddress, { from: _user.address });
-        await expect(receipt).to.be.revertedWith("Ownable: caller is not the owner");
+        const receipt = kopoAddressProviderProxy
+          .connect(_user)
+          .setRolesContractAddress(testingNewContractAddress, { from: _user.address });
+        await expect(receipt).to.be.revertedWith('Ownable: caller is not the owner');
       });
 
       it('should revert: new contract address is not a contract (POV _owner)', async () => {
         // Update kopoRolesContractAddress
         const receipt = kopoAddressProviderProxy.setRolesContractAddress(zeroAddress, { from: _owner.address });
-        await expect(receipt).to.be.revertedWith("_contractAddress is not a contract");
+        await expect(receipt).to.be.revertedWith('_contractAddress is not a contract');
       });
 
       it('should emit rolesContractUpdated event (POV _owner)', async () => {
         // kopoRolesContractUpdated event is correctly emit
-        await expect(kopoAddressProviderProxy.setRolesContractAddress(testingNewContractAddress, { from: _owner.address })).to.emit(
-          kopoAddressProviderProxy,
-          'rolesContractUpdated',
-        );
+        await expect(
+          kopoAddressProviderProxy.setRolesContractAddress(testingNewContractAddress, { from: _owner.address }),
+        ).to.emit(kopoAddressProviderProxy, 'rolesContractUpdated');
       });
     });
   });
@@ -142,10 +154,14 @@ describe('📚 Testing KopoAddressProvider...', async () => {
   // Testing KopoAddressProvider after an upgrade
   describe('\n\n📘 UPGRADE CONTRACT', async () => {
     beforeEach(async () => {
-      const KopoAddressProvider = await hre.ethers.getContractFactory("KopoAddressProvider");
-      kopoAddressProviderProxy = await hre.upgrades.deployProxy(KopoAddressProvider, [folderFactoryContractAddress, kopoRolesContractAddress], { initializer: 'initialize' });
+      const KopoAddressProvider = await hre.ethers.getContractFactory('KopoAddressProvider');
+      kopoAddressProviderProxy = await hre.upgrades.deployProxy(
+        KopoAddressProvider,
+        [folderFactoryContractAddress, kopoRolesContractAddress],
+        { initializer: 'initialize' },
+      );
 
-      const KopoAddressProviderV2 = await hre.ethers.getContractFactory("KopoAddressProvider_testonly");
+      const KopoAddressProviderV2 = await hre.ethers.getContractFactory('KopoAddressProvider_testonly');
       kopoAddressProviderProxy = await upgrades.upgradeProxy(kopoAddressProviderProxy, KopoAddressProviderV2);
       [_owner, _user] = await hre.ethers.getSigners();
     });
@@ -173,7 +189,9 @@ describe('📚 Testing KopoAddressProvider...', async () => {
     describe('\n✨ CONTEXT: Test setFolderFactoryContractAddress\n', async () => {
       it('should update folderFactoryContractAddress (POV _owner)', async () => {
         // Update folderFactoryContractAddress
-        await kopoAddressProviderProxy.setFolderFactoryContractAddress(testingNewContractAddress, { from: _owner.address });
+        await kopoAddressProviderProxy.setFolderFactoryContractAddress(testingNewContractAddress, {
+          from: _owner.address,
+        });
 
         // Get folderFactoryContractAddress
         const receipt = (await kopoAddressProviderProxy.folderFactoryContractAddress()).toString();
@@ -182,22 +200,23 @@ describe('📚 Testing KopoAddressProvider...', async () => {
 
       it('should revert: caller is not the owner (POV _user)', async () => {
         // Update folderFactoryContractAddress
-        const receipt = kopoAddressProviderProxy.connect(_user).setFolderFactoryContractAddress(testingNewContractAddress, { from: _user.address });
-        await expect(receipt).to.be.revertedWith("Ownable: caller is not the owner");
+        const receipt = kopoAddressProviderProxy
+          .connect(_user)
+          .setFolderFactoryContractAddress(testingNewContractAddress, { from: _user.address });
+        await expect(receipt).to.be.revertedWith('Ownable: caller is not the owner');
       });
 
       it('should revert: new contract address is not a contract (POV _owner)', async () => {
         // Update folderFactoryContractAddress
         const receipt = kopoAddressProviderProxy.setFolderFactoryContractAddress(zeroAddress, { from: _owner.address });
-        await expect(receipt).to.be.revertedWith("_contractAddress is not a contract");
+        await expect(receipt).to.be.revertedWith('_contractAddress is not a contract');
       });
 
       it('should emit folderFactoryContractUpdated event (POV _owner)', async () => {
         // folderFactoryContractUpdated event is correctly emit
-        await expect(kopoAddressProviderProxy.setFolderFactoryContractAddress(testingNewContractAddress, { from: _owner.address })).to.emit(
-          kopoAddressProviderProxy,
-          'folderFactoryContractUpdated',
-        );
+        await expect(
+          kopoAddressProviderProxy.setFolderFactoryContractAddress(testingNewContractAddress, { from: _owner.address }),
+        ).to.emit(kopoAddressProviderProxy, 'folderFactoryContractUpdated');
       });
     });
 
@@ -213,22 +232,23 @@ describe('📚 Testing KopoAddressProvider...', async () => {
 
       it('should revert: caller is not the owner (POV _user)', async () => {
         // Update kopoRolesContractAddress
-        const receipt = kopoAddressProviderProxy.connect(_user).setRolesContractAddress(testingNewContractAddress, { from: _user.address });
-        await expect(receipt).to.be.revertedWith("Ownable: caller is not the owner");
+        const receipt = kopoAddressProviderProxy
+          .connect(_user)
+          .setRolesContractAddress(testingNewContractAddress, { from: _user.address });
+        await expect(receipt).to.be.revertedWith('Ownable: caller is not the owner');
       });
 
       it('should revert: new contract address is not a contract (POV _owner)', async () => {
         // Update kopoRolesContractAddress
         const receipt = kopoAddressProviderProxy.setRolesContractAddress(zeroAddress, { from: _owner.address });
-        await expect(receipt).to.be.revertedWith("_contractAddress is not a contract");
+        await expect(receipt).to.be.revertedWith('_contractAddress is not a contract');
       });
 
       it('should emit kopoRolesContractUpdated event (POV _owner)', async () => {
         // kopoRolesContractUpdated event is correctly emit
-        await expect(kopoAddressProviderProxy.setRolesContractAddress(testingNewContractAddress, { from: _owner.address })).to.emit(
-          kopoAddressProviderProxy,
-          'rolesContractUpdated',
-        );
+        await expect(
+          kopoAddressProviderProxy.setRolesContractAddress(testingNewContractAddress, { from: _owner.address }),
+        ).to.emit(kopoAddressProviderProxy, 'rolesContractUpdated');
       });
     });
 
@@ -244,8 +264,10 @@ describe('📚 Testing KopoAddressProvider...', async () => {
 
       it('should revert: caller is not the owner (POV _user)', async () => {
         // Update testingContractAddress
-        const receipt = kopoAddressProviderProxy.connect(_user).setTestingContractAddress(testingNewContractAddress, { from: _user.address });
-        await expect(receipt).to.be.revertedWith("Ownable: caller is not the owner");
+        const receipt = kopoAddressProviderProxy
+          .connect(_user)
+          .setTestingContractAddress(testingNewContractAddress, { from: _user.address });
+        await expect(receipt).to.be.revertedWith('Ownable: caller is not the owner');
       });
 
       it('should revert: new contract address is not a contract (POV _owner)', async () => {
@@ -254,15 +276,14 @@ describe('📚 Testing KopoAddressProvider...', async () => {
 
         // Update testingContractAddress to zeroAddress
         const receipt = kopoAddressProviderProxy.setTestingContractAddress(zeroAddress, { from: _owner.address });
-        await expect(receipt).to.be.revertedWith("_contractAddress is not a contract");
+        await expect(receipt).to.be.revertedWith('_contractAddress is not a contract');
       });
 
       it('should emit testingContractUpdated event (POV _owner)', async () => {
         // testingContractUpdated event is correctly emit
-        await expect(kopoAddressProviderProxy.setTestingContractAddress(testingNewContractAddress, { from: _owner.address })).to.emit(
-          kopoAddressProviderProxy,
-          'testingContractUpdated',
-        );
+        await expect(
+          kopoAddressProviderProxy.setTestingContractAddress(testingNewContractAddress, { from: _owner.address }),
+        ).to.emit(kopoAddressProviderProxy, 'testingContractUpdated');
       });
     });
   });

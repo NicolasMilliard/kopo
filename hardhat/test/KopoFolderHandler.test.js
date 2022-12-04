@@ -4,27 +4,26 @@ const hre = require('hardhat');
 describe('KopoFolderHandler Contract', () => {
   let owner;
   let hacker;
-  let account1;
+  let verified1;
   let kopoAddressProvider;
   let kopoFolderContract;
 
   /**
-   * @dev To launch every test, the address provider needs to be depoyed.
-   * This is common to each scripts.
+   * @dev To launch every test, the address provider needs to be depoyed
+   * and roles set.
    */
   before(async () => {
-    // TODO Use the real address provider.
-    const kopoRolesManagerProviderFactory = await hre.ethers.getContractFactory(
-      'contracts/KopoFolderHandler.sol:KopoRolesManager',
-    );
+    [owner, verified1, hacker] = await hre.ethers.getSigners();
+    const kopoRolesManagerProviderFactory = await hre.ethers.getContractFactory('KopoRolesManager');
     const kopoRolesManager = await kopoRolesManagerProviderFactory.deploy();
     await kopoRolesManager.deployed();
 
-    const kopoAddressProviderFactory = await hre.ethers.getContractFactory(
-      'contracts/KopoFolderHandler.sol:KopoAddressProvider',
-    );
-    kopoAddressProvider = await kopoAddressProviderFactory.deploy(kopoRolesManager.address);
-    await kopoAddressProvider.deployed();
+    const kopoAddressProviderFactory = await hre.ethers.getContractFactory('KopoAddressProvider');
+    kopoAddressProvider = await hre.upgrades.deployProxy(kopoAddressProviderFactory, [], {
+      initializer: 'initialize',
+    });
+    await kopoAddressProvider.setRolesContractAddress(kopoRolesManager.address);
+    await kopoRolesManager.verifyUser(verified1.address);
   });
 
   /**
@@ -35,7 +34,7 @@ describe('KopoFolderHandler Contract', () => {
     const kopoFolderContractFactory = await hre.ethers.getContractFactory('KopoFolderHandler');
     kopoFolderContract = await kopoFolderContractFactory.deploy(kopoAddressProvider.address, folderId);
     await kopoFolderContract.deployed();
-    [owner, account1, hacker] = await hre.ethers.getSigners();
+    [owner, verified1, hacker] = await hre.ethers.getSigners();
   });
 
   /**
@@ -47,14 +46,13 @@ describe('KopoFolderHandler Contract', () => {
       expect(contractOwner).to.be.equal(owner.address);
     });
 
-    it.skip('should transfer ownership to a new verified user', async () => {
-      // TODO White list account1 before.
-      await expect(kopoFolderContract.transferOwnership(account1.address))
+    it('should transfer ownership to a new verified user', async () => {
+      await expect(kopoFolderContract.transferOwnership(verified1.address))
         .to.emit(kopoFolderContract, 'OwnershipTransferred')
-        .withArgs(owner.address, account1.address);
+        .withArgs(owner.address, verified1.address);
     });
 
-    it.skip('should prevent transfer to unverified user', async () => {
+    itkip('should prevent transfer to unverified user', async () => {
       await expect(kopoFolderContract.transferOwnership(hacker.address)).to.be.revertedWith('not verified');
     });
   });

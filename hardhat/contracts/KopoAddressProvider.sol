@@ -22,22 +22,8 @@ contract KopoAddressProvider is Initializable, OwnableUpgradeable {
 
   /// @notice KopoAddressProvider must be deployed after others contracts used by Kopo
   /// @dev KopoAddressProvider is upgradeable so initialize is used instead of a constructor
-  /// @param _folderFactoryContractAddress is FolderFactory contract address
-  /// @param _rolesContractAddress is Roles contract address
-  function initialize(address _folderFactoryContractAddress, address _rolesContractAddress) external initializer {
-    require(
-      AddressUpgradeable.isContract(_folderFactoryContractAddress) == true,
-      '_folderFactoryContractAddress is not a contract'
-    );
-    require(AddressUpgradeable.isContract(_rolesContractAddress) == true, '_rolesContractAddress is not a contract');
-
-    folderFactoryContractAddress = _folderFactoryContractAddress;
-    rolesContractAddress = _rolesContractAddress;
-
+  function initialize() external initializer {
     __Ownable_init();
-
-    emit folderFactoryContractUpdated(address(0), folderFactoryContractAddress);
-    emit rolesContractUpdated(address(0), rolesContractAddress);
   }
 
   /// @notice Set KopoFolderFactory contract address

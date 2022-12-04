@@ -5,41 +5,8 @@ import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
 
-/***************************************************************************/
-/* DEBUG                                                                   */
-/***************************************************************************/
-//import './KopoRolesManager.sol';
-//import './KopoAddressProvider.sol';
-
-contract KopoRolesManager {
-  function isVerified(address _addr) external pure returns (bool) {
-    return true;
-  }
-
-  function isXXX(address _addr) external pure returns (bool) {
-    return true;
-  }
-}
-
-contract KopoAddressProvider {
-  KopoRolesManager private roleManager;
-
-  constructor(address _roleContract) {
-    roleManager = new KopoRolesManager();
-  }
-
-  function getKopoRolesContractAddress() external returns (address) {
-    return address(roleManager);
-  }
-
-  function getKopoFolderFactoryContractAddress() external returns (address) {
-    address(0);
-  }
-}
-
-/***************************************************************************/
-/* DEBUG                                                                   */
-/***************************************************************************/
+import './KopoAddressProvider.sol';
+import './KopoRolesManager.sol';
 
 /** @title KopoFolderHandler
  * @author Nicolas Milliard - Matthieu Bonetti
@@ -66,7 +33,7 @@ contract KopoFolderHandler is ERC721, Ownable {
 
   /** @dev Calls KopoRolesManager to check. */
   modifier isVerified(address _addr) {
-    require(KopoRolesManager(addressProvider.getKopoRolesContractAddress()).isVerified(_addr) == true, 'not verified');
+    require(KopoRolesManager(addressProvider.rolesContractAddress()).isVerified(_addr) == true, 'not verified');
     _;
   }
 
