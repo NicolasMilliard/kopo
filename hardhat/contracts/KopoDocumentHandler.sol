@@ -6,6 +6,8 @@ import '@openzeppelin/contracts/utils/Counters.sol';
 
 import './KopoFolderHandler.sol';
 import './KopoFolderFactory.sol';
+import './KopoAddressProvider.sol';
+import './KopoRolesManager.sol';
 
 /** @title KopoDocumentHandler
  * @author Nicolas Milliard - Matthieu Bonetti
@@ -27,13 +29,13 @@ contract KopoDocumentHandler is ERC721 {
 
   /** @dev Calls KopoRolesManager to check. */
   modifier isVerified(address _addr) {
-    require(KopoRolesManager(addressProvider.getKopoRolesContractAddress()).isVerified(_addr) == true, 'not verified');
+    require(KopoRolesManager(addressProvider.rolesContractAddress()).isVerified(_addr) == true, 'not verified');
     _;
   }
 
   /** @dev Calls KopoRolesManager to check. */
-  modifier isXXX(address _addr) {
-    require(KopoRolesManager(addressProvider.getKopoRolesContractAddress()).isXXX(_addr) == true, 'not XXX');
+  modifier isOblige(address _addr) {
+    require(KopoRolesManager(addressProvider.rolesContractAddress()).isOblige(_addr) == true, 'not oblige');
     _;
   }
 
@@ -56,7 +58,7 @@ contract KopoDocumentHandler is ERC721 {
    * @param _to The NFT recipient (the recipient KopoFolder address).
    * Emits a transfer event.
    */
-  function safeMint(address _to, string calldata metadata) external isXXX(msg.sender) isValidFolder(_to) {
+  function safeMint(address _to, string calldata metadata) external isOblige(msg.sender) isValidFolder(_to) {
     uint256 tokenId = tokenIds.current();
     tokenIds.increment();
     // Add the document CID and metadata to the NFT.

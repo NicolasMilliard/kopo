@@ -2,6 +2,8 @@
 pragma solidity 0.8.17;
 
 import './KopoFolderHandler.sol';
+import './KopoAddressProvider.sol';
+import './KopoRolesManager.sol';
 
 /**
  * @title KopoFolderFactory
@@ -16,7 +18,7 @@ contract KopoFolderFactory {
 
   /** @dev Calls KopoRolesManager to check. */
   modifier isVerified(address _addr) {
-    require(KopoRolesManager(addressProvider.getKopoRolesContractAddress()).isVerified(_addr) == true, 'not verified');
+    require(KopoRolesManager(addressProvider.rolesContractAddress()).isVerified(_addr) == true, 'not verified');
     _;
   }
 

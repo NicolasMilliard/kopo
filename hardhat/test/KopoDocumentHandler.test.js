@@ -3,28 +3,27 @@ const hre = require('hardhat');
 
 describe('KopoDocumentHandler Contract', () => {
   let owner;
+  let verified1;
   let hacker;
-  let account1;
   let kopoAddressProvider;
   let kopoDocumentContract;
 
   /**
-   * @dev To launch every test, the address provider needs to be depoyed.
-   * This is common to each scripts.
+   * @dev To launch every test, the address provider needs to be depoyed
+   * and roles set.
    */
   before(async () => {
-    // TODO Use the real address provider.
-    const kopoRolesManagerProviderFactory = await hre.ethers.getContractFactory(
-      'contracts/KopoDocumentHandler.sol:KopoRolesManager',
-    );
+    [owner, verified1, hacker] = await hre.ethers.getSigners();
+    const kopoRolesManagerProviderFactory = await hre.ethers.getContractFactory('KopoRolesManager');
     const kopoRolesManager = await kopoRolesManagerProviderFactory.deploy();
     await kopoRolesManager.deployed();
 
-    const kopoAddressProviderFactory = await hre.ethers.getContractFactory(
-      'contracts/KopoDocumentHandler.sol:KopoAddressProvider',
-    );
-    kopoAddressProvider = await kopoAddressProviderFactory.deploy(kopoRolesManager.address);
-    await kopoAddressProvider.deployed();
+    const kopoAddressProviderFactory = await hre.ethers.getContractFactory('KopoAddressProvider');
+    kopoAddressProvider = await hre.upgrades.deployProxy(kopoAddressProviderFactory, [], {
+      initializer: 'initialize',
+    });
+    await kopoAddressProvider.setRolesContractAddress(kopoRolesManager.address);
+    await kopoRolesManager.verifyUser(verified1.address);
   });
 
   /**
@@ -34,7 +33,6 @@ describe('KopoDocumentHandler Contract', () => {
     const kopoDocumentContractFactory = await hre.ethers.getContractFactory('KopoDocumentHandler');
     kopoDocumentContract = await kopoDocumentContractFactory.deploy(kopoAddressProvider.address);
     await kopoDocumentContract.deployed();
-    [owner, account1, hacker] = await hre.ethers.getSigners();
   });
 
   /**
