@@ -5,14 +5,13 @@ require('@openzeppelin/hardhat-upgrades');
 require('hardhat-gas-reporter');
 require('solidity-coverage');
 require('@nomiclabs/hardhat-etherscan');
-const { utils } = require('ethers');
 
 /**
  * Display the list of accounts.
  * @dev hh accounts
  */
 task('accounts', 'Prints the list of accounts', async () => {
-  const hdNode = utils.HDNode.fromMnemonic(process.env.WALLET_DEV_MNEMONIC);
+  const hdNode = ethers.utils.HDNode.fromMnemonic(process.env.WALLET_DEV_MNEMONIC);
   const accounts = await ethers.getSigners();
   let i = 0;
   for (const account of accounts) {
