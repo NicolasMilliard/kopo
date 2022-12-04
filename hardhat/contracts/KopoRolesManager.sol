@@ -101,16 +101,16 @@ contract KopoRolesManager {
   }
 
   /// @notice Check if the sender is verified
-  function isVerified() external view returns (bool) {
-    if (users[msg.sender].isVerified == true) {
+  function isVerified(address _addr) external view returns (bool) {
+    if (users[_addr].isVerified == true) {
       return true;
     }
     return false;
   }
 
   /// @notice Check if the sender is an Oblige
-  function isOblige() external view returns (bool) {
-    if (users[msg.sender].rolesList == rolesList.OBLIGE) {
+  function isOblige(address _addr) external view returns (bool) {
+    if (users[_addr].rolesList == rolesList.OBLIGE) {
       return true;
     }
     return false;
