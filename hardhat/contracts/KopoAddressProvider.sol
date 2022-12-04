@@ -12,76 +12,55 @@ import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
  */
 
 contract KopoAddressProvider is Initializable, OwnableUpgradeable {
-  address kopoFolderFactoryContractAddress;
-  address kopoRolesContractAddress;
+  address public folderFactoryContractAddress;
+  address public rolesContractAddress;
   // Future variables MUST be added from this line
   uint256[48] __gap;
 
-  event kopoFolderFactoryContractUpdated(address indexed _previousAddress, address indexed _newAddress);
-  event kopoRolesContractUpdated(address indexed _previousAddress, address indexed _newAddress);
+  event folderFactoryContractUpdated(address indexed _previousAddress, address indexed _newAddress);
+  event rolesContractUpdated(address indexed _previousAddress, address indexed _newAddress);
 
   /// @notice KopoAddressProvider must be deployed after others contracts used by Kopo
   /// @dev KopoAddressProvider is upgradeable so initialize is used instead of a constructor
-  /// @param _kopoFolderFactoryContractAddress is FolderFactory contract address
-  /// @param _kopoRolesContractAddress is Roles contract address
-  function initialize(address _kopoFolderFactoryContractAddress, address _kopoRolesContractAddress)
-    external
-    initializer
-  {
+  /// @param _folderFactoryContractAddress is FolderFactory contract address
+  /// @param _rolesContractAddress is Roles contract address
+  function initialize(address _folderFactoryContractAddress, address _rolesContractAddress) external initializer {
     require(
-      AddressUpgradeable.isContract(_kopoFolderFactoryContractAddress) == true,
-      '_kopoFolderFactoryContractAddress is not a contract'
+      AddressUpgradeable.isContract(_folderFactoryContractAddress) == true,
+      '_folderFactoryContractAddress is not a contract'
     );
-    require(
-      AddressUpgradeable.isContract(_kopoRolesContractAddress) == true,
-      '_kopoRolesContractAddress is not a contract'
-    );
+    require(AddressUpgradeable.isContract(_rolesContractAddress) == true, '_rolesContractAddress is not a contract');
 
-    kopoFolderFactoryContractAddress = _kopoFolderFactoryContractAddress;
-    kopoRolesContractAddress = _kopoRolesContractAddress;
+    folderFactoryContractAddress = _folderFactoryContractAddress;
+    rolesContractAddress = _rolesContractAddress;
 
     __Ownable_init();
 
-    emit kopoFolderFactoryContractUpdated(address(0), kopoFolderFactoryContractAddress);
-    emit kopoRolesContractUpdated(address(0), kopoRolesContractAddress);
+    emit folderFactoryContractUpdated(address(0), folderFactoryContractAddress);
+    emit rolesContractUpdated(address(0), rolesContractAddress);
   }
 
   /// @notice Set KopoFolderFactory contract address
   /// @dev Sender must be the owner
   /// @param _contractAddress must be a contract at a different address
-  function setKopoFolderFactoryContractAddress(address _contractAddress) external onlyOwner {
-    require(
-      _contractAddress != kopoFolderFactoryContractAddress,
-      'Contract address must be different from the current one'
-    );
+  function setFolderFactoryContractAddress(address _contractAddress) external onlyOwner {
     require(AddressUpgradeable.isContract(_contractAddress) == true, '_contractAddress is not a contract');
 
-    address previousKopoFolderFactoryContractAddress = kopoFolderFactoryContractAddress;
-    kopoFolderFactoryContractAddress = _contractAddress;
+    address previousFolderFactoryContractAddress = folderFactoryContractAddress;
+    folderFactoryContractAddress = _contractAddress;
 
-    emit kopoFolderFactoryContractUpdated(previousKopoFolderFactoryContractAddress, kopoFolderFactoryContractAddress);
+    emit folderFactoryContractUpdated(previousFolderFactoryContractAddress, folderFactoryContractAddress);
   }
 
   /// @notice Set KopoRolesManager contract address
   /// @dev Sender must be the owner
   /// @param _contractAddress must be a contract at a different address
   function setRolesContractAddress(address _contractAddress) external onlyOwner {
-    require(_contractAddress != kopoRolesContractAddress, 'Contract address must be different from the current one');
     require(AddressUpgradeable.isContract(_contractAddress) == true, '_contractAddress is not a contract');
 
-    address previousKopoRolesContractAddress = kopoRolesContractAddress;
-    kopoRolesContractAddress = _contractAddress;
+    address previousRolesContractAddress = rolesContractAddress;
+    rolesContractAddress = _contractAddress;
 
-    emit kopoRolesContractUpdated(previousKopoRolesContractAddress, kopoRolesContractAddress);
-  }
-
-  /// @notice return KopoFolderFactory contract address
-  function getKopoFolderFactoryContractAddress() external view onlyOwner returns (address) {
-    return kopoFolderFactoryContractAddress;
-  }
-
-  /// @notice return KopoRolesManager contract address
-  function getKopoRolesContractAddress() external view onlyOwner returns (address) {
-    return kopoRolesContractAddress;
+    emit rolesContractUpdated(previousRolesContractAddress, rolesContractAddress);
   }
 }
