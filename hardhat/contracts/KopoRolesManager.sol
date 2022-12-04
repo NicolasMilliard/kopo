@@ -108,6 +108,14 @@ contract KopoRolesManager {
     return false;
   }
 
+  /// @notice Check if the sender is an Oblige
+  function isOblige() external view returns (bool) {
+    if (users[msg.sender].rolesList == rolesList.OBLIGE) {
+      return true;
+    }
+    return false;
+  }
+
   /// @notice Get the role of a specific address
   function getUserRole(address _address) external view returns (rolesList) {
     return users[_address].rolesList;
