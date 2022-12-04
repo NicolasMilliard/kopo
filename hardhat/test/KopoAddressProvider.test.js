@@ -6,7 +6,7 @@ describe('📚 Testing KopoAddressProvider...', async () => {
   const folderFactoryContractAddress = "0x1284294ddBD4Fe3D675741c306F2B6Eaa4d6D9A9";
   let kopoAddressProviderProxy;
   let testingNewContractAddress;
-  const zeroAddress = "0x0000000000000000000000000000000000000000";
+  // const zeroAddress = hre.ethers.constants.AddressZero;
   let _owner;
   let _user;
 
@@ -138,28 +138,6 @@ describe('📚 Testing KopoAddressProvider...', async () => {
       });
     });
   });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   // Testing KopoAddressProvider after an upgrade
   describe('\n\n📘 UPGRADE CONTRACT', async () => {
