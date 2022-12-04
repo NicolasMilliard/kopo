@@ -247,7 +247,7 @@ describe('Testing KopoRolesManager...', async () => {
 
       // Returns isVerified (true)
       const receipt = await kopoRolesManagerContract.connect(_user).getUserVerifiedStatus(_user.address);
-      await expect(receipt).to.be.equal(true);
+      await expect(receipt).to.be.true;
     });
   });
 
@@ -255,7 +255,7 @@ describe('Testing KopoRolesManager...', async () => {
     it('should return false (POV _user)', async () => {
       // Returns isBlacklisted (false)
       const receipt = await kopoRolesManagerContract.connect(_user).getUserBlacklistedStatus(_user.address);
-      await expect(receipt).to.be.equal(false);
+      await expect(receipt).to.be.equal.false;
     });
 
     it('should return true (POV _user)', async () => {
