@@ -37,7 +37,7 @@ contract KopoRolesManager {
   }
 
   /// @notice Check if the provided _address is not address(0)
-  modifier isZeroAddress(address _address) {
+  modifier isNotZeroAddress(address _address) {
     require(_address != address(0), "Address 0 can't be updated");
     _;
   }
@@ -51,12 +51,6 @@ contract KopoRolesManager {
     _;
   }
 
-  /// @notice Check if the sender is verified
-  modifier isVerified() {
-    require(users[msg.sender].isVerified == true, "You're not verified");
-    _;
-  }
-
   /// @notice Check if the sender is not blacklisted
   modifier isNotBlacklisted() {
     require(users[msg.sender].isBlacklisted == false, "You're blacklisted");
@@ -65,7 +59,7 @@ contract KopoRolesManager {
 
   /// @notice Add the role ADMIN to an address
   /// @param _address can't be address(0) and can't already be an ADMIN address
-  function setRoleAdmin(address _address) external isActiveAdmin isZeroAddress(_address) {
+  function setRoleAdmin(address _address) external isActiveAdmin isNotZeroAddress(_address) {
     require(users[_address].rolesList != rolesList.ADMIN, 'This address is already an admin');
 
     users[_address].rolesList = rolesList.ADMIN;
@@ -88,7 +82,7 @@ contract KopoRolesManager {
 
   /// @notice Verify a user when KYC/KYB is successfully sent to Kopo
   /// @param _address is the address of a non verified user
-  function verifyUser(address _address) external isActiveAdmin isZeroAddress(_address) {
+  function verifyUser(address _address) external isActiveAdmin isNotZeroAddress(_address) {
     require(users[_address].isVerified == false, 'This address is already verified');
 
     users[_address].isVerified = true;
@@ -98,12 +92,20 @@ contract KopoRolesManager {
 
   /// @notice Blacklist an address (admin or user)
   /// @param _address is the address of a user or an admin not blacklisted
-  function blacklistUser(address _address) external isActiveAdmin isZeroAddress(_address) {
+  function blacklistUser(address _address) external isActiveAdmin isNotZeroAddress(_address) {
     require(users[_address].isBlacklisted == false, 'This address is already blacklisted');
 
     users[_address].isBlacklisted = true;
 
     emit UserBlacklisted(_address);
+  }
+
+  /// @notice Check if the sender is verified
+  function isVerified() external view returns (bool) {
+    if (users[msg.sender].isVerified == true) {
+      return true;
+    }
+    return false;
   }
 
   /// @notice Get the role of a specific address
