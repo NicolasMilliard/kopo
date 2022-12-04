@@ -202,6 +202,20 @@ describe('Testing KopoRolesManager...', async () => {
     });
   });
 
+  describe('\n✨ CONTEXT: Test isVerified\n', async () => {
+    it('should return false (POV _user)', async () => {
+      const receipt = await kopoRolesManagerContract.connect(_user).isVerified();
+      await expect(receipt).to.be.false;
+    });
+
+    it('should return true (POV _user)', async () => {
+      await kopoRolesManagerContract.verifyUser(_user.address, { from: _owner.address });
+
+      const receipt = await kopoRolesManagerContract.connect(_user).isVerified();
+      await expect(receipt).to.be.true;
+    });
+  });
+
   describe('\n✨ CONTEXT: Test getUserRole\n', async () => {
     it('should return the default role (POV _user)', async () => {
       // Returns the default role
