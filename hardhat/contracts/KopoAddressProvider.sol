@@ -16,7 +16,7 @@ contract KopoAddressProvider is Initializable, OwnableUpgradeable {
   address public rolesContractAddress;
   address public documentHandlerContractAddress;
   // Future variables MUST be added from this line
-  uint256[48] __gap;
+  uint256[47] __gap;
 
   event folderFactoryContractUpdated(address indexed _previousAddress, address indexed _newAddress);
   event rolesContractUpdated(address indexed _previousAddress, address indexed _newAddress);
@@ -26,18 +26,6 @@ contract KopoAddressProvider is Initializable, OwnableUpgradeable {
   /// @dev KopoAddressProvider is upgradeable so initialize is used instead of a constructor
   function initialize() external initializer {
     __Ownable_init();
-  }
-
-  /// @notice Set KopoDocumentHandler contract address
-  /// @dev Sender must be the owner
-  /// @param _contractAddress must be a contract at a different address
-  function setDocumentHandlerContractAddress(address _contractAddress) external onlyOwner {
-    require(AddressUpgradeable.isContract(_contractAddress) == true, '_contractAddress is not a contract');
-
-    address previousDocumentHandlerContractAddress = documentHandlerContractAddress;
-    documentHandlerContractAddress = _contractAddress;
-
-    emit documentHandlerContractUpdated(previousDocumentHandlerContractAddress, documentHandlerContractAddress);
   }
 
   /// @notice Set KopoFolderFactory contract address
@@ -62,5 +50,17 @@ contract KopoAddressProvider is Initializable, OwnableUpgradeable {
     rolesContractAddress = _contractAddress;
 
     emit rolesContractUpdated(previousRolesContractAddress, rolesContractAddress);
+  }
+
+  /// @notice Set KopoDocumentHandler contract address
+  /// @dev Sender must be the owner
+  /// @param _contractAddress must be a contract at a different address
+  function setDocumentHandlerContractAddress(address _contractAddress) external onlyOwner {
+    require(AddressUpgradeable.isContract(_contractAddress) == true, '_contractAddress is not a contract');
+
+    address previousDocumentHandlerContractAddress = documentHandlerContractAddress;
+    documentHandlerContractAddress = _contractAddress;
+
+    emit documentHandlerContractUpdated(previousDocumentHandlerContractAddress, documentHandlerContractAddress);
   }
 }
