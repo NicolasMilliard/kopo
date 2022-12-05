@@ -14,16 +14,30 @@ import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
 contract KopoAddressProvider is Initializable, OwnableUpgradeable {
   address public folderFactoryContractAddress;
   address public rolesContractAddress;
+  address public documentHandlerContractAddress;
   // Future variables MUST be added from this line
   uint256[48] __gap;
 
   event folderFactoryContractUpdated(address indexed _previousAddress, address indexed _newAddress);
   event rolesContractUpdated(address indexed _previousAddress, address indexed _newAddress);
+  event documentHandlerContractUpdated(address indexed _previousAddress, address indexed _newAddress);
 
   /// @notice KopoAddressProvider must be deployed after others contracts used by Kopo
   /// @dev KopoAddressProvider is upgradeable so initialize is used instead of a constructor
   function initialize() external initializer {
     __Ownable_init();
+  }
+
+  /// @notice Set KopoDocumentHandler contract address
+  /// @dev Sender must be the owner
+  /// @param _contractAddress must be a contract at a different address
+  function setDocumentHandlerContractAddress(address _contractAddress) external onlyOwner {
+    require(AddressUpgradeable.isContract(_contractAddress) == true, '_contractAddress is not a contract');
+
+    address previousDocumentHandlerContractAddress = documentHandlerContractAddress;
+    documentHandlerContractAddress = _contractAddress;
+
+    emit documentHandlerContractUpdated(previousDocumentHandlerContractAddress, documentHandlerContractAddress);
   }
 
   /// @notice Set KopoFolderFactory contract address
