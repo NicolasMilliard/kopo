@@ -54,12 +54,26 @@ describe('KopoFolderHandler Contract', () => {
     });
 
     it('batch create a new folder contracts (POV: verified).', async () => {
-      const amount = 21;
+      const amount = 20;
       await kopoFolderFactoryContract.connect(verified1).batchCreateFolders(amount);
     });
 
     it('forbids unregistered users from deploying a new contract (POV: hacker).', async () => {
       await expect(kopoFolderFactoryContract.connect(hacker).createFolder()).to.be.revertedWith('not verified');
+    });
+
+    it('forbids unregistered users from deploying a new contract with nonce (POV: hacker).', async () => {
+      const nonce = 1;
+      await expect(kopoFolderFactoryContract.connect(hacker).createFolderWithNonce(nonce)).to.be.revertedWith(
+        'not verified',
+      );
+    });
+
+    it('forbids unregistered users from deploying a new contract with batch (POV: hacker).', async () => {
+      const amount = 2;
+      await expect(kopoFolderFactoryContract.connect(hacker).batchCreateFolders(amount)).to.be.revertedWith(
+        'not verified',
+      );
     });
 
     /**

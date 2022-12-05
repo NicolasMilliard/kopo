@@ -19,34 +19,65 @@ contract KopoDocumentHandler is ERC721 {
   Counters.Counter private tokenIds;
   KopoAddressProvider private immutable addressProvider;
 
-  struct Token {
-    string metadata; /// CID of the json metadata.
+  mapping(uint256 => string) tokens;
+
+  enum RequestStatus {
+    zero,
+    pending,
+    rejected,
+    approved
   }
 
-  mapping(uint256 => Token) tokens;
+  struct TokenRequest {
+    address from;
+    address to;
+    address folder;
+    RequestStatus status;
+  }
 
-  event TokenRequested(address _from, string CID, address _to);
+  mapping(string => TokenRequest) tokenRequests;
 
-  /** @dev Calls KopoRolesManager to check. */
+  event TokenRequested(address _from, string _documentCID, address _toOblige, address _toFolder);
+  event TokenRejected(string _documentCID, address _from);
+
+  /**
+   * @dev Calls KopoRolesManager to check.
+   * @param _addr Address to check.
+   */
   modifier isVerified(address _addr) {
     require(KopoRolesManager(addressProvider.rolesContractAddress()).isVerified(_addr) == true, 'not verified');
     _;
   }
 
-  /** @dev Calls KopoRolesManager to check. */
+  /**
+   * @dev Calls KopoRolesManager to check.
+   * @param _addr Address to check.
+   */
   modifier isOblige(address _addr) {
     require(KopoRolesManager(addressProvider.rolesContractAddress()).isOblige(_addr) == true, 'not oblige');
     _;
   }
 
-  /** @dev Calls KopoFolderFactory to check. */
+  /**
+   * @dev Calls KopoFolderFactory to check.
+   * @param _addr Address of the folder to check.
+   */
   modifier isValidFolder(address _addr) {
     bytes32 folderId = KopoFolderHandler(_addr).folderId();
-    // TODO USE the real address provider.
-    // require(
-    //   KopoFolderFactory(addressProvider.getKopoFolderFactoryContractAddress()).registeredFolders(folderId) == _addr,
-    //   'invalid folder contract'
-    // );
+    require(
+      KopoFolderFactory(addressProvider.folderFactoryContractAddress()).registeredFolders(folderId) == _addr,
+      'invalid folder contract'
+    );
+    _;
+  }
+
+  /**
+   * Check of _addr is the folder owner.
+   * @param _folder Address of the folder contract.
+   * @param _addr Address to check.
+   */
+  modifier isFolderOwner(address _folder, address _addr) {
+    require(KopoFolderHandler(_folder).owner() == _addr, 'not folder owner');
     _;
   }
 
@@ -54,31 +85,73 @@ contract KopoDocumentHandler is ERC721 {
     addressProvider = KopoAddressProvider(_addressProvider);
   }
 
-  /** Mint a token that represents the document.
-   * @param _to The NFT recipient (the recipient KopoFolder address).
-   * Emits a transfer event.
+  /**
+   * Return the NFT metadata.
+   * @param _tokenId ID of the token.
    */
-  function safeMint(address _to, string calldata metadata) external isOblige(msg.sender) isValidFolder(_to) {
-    uint256 tokenId = tokenIds.current();
-    tokenIds.increment();
-    // Add the document CID and metadata to the NFT.
-    tokens[tokenId].metadata = metadata;
-    _safeMint(_to, tokenId);
+  function tokenURI(uint256 _tokenId) public view override returns (string memory) {
+    require(bytes(tokens[_tokenId]).length != 0, 'token does not exist');
+    return string.concat('ipfs://', tokens[_tokenId]);
   }
 
   /**
-   * Return the NFT metadata.
+   * Submit a document to an oblige.
+   * @dev The document to submit is on IPFS, identified with its CID.
+   * In current version, the document is in clear-text. Future/Production
+   * version will include asymetric encryption.
+   * @param _documentCID The IPFS CID of the document to submit.
+   * @param _toOblige The oblige that can validate the document.
+   * @param _toFolder The folder to assign the NFT.
    */
-  function tokenURI(uint256 _tokenId) public view override returns (string memory) {
-    return string(abi.encodePacked(tokens[_tokenId].metadata));
+  function requestToken(
+    string calldata _documentCID,
+    address _toOblige,
+    address _toFolder
+  ) external isVerified(msg.sender) isOblige(_toOblige) isValidFolder(_toFolder) isFolderOwner(_toFolder, msg.sender) {
+    require(tokenRequests[_documentCID].from == address(0), 'already requested');
+
+    TokenRequest memory tokenRequest = TokenRequest({
+      from: msg.sender,
+      to: _toOblige,
+      folder: _toFolder,
+      status: RequestStatus.pending
+    });
+    tokenRequests[_documentCID] = tokenRequest;
+
+    emit TokenRequested(msg.sender, _documentCID, _toOblige, _toFolder);
   }
 
-  function requestToken(string calldata CID, address _to) external isVerified(msg.sender) isValidFolder(_to) {
-    emit TokenRequested(msg.sender, CID, _to);
+  /**
+   * Let the proper oblige to reject a document.
+   * @param _documentCID Original document CID.
+   */
+  function rejectTokenRequest(string calldata _documentCID) external {
+    require(tokenRequests[_documentCID].to == msg.sender, 'not proper oblige');
+    tokenRequests[_documentCID].status = RequestStatus.rejected;
+    emit TokenRejected(_documentCID, tokenRequests[_documentCID].from);
   }
 
-  function approve(address _to, uint256 _tokenId) public override isVerified(msg.sender) isVerified(_to) {
-    // TODO require a valid NFT
-    super.approve(_to, _tokenId);
+  /**
+   * Mint a token that represents the document.
+   * @param _documentCID IPFS CID for the original document.
+   * @param _metadataCID IPFS CID for the NFT's metadata.
+   * Emits a transfer event.
+   */
+  function safeMint(string calldata _documentCID, string calldata _metadataCID) external isOblige(msg.sender) {
+    require(tokenRequests[_documentCID].status == RequestStatus.pending, 'invalid status');
+
+    tokenRequests[_documentCID].status = RequestStatus.approved;
+
+    /**
+     * @dev Future improvements could be to use the _metadataCID as uint256 as tokenId.
+     */
+    uint256 tokenId = tokenIds.current();
+    tokenIds.increment();
+    tokens[tokenId] = _metadataCID;
+
+    /**
+     * @dev Mint the NFT and emit the Transfer event.
+     */
+    _safeMint(tokenRequests[_documentCID].folder, tokenId);
   }
 }

@@ -5,6 +5,7 @@ describe('KopoFolderHandler Contract', () => {
   let owner;
   let hacker;
   let verified1;
+  let verified2;
   let kopoAddressProvider;
   let kopoFolderContract;
 
@@ -13,7 +14,7 @@ describe('KopoFolderHandler Contract', () => {
    * and roles set.
    */
   before(async () => {
-    [owner, verified1, hacker] = await hre.ethers.getSigners();
+    [owner, verified1, verified2, hacker] = await hre.ethers.getSigners();
     const kopoRolesManagerProviderFactory = await hre.ethers.getContractFactory('KopoRolesManager');
     const kopoRolesManager = await kopoRolesManagerProviderFactory.deploy();
     await kopoRolesManager.deployed();
@@ -24,6 +25,7 @@ describe('KopoFolderHandler Contract', () => {
     });
     await kopoAddressProvider.setRolesContractAddress(kopoRolesManager.address);
     await kopoRolesManager.verifyUser(verified1.address);
+    await kopoRolesManager.verifyUser(verified2.address);
   });
 
   /**
@@ -34,7 +36,6 @@ describe('KopoFolderHandler Contract', () => {
     const kopoFolderContractFactory = await hre.ethers.getContractFactory('KopoFolderHandler');
     kopoFolderContract = await kopoFolderContractFactory.deploy(kopoAddressProvider.address, folderId);
     await kopoFolderContract.deployed();
-    [owner, verified1, hacker] = await hre.ethers.getSigners();
   });
 
   /**
@@ -52,8 +53,14 @@ describe('KopoFolderHandler Contract', () => {
         .withArgs(owner.address, verified1.address);
     });
 
-    itkip('should prevent transfer to unverified user', async () => {
+    it('should prevent transfer to unverified user', async () => {
       await expect(kopoFolderContract.transferOwnership(hacker.address)).to.be.revertedWith('not verified');
+    });
+
+    it('should prevent transfer from a malicious user (POV: hacker)', async () => {
+      await expect(kopoFolderContract.connect(hacker).transferOwnership(verified2.address)).to.be.revertedWith(
+        'Ownable: caller is not the owner',
+      );
     });
   });
 
