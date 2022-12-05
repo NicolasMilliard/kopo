@@ -32,11 +32,11 @@ const main = async () => {
   await kopoAddressProvider.setDocumentHandlerContractAddress(kopoDocumentHandler.address);
 
   /* Kopo Folder Factory. KopoFolderHandler is deployed with. */
-  const kopoFolderFactoryFactory = await hre.ethers.getContractFactory('KopoDocumentHandler');
+  const kopoFolderFactoryFactory = await hre.ethers.getContractFactory('KopoFolderFactory');
   const kopoFolderFactory = await kopoFolderFactoryFactory.deploy(kopoAddressProvider.address);
   await kopoFolderFactory.deployed();
   console.log(`[+] KopoFolderFactory: ${kopoFolderFactory.address}`);
-  await kopoAddressProvider.setFolderFactoryContractAddress(kopoRolesManager.address);
+  await kopoAddressProvider.setFolderFactoryContractAddress(kopoFolderFactory.address);
 
   /* Checking balance again */
   balance = await deployer.getBalance();
