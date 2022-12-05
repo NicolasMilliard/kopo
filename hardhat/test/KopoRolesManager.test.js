@@ -3,6 +3,7 @@ const hre = require('hardhat');
 
 describe('Testing KopoRolesManager...', async () => {
   // Variables used through all tests
+  const zeroAddress = hre.ethers.constants.AddressZero;
   let kopoRolesManagerContract;
   let _owner;
   let _admin;
@@ -36,7 +37,7 @@ describe('Testing KopoRolesManager...', async () => {
 
     it('should revert: You\'re not an active admin (POV _user)', async () => {
       // Only an ADMIN can add an ADMIN
-      const receipt = kopoRolesManagerContract.connect(_user).setRoleAdmin(_user.address, { from: _user.address });
+      const receipt = kopoRolesManagerContract.connect(_user).setRoleAdmin(_user.address);
       await expect(receipt).to.be.revertedWith("You're not an active admin");
     });
 
@@ -44,7 +45,7 @@ describe('Testing KopoRolesManager...', async () => {
       // Set the role ADMIN to _admin
       await kopoRolesManagerContract.setRoleAdmin(_admin.address, { from: _owner.address });
       // address(0) can't be added
-      const receipt = kopoRolesManagerContract.connect(_admin).setRoleAdmin("0x0000000000000000000000000000000000000000", { from: _admin.address });
+      const receipt = kopoRolesManagerContract.connect(_admin).setRoleAdmin(zeroAddress);
       await expect(receipt).to.be.revertedWith("Address 0 can't be updated");
     });
 
@@ -52,7 +53,7 @@ describe('Testing KopoRolesManager...', async () => {
       // An ADMIN can be added only once
       await kopoRolesManagerContract.setRoleAdmin(_admin.address, { from: _owner.address });
 
-      const receipt = kopoRolesManagerContract.connect(_admin).setRoleAdmin(_admin.address, { from: _admin.address });
+      const receipt = kopoRolesManagerContract.connect(_admin).setRoleAdmin(_admin.address);
       await expect(receipt).to.be.revertedWith("This address is already an admin");
     });
 
@@ -66,39 +67,48 @@ describe('Testing KopoRolesManager...', async () => {
   });
 
   describe('\n✨ CONTEXT: Test updateUserRole\n', async () => {
-    it('should update the user role to RGE (POV _user)', async () => {
+    it('should update the user role to RGE (POV _admin)', async () => {
+      // Set the role ADMIN to _admin
+      await kopoRolesManagerContract.setRoleAdmin(_admin.address, { from: _owner.address });
+
       // Update the role of the _user to 2 (RGE)
-      await kopoRolesManagerContract.connect(_user).updateUserRole(2, { from: _user.address });
+      await kopoRolesManagerContract.connect(_admin).updateUserRole(_user.address, 2);
 
       const receipt = await kopoRolesManagerContract.getUserRole(_user.address);
       await expect(receipt).to.be.equal(2);
     });
 
-    it('should revert: Sender\'s address is blacklisted (POV _userBlacklisted)', async () => {
-      // Set an user blacklisted
-      await kopoRolesManagerContract.blacklistUser(_userBlacklisted.address);
-
-      const receipt = kopoRolesManagerContract.connect(_userBlacklisted).updateUserRole(2, { from: _userBlacklisted.address });
-      await expect(receipt).to.be.revertedWith("You're blacklisted");
+    it('should revert: Sender\'s address is not an active admin (POV _user)', async () => {
+      const receipt = kopoRolesManagerContract.connect(_user).updateUserRole(_user.address, 2);
+      await expect(receipt).to.be.revertedWith("You're not an active admin");
     });
 
-    it('should revert: _user has already this role (POV _user)', async () => {
+    it('should revert: _user has already this role (POV _admin)', async () => {
+      // Set the role ADMIN to _admin
+      await kopoRolesManagerContract.setRoleAdmin(_admin.address, { from: _owner.address });
+
       // Update the role of the _user to 3 (OBLIGE)
-      await kopoRolesManagerContract.connect(_user).updateUserRole(3, { from: _user.address });
+      await kopoRolesManagerContract.connect(_admin).updateUserRole(_user.address, 3);
 
-      const receipt = kopoRolesManagerContract.connect(_user).updateUserRole(3, { from: _user.address });
-      await expect(receipt).to.be.revertedWith("Your address has already this role");
+      const receipt = kopoRolesManagerContract.connect(_admin).updateUserRole(_user.address, 3);
+      await expect(receipt).to.be.revertedWith('This address has already this role');
     });
 
-    it('should revert: _user try to get the role ADMIN (POV _user)', async () => {
+    it('should revert: _admin try to give the role ADMIN (POV _admin)', async () => {
+      // Set the role ADMIN to _admin
+      await kopoRolesManagerContract.setRoleAdmin(_admin.address, { from: _owner.address });
+
       // Update the role of the _user to 4 (ADMIN)
-      const receipt = kopoRolesManagerContract.connect(_user).updateUserRole(4, { from: _user.address });
+      const receipt = kopoRolesManagerContract.connect(_admin).updateUserRole(_user.address, 4);
       await expect(receipt).to.be.revertedWith("You can't update to this role");
     });
 
-    it('should emit UserRoleUpdated event (POV _user)', async () => {
+    it('should emit UserRoleUpdated event (POV _admin)', async () => {
+      // Set the role ADMIN to _admin
+      await kopoRolesManagerContract.setRoleAdmin(_admin.address, { from: _owner.address });
+
       // UserRoleUpdated event is correctly emit
-      await expect(kopoRolesManagerContract.connect(_user).updateUserRole(2, { from: _user.address })).to.emit(
+      await expect(kopoRolesManagerContract.connect(_admin).updateUserRole(_user.address, 2)).to.emit(
         kopoRolesManagerContract,
         'UserRoleUpdated',
       );
@@ -110,15 +120,15 @@ describe('Testing KopoRolesManager...', async () => {
       // Set _admin the role ADMIN
       await kopoRolesManagerContract.setRoleAdmin(_admin.address, { from: _owner.address });
       // Verify an user
-      await kopoRolesManagerContract.connect(_admin).verifyUser(_user.address, { from: _admin.address });
+      await kopoRolesManagerContract.connect(_admin).verifyUser(_user.address);
 
       const receipt = await kopoRolesManagerContract.connect(_user).getUserVerifiedStatus(_user.address);
-      await expect(receipt).to.be.equal(true);
+      await expect(receipt).to.be.true;
     });
 
     it('should revert: only an ADMIN can verify an user (POV _user)', async () => {
       // Only an ADMIN can verify an user
-      const receipt = kopoRolesManagerContract.connect(_user).verifyUser(_user.address, { from: _user.address });
+      const receipt = kopoRolesManagerContract.connect(_user).verifyUser(_user.address);
       await expect(receipt).to.be.revertedWith("You're not an active admin");
     });
 
@@ -127,7 +137,7 @@ describe('Testing KopoRolesManager...', async () => {
       await kopoRolesManagerContract.setRoleAdmin(_admin.address, { from: _owner.address });
 
       // address(0) can't be added
-      const receipt = kopoRolesManagerContract.connect(_admin).verifyUser("0x0000000000000000000000000000000000000000", { from: _admin.address });
+      const receipt = kopoRolesManagerContract.connect(_admin).verifyUser(zeroAddress);
       await expect(receipt).to.be.revertedWith("Address 0 can't be updated");
     });
 
@@ -135,9 +145,9 @@ describe('Testing KopoRolesManager...', async () => {
       // Set _admin the role ADMIN
       await kopoRolesManagerContract.setRoleAdmin(_admin.address, { from: _owner.address });
 
-      await kopoRolesManagerContract.connect(_admin).verifyUser(_user.address, { from: _admin.address });
+      await kopoRolesManagerContract.connect(_admin).verifyUser(_user.address);
 
-      const receipt = kopoRolesManagerContract.connect(_admin).verifyUser(_user.address, { from: _admin.address });
+      const receipt = kopoRolesManagerContract.connect(_admin).verifyUser(_user.address);
       await expect(receipt).to.be.revertedWith("This address is already verified");
     });
 
@@ -146,7 +156,7 @@ describe('Testing KopoRolesManager...', async () => {
       await kopoRolesManagerContract.setRoleAdmin(_admin.address, { from: _owner.address });
 
       // UserVerified event is correctly emit
-      await expect(kopoRolesManagerContract.connect(_admin).verifyUser(_user.address, { from: _admin.address })).to.emit(
+      await expect(kopoRolesManagerContract.connect(_admin).verifyUser(_user.address)).to.emit(
         kopoRolesManagerContract,
         'UserVerified',
       );
@@ -159,15 +169,15 @@ describe('Testing KopoRolesManager...', async () => {
       await kopoRolesManagerContract.setRoleAdmin(_admin.address, { from: _owner.address });
 
       // Blacklist an user
-      await kopoRolesManagerContract.connect(_admin).blacklistUser(_user.address, { from: _admin.address });
+      await kopoRolesManagerContract.connect(_admin).blacklistUser(_user.address);
 
       const receipt = await kopoRolesManagerContract.connect(_user).getUserBlacklistedStatus(_user.address);
-      await expect(receipt).to.be.equal(true);
+      await expect(receipt).to.be.true;
     });
 
     it('should revert: only an ADMIN can blacklist an user (POV _user)', async () => {
       // Only an ADMIN can blacklist an user
-      const receipt = kopoRolesManagerContract.connect(_user).blacklistUser(_user.address, { from: _user.address });
+      const receipt = kopoRolesManagerContract.connect(_user).blacklistUser(_user.address);
       await expect(receipt).to.be.revertedWith("You're not an active admin");
     });
 
@@ -176,7 +186,7 @@ describe('Testing KopoRolesManager...', async () => {
       await kopoRolesManagerContract.setRoleAdmin(_admin.address, { from: _owner.address });
 
       // address(0) can't be added
-      const receipt = kopoRolesManagerContract.connect(_admin).blacklistUser("0x0000000000000000000000000000000000000000", { from: _admin.address });
+      const receipt = kopoRolesManagerContract.connect(_admin).blacklistUser(zeroAddress);
       await expect(receipt).to.be.revertedWith("Address 0 can't be updated");
     });
 
@@ -184,9 +194,9 @@ describe('Testing KopoRolesManager...', async () => {
       // Set _admin the role ADMIN
       await kopoRolesManagerContract.setRoleAdmin(_admin.address, { from: _owner.address });
 
-      await kopoRolesManagerContract.connect(_admin).blacklistUser(_user.address, { from: _admin.address });
+      await kopoRolesManagerContract.connect(_admin).blacklistUser(_user.address);
 
-      const receipt = kopoRolesManagerContract.connect(_admin).blacklistUser(_user.address, { from: _admin.address });
+      const receipt = kopoRolesManagerContract.connect(_admin).blacklistUser(_user.address);
       await expect(receipt).to.be.revertedWith("This address is already blacklisted");
     });
 
@@ -195,7 +205,7 @@ describe('Testing KopoRolesManager...', async () => {
       await kopoRolesManagerContract.setRoleAdmin(_admin.address, { from: _owner.address });
 
       // UserBlacklisted event is correctly emit
-      await expect(kopoRolesManagerContract.connect(_admin).blacklistUser(_user.address, { from: _admin.address })).to.emit(
+      await expect(kopoRolesManagerContract.connect(_admin).blacklistUser(_user.address)).to.emit(
         kopoRolesManagerContract,
         'UserBlacklisted',
       );
@@ -204,14 +214,14 @@ describe('Testing KopoRolesManager...', async () => {
 
   describe('\n✨ CONTEXT: Test isVerified\n', async () => {
     it('should return false (POV _user)', async () => {
-      const receipt = await kopoRolesManagerContract.connect(_user).isVerified();
+      const receipt = await kopoRolesManagerContract.connect(_user).isVerified(_user.address);
       await expect(receipt).to.be.false;
     });
 
     it('should return true (POV _user)', async () => {
       await kopoRolesManagerContract.verifyUser(_user.address, { from: _owner.address });
 
-      const receipt = await kopoRolesManagerContract.connect(_user).isVerified();
+      const receipt = await kopoRolesManagerContract.connect(_user).isVerified(_user.address);
       await expect(receipt).to.be.true;
     });
   });
@@ -224,7 +234,10 @@ describe('Testing KopoRolesManager...', async () => {
     });
 
     it('should return the updated role (POV _user)', async () => {
-      await kopoRolesManagerContract.connect(_user).updateUserRole(1);
+      // Set _admin the role ADMIN
+      await kopoRolesManagerContract.setRoleAdmin(_admin.address, { from: _owner.address });
+
+      await kopoRolesManagerContract.connect(_admin).updateUserRole(_user.address, 1);
       // Returns the updated role
       const receipt = await kopoRolesManagerContract.connect(_user).getUserRole(_user.address);
       await expect(receipt).to.be.equal(1);
@@ -235,7 +248,7 @@ describe('Testing KopoRolesManager...', async () => {
     it('should return false (POV _user)', async () => {
       // Returns isVerified (false)
       const receipt = await kopoRolesManagerContract.connect(_user).getUserVerifiedStatus(_user.address);
-      await expect(receipt).to.be.equal(false);
+      await expect(receipt).to.be.false;
     });
 
     it('should return true (POV _user)', async () => {
@@ -255,7 +268,7 @@ describe('Testing KopoRolesManager...', async () => {
     it('should return false (POV _user)', async () => {
       // Returns isBlacklisted (false)
       const receipt = await kopoRolesManagerContract.connect(_user).getUserBlacklistedStatus(_user.address);
-      await expect(receipt).to.be.equal.false;
+      await expect(receipt).to.be.false;
     });
 
     it('should return true (POV _user)', async () => {
@@ -267,7 +280,79 @@ describe('Testing KopoRolesManager...', async () => {
 
       // Returns isBlacklisted (true)
       const receipt = await kopoRolesManagerContract.connect(_user).getUserBlacklistedStatus(_user.address);
-      await expect(receipt).to.be.equal(true);
+      await expect(receipt).to.be.true;
     });
+  });
+
+  describe('\n✨ CONTEXT: Test isBeneficiare\n', async () => {
+    it('should return true', async () => {
+      const receipt = await kopoRolesManagerContract.connect(_user).isBeneficiaire(_user.address);
+      await expect(receipt).to.be.true;
+    });
+
+    it('should return false', async () => {
+      // Set _admin the role ADMIN
+      await kopoRolesManagerContract.setRoleAdmin(_admin.address, { from: _owner.address });
+
+      // Set the role RGE to _user
+      await kopoRolesManagerContract.connect(_admin).updateUserRole(_user.address, 1);
+
+      const receipt = await kopoRolesManagerContract.connect(_user).isBeneficiaire(_user.address);
+      await expect(receipt).to.be.false;
+    })
+  });
+
+  describe('\n✨ CONTEXT: Test isRGE\n', async () => {
+    it('should return true', async () => {
+      // Set _admin the role ADMIN
+      await kopoRolesManagerContract.setRoleAdmin(_admin.address, { from: _owner.address });
+
+      // Set the role RGE to _user
+      await kopoRolesManagerContract.connect(_admin).updateUserRole(_user.address, 1);
+
+      const receipt = await kopoRolesManagerContract.connect(_user).isRGE(_user.address);
+      await expect(receipt).to.be.true;
+    });
+
+    it('should return false', async () => {
+      const receipt = await kopoRolesManagerContract.connect(_user).isRGE(_user.address);
+      await expect(receipt).to.be.false;
+    })
+  });
+
+  describe('\n✨ CONTEXT: Test isOblige\n', async () => {
+    it('should return true', async () => {
+      // Set _admin the role ADMIN
+      await kopoRolesManagerContract.setRoleAdmin(_admin.address, { from: _owner.address });
+
+      // Set the role RGE to _user
+      await kopoRolesManagerContract.connect(_admin).updateUserRole(_user.address, 2);
+
+      const receipt = await kopoRolesManagerContract.connect(_user).isOblige(_user.address);
+      await expect(receipt).to.be.true;
+    });
+
+    it('should return false', async () => {
+      const receipt = await kopoRolesManagerContract.connect(_user).isOblige(_user.address);
+      await expect(receipt).to.be.false;
+    })
+  });
+
+  describe('\n✨ CONTEXT: Test isNonOblige\n', async () => {
+    it('should return true', async () => {
+      // Set _admin the role ADMIN
+      await kopoRolesManagerContract.setRoleAdmin(_admin.address, { from: _owner.address });
+
+      // Set the role RGE to _user
+      await kopoRolesManagerContract.connect(_admin).updateUserRole(_user.address, 3);
+
+      const receipt = await kopoRolesManagerContract.connect(_user).isNonOblige(_user.address);
+      await expect(receipt).to.be.true;
+    });
+
+    it('should return false', async () => {
+      const receipt = await kopoRolesManagerContract.connect(_user).isNonOblige(_user.address);
+      await expect(receipt).to.be.false;
+    })
   });
 });

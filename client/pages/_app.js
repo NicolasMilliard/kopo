@@ -1,6 +1,6 @@
 import { getDefaultWallets, lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { getDefaultProvider } from 'ethers';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 import Navbar from '../components/Navbar/navbar';
@@ -26,8 +26,6 @@ const wagmiClient = createClient({
 });
 
 const App = ({ Component, pageProps }) => {
-  const notify = () => toast('Hello Kopo!');
-
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains} modalSize="compact" theme={lightTheme({
@@ -39,12 +37,6 @@ const App = ({ Component, pageProps }) => {
       })}>
         <Navbar />
         <Component {...pageProps} />
-        <button
-          onClick={notify}
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Toastify test
-        </button>
         <ToastContainer />
       </RainbowKitProvider>
     </WagmiConfig>
