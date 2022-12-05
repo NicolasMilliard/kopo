@@ -3,6 +3,7 @@ pragma solidity 0.8.17;
 
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
+import '@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
 
 import './KopoAddressProvider.sol';
@@ -15,9 +16,9 @@ import './KopoRolesManager.sol';
  * The contract can mint a single NFT, representing the folder, that can
  * be transfered, set as collateral, or any Defi usage.
  * @dev The contract is Ownable, meaning only the owner has control over it.
- * The ownership is transferable.
+ * The ownership is transferable to verified users only.
  */
-contract KopoFolderHandler is ERC721, Ownable {
+contract KopoFolderHandler is ERC721, IERC721Receiver, Ownable {
   using Counters for Counters.Counter;
   Counters.Counter private tokenIds;
   bytes32 public folderId;
@@ -62,5 +63,12 @@ contract KopoFolderHandler is ERC721, Ownable {
    */
   function transferOwnership(address _newOwner) public virtual override isVerified(_newOwner) onlyOwner {
     super.transferOwnership(_newOwner);
+  }
+
+  /**
+   * This contracts received the document NFT.
+   */
+  function onERC721Received(address, address, uint256, bytes calldata) external pure returns (bytes4) {
+    return IERC721Receiver.onERC721Received.selector;
   }
 }
