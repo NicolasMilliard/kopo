@@ -51,12 +51,6 @@ contract KopoRolesManager {
     _;
   }
 
-  /// @notice Check if the sender is not blacklisted
-  modifier isNotBlacklisted() {
-    require(users[msg.sender].isBlacklisted == false, "You're blacklisted");
-    _;
-  }
-
   /// @notice Add the role ADMIN to an address
   /// @param _address can't be address(0) and can't already be an ADMIN address
   function setRoleAdmin(address _address) external isActiveAdmin isNotZeroAddress(_address) {
@@ -68,16 +62,17 @@ contract KopoRolesManager {
   }
 
   /// @notice Update the role of a user (except to ADMIN role)
-  /// @dev This function is called when a user update his profile (by default a user is BENEFICIAIRE)
+  /// @dev This function is called when a user wants to update his profile (must be called by an active admin)
+  /// @param _address is the address of the user we want to update the role
   /// @param _role is the updated role the user wants
-  function updateUserRole(uint256 _role) external isNotBlacklisted {
-    require(users[msg.sender].rolesList != rolesList(_role), 'Your address has already this role');
+  function updateUserRole(address _address, uint256 _role) external isActiveAdmin {
+    require(users[_address].rolesList != rolesList(_role), 'This address has already this role');
     require(_role < 4, "You can't update to this role");
 
-    rolesList previousRole = users[msg.sender].rolesList;
-    users[msg.sender].rolesList = rolesList(_role);
+    rolesList previousRole = users[_address].rolesList;
+    users[_address].rolesList = rolesList(_role);
 
-    emit UserRoleUpdated(msg.sender, previousRole, users[msg.sender].rolesList);
+    emit UserRoleUpdated(_address, previousRole, users[_address].rolesList);
   }
 
   /// @notice Verify a user when KYC/KYB is successfully sent to Kopo
@@ -108,9 +103,33 @@ contract KopoRolesManager {
     return false;
   }
 
+  /// @notice Check if the sender is an Beneficiare
+  function isBeneficiaire(address _address) external view returns (bool) {
+    if (users[_address].rolesList == rolesList.BENEFICIAIRE) {
+      return true;
+    }
+    return false;
+  }
+
+  /// @notice Check if the sender is an RGE
+  function isRGE(address _address) external view returns (bool) {
+    if (users[_address].rolesList == rolesList.RGE) {
+      return true;
+    }
+    return false;
+  }
+
   /// @notice Check if the sender is an Oblige
-  function isOblige(address _addr) external view returns (bool) {
-    if (users[_addr].rolesList == rolesList.OBLIGE) {
+  function isNonOblige(address _address) external view returns (bool) {
+    if (users[_address].rolesList == rolesList.NONOBLIGE) {
+      return true;
+    }
+    return false;
+  }
+
+  /// @notice Check if the sender is an Oblige
+  function isOblige(address _address) external view returns (bool) {
+    if (users[_address].rolesList == rolesList.OBLIGE) {
       return true;
     }
     return false;
