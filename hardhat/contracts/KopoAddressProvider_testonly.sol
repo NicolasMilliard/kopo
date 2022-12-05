@@ -14,12 +14,14 @@ import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
 contract KopoAddressProvider_testonly is Initializable, OwnableUpgradeable {
   address public folderFactoryContractAddress;
   address public rolesContractAddress;
+  address public documentHandlerContractAddress;
   address public testingContractAddress; // new variable
   // Future variables MUST be added from this line
-  uint256[47] __gap;
+  uint256[46] __gap;
 
   event folderFactoryContractUpdated(address indexed _previousAddress, address indexed _newAddress);
   event rolesContractUpdated(address indexed _previousAddress, address indexed _newAddress);
+  event documentHandlerContractUpdated(address indexed _previousAddress, address indexed _newAddress);
   event testingContractUpdated(address indexed _previousAddress, address indexed _newAddress); // new event
 
   /// @notice Set KopoFolderFactory contract address
@@ -44,6 +46,18 @@ contract KopoAddressProvider_testonly is Initializable, OwnableUpgradeable {
     rolesContractAddress = _contractAddress;
 
     emit rolesContractUpdated(previousRolesContractAddress, rolesContractAddress);
+  }
+
+  /// @notice Set KopoDocumentHandler contract address
+  /// @dev Sender must be the owner
+  /// @param _contractAddress must be a contract at a different address
+  function setDocumentHandlerContractAddress(address _contractAddress) external onlyOwner {
+    require(AddressUpgradeable.isContract(_contractAddress) == true, '_contractAddress is not a contract');
+
+    address previousDocumentHandlerContractAddress = documentHandlerContractAddress;
+    documentHandlerContractAddress = _contractAddress;
+
+    emit documentHandlerContractUpdated(previousDocumentHandlerContractAddress, documentHandlerContractAddress);
   }
 
   /// @dev For testing only
