@@ -22,7 +22,7 @@ const main = async () => {
   const kopoRolesManager = await kopoRolesManagerProviderFactory.deploy();
   await kopoRolesManager.deployed();
   console.log(`[+] KopoRolesManager: ${kopoRolesManager.address}`);
-  await kopoAddressProvider.setRolesContractAddress(kopoRolesManager.address);
+  await kopoAddressProvider.setRolesManagerContractAddress(kopoRolesManager.address);
 
   /* Kopo Document Handler */
   const kopoDocumentHandlerFactory = await hre.ethers.getContractFactory('KopoDocumentHandler');
