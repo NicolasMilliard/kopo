@@ -18,7 +18,7 @@ contract KopoFolderFactory {
 
   /** @dev Calls KopoRolesManager to check. */
   modifier isVerified(address _addr) {
-    require(KopoRolesManager(addressProvider.rolesContractAddress()).isVerified(_addr) == true, 'not verified');
+    require(KopoRolesManager(addressProvider.rolesManagerContractAddress()).isVerified(_addr) == true, 'not verified');
     _;
   }
 

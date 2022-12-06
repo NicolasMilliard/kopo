@@ -45,7 +45,7 @@ contract KopoDocumentHandler is ERC721 {
    * @param _addr Address to check.
    */
   modifier isVerified(address _addr) {
-    require(KopoRolesManager(addressProvider.rolesContractAddress()).isVerified(_addr) == true, 'not verified');
+    require(KopoRolesManager(addressProvider.rolesManagerContractAddress()).isVerified(_addr) == true, 'not verified');
     _;
   }
 
@@ -54,7 +54,7 @@ contract KopoDocumentHandler is ERC721 {
    * @param _addr Address to check.
    */
   modifier isOblige(address _addr) {
-    require(KopoRolesManager(addressProvider.rolesContractAddress()).isOblige(_addr) == true, 'not oblige');
+    require(KopoRolesManager(addressProvider.rolesManagerContractAddress()).isOblige(_addr) == true, 'not oblige');
     _;
   }
 

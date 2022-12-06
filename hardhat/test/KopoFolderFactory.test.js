@@ -21,7 +21,7 @@ describe('KopoFolderHandler Contract', () => {
     kopoAddressProvider = await hre.upgrades.deployProxy(kopoAddressProviderFactory, [], {
       initializer: 'initialize',
     });
-    await kopoAddressProvider.setRolesContractAddress(kopoRolesManager.address);
+    await kopoAddressProvider.setRolesManagerContractAddress(kopoRolesManager.address);
     await kopoRolesManager.verifyUser(verified1.address);
   });
 

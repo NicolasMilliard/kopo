@@ -34,7 +34,7 @@ contract KopoFolderHandler is ERC721, IERC721Receiver, Ownable {
 
   /** @dev Calls KopoRolesManager to check. */
   modifier isVerified(address _addr) {
-    require(KopoRolesManager(addressProvider.rolesContractAddress()).isVerified(_addr) == true, 'not verified');
+    require(KopoRolesManager(addressProvider.rolesManagerContractAddress()).isVerified(_addr) == true, 'not verified');
     _;
   }
 
@@ -68,7 +68,12 @@ contract KopoFolderHandler is ERC721, IERC721Receiver, Ownable {
   /**
    * This contracts received the document NFT.
    */
-  function onERC721Received(address, address, uint256, bytes calldata) external pure returns (bytes4) {
+  function onERC721Received(
+    address,
+    address,
+    uint256,
+    bytes calldata
+  ) external pure returns (bytes4) {
     return IERC721Receiver.onERC721Received.selector;
   }
 }
