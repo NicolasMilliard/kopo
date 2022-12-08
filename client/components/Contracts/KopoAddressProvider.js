@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useContractRead, useContractWrite, usePrepareContractWrite } from 'wagmi';
-import { addressProviderContract } from '../../utils/connectKopoAddressProvider';
+import { chain, useContractRead, useContractWrite, usePrepareContractWrite } from 'wagmi';
+import { addressProviderContract } from '../../utils/contracts';
 
 // FolderFactoryContract
 const GetFolderFactoryContractAddress = () => {
   const [folderFactory, setFolderFactory] = useState('');
-  const { data } = useContractRead({
-    address: '0xA56f1A7b95D5C2E01A97fE6c17103822cc191E0E',
+
+  let { data } = useContractRead({
+    address: addressProviderContract.address,
     abi: addressProviderContract.abi,
     functionName: 'folderFactoryContractAddress',
     watch: true,
@@ -19,12 +20,12 @@ const GetFolderFactoryContractAddress = () => {
   }, [data]);
 
   return <h3 className="text-lg">folderFactoryContractAddress: {folderFactory}</h3>;
-}
+};
 
 const SetFolderFactoryContractAddress = () => {
   const [folderFactory, setFolderFactory] = useState('');
   const { config, error } = usePrepareContractWrite({
-    address: '0xA56f1A7b95D5C2E01A97fE6c17103822cc191E0E',
+    address: addressProviderContract.address,
     abi: addressProviderContract.abi,
     functionName: 'setFolderFactoryContractAddress',
     args: [folderFactory],
@@ -47,11 +48,7 @@ const SetFolderFactoryContractAddress = () => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <input
-          id="message"
-          placeholder="Enter 0x address here"
-          onChange={(e) => setFolderFactory(e.target.value)}
-        />
+        <input id="message" placeholder="Enter 0x address here" onChange={(e) => setFolderFactory(e.target.value)} />
         <button
           type="submit"
           className="mt-8 bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
@@ -67,7 +64,7 @@ const SetFolderFactoryContractAddress = () => {
 const GetRolesManagerContractAddress = () => {
   const [rolesManager, setRolesManager] = useState('');
   const { data } = useContractRead({
-    address: '0xA56f1A7b95D5C2E01A97fE6c17103822cc191E0E',
+    address: addressProviderContract.address,
     abi: addressProviderContract.abi,
     functionName: 'rolesManagerContractAddress',
     watch: true,
@@ -80,12 +77,12 @@ const GetRolesManagerContractAddress = () => {
   }, [data]);
 
   return <h3 className="text-lg">rolesManagerContractAddress: {rolesManager}</h3>;
-}
+};
 
 const SetRolesManagerContractAddress = () => {
   const [rolesManager, setRolesManager] = useState('');
   const { config, error } = usePrepareContractWrite({
-    address: '0xA56f1A7b95D5C2E01A97fE6c17103822cc191E0E',
+    address: addressProviderContract.address,
     abi: addressProviderContract.abi,
     functionName: 'setRolesManagerContractAddress',
     args: [rolesManager],
@@ -108,11 +105,7 @@ const SetRolesManagerContractAddress = () => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <input
-          id="message"
-          placeholder="Enter 0x address here"
-          onChange={(e) => setRolesManager(e.target.value)}
-        />
+        <input id="message" placeholder="Enter 0x address here" onChange={(e) => setRolesManager(e.target.value)} />
         <button
           type="submit"
           className="mt-8 bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
@@ -128,7 +121,7 @@ const SetRolesManagerContractAddress = () => {
 const GetDocumentHandlerContractAddress = () => {
   const [documentHandler, setDocumentHandler] = useState('');
   const { data } = useContractRead({
-    address: '0xA56f1A7b95D5C2E01A97fE6c17103822cc191E0E',
+    address: addressProviderContract.address,
     abi: addressProviderContract.abi,
     functionName: 'documentHandlerContractAddress',
     watch: true,
@@ -141,12 +134,12 @@ const GetDocumentHandlerContractAddress = () => {
   }, [data]);
 
   return <h3 className="text-lg">documentHandlerContractAddress: {documentHandler}</h3>;
-}
+};
 
 const SetDocumentHandlerContractAddress = () => {
   const [documentHandler, setDocumentHandler] = useState('');
   const { config, error } = usePrepareContractWrite({
-    address: '0xA56f1A7b95D5C2E01A97fE6c17103822cc191E0E',
+    address: addressProviderContract.address,
     abi: addressProviderContract.abi,
     functionName: 'setDocumentHandlerContractAddress',
     args: [documentHandler],
@@ -169,11 +162,7 @@ const SetDocumentHandlerContractAddress = () => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <input
-          id="message"
-          placeholder="Enter 0x address here"
-          onChange={(e) => setDocumentHandler(e.target.value)}
-        />
+        <input id="message" placeholder="Enter 0x address here" onChange={(e) => setDocumentHandler(e.target.value)} />
         <button
           type="submit"
           className="mt-8 bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"

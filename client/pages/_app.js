@@ -9,10 +9,7 @@ import '@rainbow-me/rainbowkit/styles.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/global.css';
 
-const { chains, provider } = configureChains(
-  [chain.localhost, chain.hardhat, chain.polygonMumbai, chain.polygon],
-  [publicProvider()],
-);
+const { chains, provider } = configureChains([chain.localhost, chain.polygonMumbai], [publicProvider()]);
 
 const { connectors } = getDefaultWallets({
   appName: 'Kopo',
@@ -28,13 +25,17 @@ const wagmiClient = createClient({
 const App = ({ Component, pageProps }) => {
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains} modalSize="compact" theme={lightTheme({
-        accentColor: '#22c55e',
-        accentColorForeground: 'white',
-        borderRadius: 'medium',
-        fontStack: 'system',
-        overlayBlur: 'small',
-      })}>
+      <RainbowKitProvider
+        chains={chains}
+        modalSize="compact"
+        theme={lightTheme({
+          accentColor: '#22c55e',
+          accentColorForeground: 'white',
+          borderRadius: 'medium',
+          fontStack: 'system',
+          overlayBlur: 'small',
+        })}
+      >
         <Navbar />
         <Component {...pageProps} />
         <ToastContainer />
