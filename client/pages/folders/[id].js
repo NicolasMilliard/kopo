@@ -1,27 +1,41 @@
-import { useState } from 'react';
-import { useContractRead, useContractWrite, usePrepareContractWrite } from 'wagmi';
+import { useEffect, useState } from 'react';
 
-import { folderHandlerContract } from '../../utils/contracts';
+import { useKopo } from '../../context/KopoContext';
 
-// export async function getServerSideProps(context) {
-//   const { id } = context.params;
+//import { folderHandlerContract } from '../../utils/contracts';
 
-//   const { data } = useContractRead({
-//     address: id,
-//     abi: addressProviderContract.abi,
-//     functionName: 'folderFactoryContractAddress',
-//     watch: true,
-//   });
+const Folder = ({ id }) => {
+  const {
+    state: { getFolderHandlerContract },
+  } = useKopo();
+  const { folderId, setFolderId } = useState();
 
-//   return {
-//     props: {
-//       event: data.event,
-//     },
-//   };
-// }
+  const getFolder = async (id) => {
+    if (!getFolderHandlerContract) return;
+    const contract = await getFolderHandlerContract(id);
+    const folderId = await contract.folderId();
+    console.log(folderId);
+    // setFolderId('a');
+  };
 
-const Folder = ({ folder }) => {
-  return <div>Coucou</div>;
+  useEffect(() => {
+    (async () => {
+      getFolder(id);
+      console.log(setFolderId);
+    })();
+  }, [getFolderHandlerContract, id]);
+
+  return <div>Numéro de dossier: {folderId}</div>;
 };
+
+export async function getServerSideProps(context) {
+  const { id } = context.params;
+
+  return {
+    props: {
+      id: id,
+    },
+  };
+}
 
 export default Folder;
