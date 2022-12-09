@@ -14,7 +14,7 @@ import './KopoRolesManager.sol';
 contract KopoFolderFactory {
   KopoAddressProvider private immutable addressProvider;
   mapping(bytes32 => address) public registeredFolders;
-  event NewFolder(address _contract, bytes32 _folderId);
+  event NewFolder(address _from, address _contract, bytes32 _folderId);
 
   /** @dev Calls KopoRolesManager to check. */
   modifier isVerified(address _addr) {
@@ -67,6 +67,6 @@ contract KopoFolderFactory {
     registeredFolders[folderId] = address(newFolder);
     newFolder.transferOwnership(msg.sender);
 
-    emit NewFolder(address(newFolder), folderId);
+    emit NewFolder(msg.sender, address(newFolder), folderId);
   }
 }
