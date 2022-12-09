@@ -6,7 +6,7 @@ import { folderFactoryContract } from '../../utils/contracts';
 const RegisteredFolders = () => {
   const [registeredFolders, setRegisteredFolders] = useState('');
   const { data } = useContractRead({
-    address: folderFactoryContract.address,
+    address: '0x6fE42193dF6a7151CdD1a8EDA11258D3a14E0CE9',
     abi: folderFactoryContract.abi,
     functionName: 'registeredFolders',
     watch: true,
