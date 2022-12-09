@@ -23,7 +23,6 @@ const CreateFolder = () => {
 
       // Get the folderId from the response event.
       const folderAddress = wait.events[2].args._contract;
-      console.log(folderAddress);
       setIsLoading(false);
       setIsSuccess(true);
 
@@ -62,7 +61,7 @@ const CreateFolder = () => {
             </form>
           </div>
         )}
-        {isSuccess && <div>Dossier, créé, redirection...</div>}
+        {isSuccess && <div>Dossier créé, redirection...</div>}
         {isLoading && <div>En attente de la requête...</div>}
       </section>
     </div>

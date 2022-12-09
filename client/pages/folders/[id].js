@@ -31,6 +31,9 @@ const Folder = ({ id }) => {
     })();
   }, [getFolderHandlerContract, id, setFolderId]);
 
+  /**
+   * Check that the folder contract address is a legitimate address.
+   */
   useEffect(() => {
     (async () => {
       if (!folderFactoryContract) return;
