@@ -44,7 +44,7 @@ const KopoProvider = (props) => {
         process.env.KOPO_ADDRESS_PROVIDER_LOCALHOST,
         addressProviderContractArtifact.abi,
       );
-    } else if (chain.name === 'Polygin Mumbai') {
+    } else if (chain.name === 'Polygon Mumbai') {
       addressProviderContract = loadContract(
         process.env.KOPO_ADDRESS_PROVIDER_MUMBAI,
         addressProviderContractArtifact.abi,
