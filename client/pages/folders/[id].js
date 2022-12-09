@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { useKopo } from '../../context/KopoContext';
+import ReturnToDashboard from '../../components/Buttons/ReturnToDashboard';
 
 //import { folderHandlerContract } from '../../utils/contracts';
 
@@ -51,6 +52,7 @@ const Folder = ({ id }) => {
 
   return (
     <div>
+      <ReturnToDashboard />
       <div>Numéro de dossier: {folderId}</div>
 
       <div>
