@@ -67,13 +67,9 @@ contract KopoFolderHandler is ERC721, IERC721Receiver, Ownable {
 
   /**
    * This contracts received the document NFT.
+   * TODO Only allow transfer from DocumentHandler.
    */
-  function onERC721Received(
-    address,
-    address,
-    uint256,
-    bytes calldata
-  ) external pure returns (bytes4) {
+  function onERC721Received(address, address, uint256, bytes calldata) external pure returns (bytes4) {
     return IERC721Receiver.onERC721Received.selector;
   }
 }
