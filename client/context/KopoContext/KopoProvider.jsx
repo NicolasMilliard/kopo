@@ -1,9 +1,11 @@
 import { ethers } from 'ethers';
 import { useCallback, useEffect, useReducer } from 'react';
+import { useNetwork } from 'wagmi';
 
 import addressProviderContractArtifact from '../../artifacts/contracts/KopoAddressProvider.sol/KopoAddressProvider.json';
 import folderFactoryContractArtifact from '../../artifacts/contracts/KopoFolderFactory.sol/KopoFolderFactory.json';
 import folderHandlerContractArtifact from '../../artifacts/contracts/KopoFolderHandler.sol/KopoFolderHandler.json';
+import rolesManagerContractArtifact from '../../artifacts/contracts/KopoRolesManager.sol/KopoRolesManager.json';
 
 import KopoContext from './KopoContext';
 import { actions, initialState, reducer } from './state';
@@ -28,38 +30,58 @@ const loadContract = (addr, abi) => {
 
 const KopoProvider = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { chain, chains } = useNetwork();
 
   /**
    * Load all contracts.
    */
   const init = useCallback(async () => {
+    let addressProviderContract;
+
     // Address Provider
-    const addressProviderContract = loadContract(
-      process.env.KOPO_ADDRESS_PROVIDER_LOCALHOST, // TODO Dynamically change this value based on the network selected.
-      addressProviderContractArtifact.abi,
-    );
+    if (chain.name === 'Localhost') {
+      addressProviderContract = loadContract(
+        process.env.KOPO_ADDRESS_PROVIDER_LOCALHOST,
+        addressProviderContractArtifact.abi,
+      );
+    } else if (chain.name === 'Polygin Mumbai') {
+      addressProviderContract = loadContract(
+        process.env.KOPO_ADDRESS_PROVIDER_MUMBAI,
+        addressProviderContractArtifact.abi,
+      );
+    }
 
-    // Folder factory
-    const folderFactoryAddress = await addressProviderContract.folderFactoryContractAddress();
-    const folderFactoryContract = loadContract(folderFactoryAddress, folderFactoryContractArtifact.abi);
+    try {
+      // Folder factory
+      const rolesManagerAddress = await addressProviderContract.rolesManagerContractAddress();
+      const rolesManagerContract = loadContract(rolesManagerAddress, folderFactoryContractArtifact.abi);
 
-    // Folder handler
-    const getFolderHandlerContract = (address) => {
-      return loadContract(address, folderHandlerContractArtifact.abi);
-    };
+      // Folder factory
+      const folderFactoryAddress = await addressProviderContract.folderFactoryContractAddress();
+      const folderFactoryContract = loadContract(folderFactoryAddress, folderFactoryContractArtifact.abi);
 
-    dispatch({
-      type: actions.INIT,
-      data: {
-        addressProviderContract: addressProviderContract,
-        folderFactoryContract: folderFactoryContract,
-        getFolderHandlerContract: getFolderHandlerContract,
-      },
-    });
+      // Folder handler
+      const getFolderHandlerContract = (address) => {
+        return loadContract(address, folderHandlerContractArtifact.abi);
+      };
+
+      dispatch({
+        type: actions.INIT,
+        data: {
+          addressProviderContract: addressProviderContract,
+          rolesManagerContract: rolesManagerContract,
+          folderFactoryContract: folderFactoryContract,
+          getFolderHandlerContract: getFolderHandlerContract,
+        },
+      });
+    } catch (error) {
+      console.log('Could not load the contract. Are you on the correct chain?');
+    }
   }, []);
 
   /**
    * Call the init callback.
+   * Reload the contracts if the chain has changed.
    */
   useEffect(() => {
     const tryInit = async () => {
@@ -71,7 +93,7 @@ const KopoProvider = (props) => {
     };
 
     tryInit();
-  }, [init]);
+  }, [init, chain]);
 
   return (
     <KopoContext.Provider
