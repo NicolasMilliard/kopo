@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import Button from '../components/Buttons/Button';
 
 import { useContractRead, useContractWrite, usePrepareContractWrite } from 'wagmi';
-import { rolesManagerContract } from '../utils/connectKopoRolesManager';
+import { rolesManagerContract } from '../utils/contracts';
 
 const dashboard = () => {
   const { address, isConnected } = useAccount();
@@ -25,13 +25,12 @@ const dashboard = () => {
       setCurrentAccount(address);
       setIsVerified(getUserVerifiedStatus);
     }
-  }
+  };
 
   // Check when isConnected and getUserVerifiedStatus are updated
   useEffect(() => {
     checkCurrentAccount();
   }, [isConnected, getUserVerifiedStatus]);
-
 
   // Testing
   // const { config, error } = usePrepareContractWrite({
@@ -45,28 +44,26 @@ const dashboard = () => {
 
   // const verifyUser = () => {
 
-
   //   write();
   // }
 
   const newProject = () => {
     if (isVerified) {
-
     } else {
       alert("You're not verified");
     }
-  }
+  };
 
   return (
-    <div className='flex flex-col items-center justify-center mt-40'>
-      <h1 className='text-3xl'>Vous n'avez pas de projet en cours</h1>
+    <div className="flex flex-col items-center justify-center mt-40">
+      <h1 className="text-3xl">Vous n'avez pas de projet en cours</h1>
       <span>{currentAccount}</span>
       <span>{isVerified}</span>
-      <span>{isVerified ? "Vous êtes vérifié" : "Vous n'êtes pas vérifié"}</span>
+      <span>{isVerified ? 'Vous êtes vérifié' : "Vous n'êtes pas vérifié"}</span>
       {/* <Button text="Se vérifier (admin)" customFunction={verifyUser} /> */}
       <Button text="Commencer un nouveau projet" customFunction={newProject} />
     </div>
-  )
-}
+  );
+};
 
-export default dashboard
+export default dashboard;

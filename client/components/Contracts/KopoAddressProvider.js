@@ -6,7 +6,7 @@ import { addressProviderContract } from '../../utils/contracts';
 const GetFolderFactoryContractAddress = () => {
   const [folderFactory, setFolderFactory] = useState('');
 
-  let { data } = useContractRead({
+  const { data } = useContractRead({
     address: addressProviderContract.address,
     abi: addressProviderContract.abi,
     functionName: 'folderFactoryContractAddress',
