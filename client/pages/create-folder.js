@@ -1,24 +1,44 @@
 import Head from 'next/head';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { useContractRead, useContractWrite, usePrepareContractWrite } from 'wagmi';
+import Router from 'next/router';
+import { useState } from 'react';
 
-import '@rainbow-me/rainbowkit/styles.css';
-import 'react-toastify/dist/ReactToastify.css';
-
-import { folderFactoryContract } from '../utils/contracts';
+import { useKopo } from '../context/KopoContext';
 
 const CreateFolder = () => {
-  const { config, error } = usePrepareContractWrite({
-    ...folderFactoryContract,
-    functionName: 'createFolder',
-  });
-  const { data, isLoading, isSuccess, write } = useContractWrite(config);
+  const {
+    state: { folderFactoryContract },
+  } = useKopo();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleSubmit = (event) => {
+  const createFolder = async () => {
+    try {
+      const contract = folderFactoryContract;
+      if (!contract) return;
+
+      setIsLoading(true);
+
+      const tx = await contract.createFolder();
+      let wait = await tx.wait();
+
+      // Get the folderId from the response event.
+      const folderAddress = wait.events[2].args._contract;
+      console.log(folderAddress);
+      setIsLoading(false);
+      setIsSuccess(true);
+
+      // Redirect to the event's page.
+      Router.push(`/folders/${folderAddress}`);
+    } catch (error) {
+      setIsSuccess(false);
+      setIsLoading(false);
+      console.log(error);
+    }
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(write);
-    write();
+    await createFolder();
   };
 
   return (
@@ -29,7 +49,7 @@ const CreateFolder = () => {
       </Head>
 
       <section>
-        {!isLoading && (
+        {!isLoading && !isSuccess && (
           <div>
             <div>Bonjour, c'est ici pour créer un nouveau dossier.</div>
             <form onSubmit={handleSubmit}>
@@ -42,6 +62,8 @@ const CreateFolder = () => {
             </form>
           </div>
         )}
+        {isSuccess && <div>Dossier, créé, redirection...</div>}
+        {isLoading && <div>En attente de la requête...</div>}
       </section>
     </div>
   );

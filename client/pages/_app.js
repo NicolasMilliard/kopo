@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../styles/global.css';
 
 import Layout from '../components/Layout';
+import { KopoProvider } from '../context/KopoContext';
 
 const { chains, provider } = configureChains([chain.localhost, chain.polygonMumbai], [publicProvider()]);
 
@@ -37,9 +38,11 @@ const App = ({ Component, pageProps }) => {
           overlayBlur: 'small',
         })}
       >
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <KopoProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </KopoProvider>
 
         <ToastContainer />
       </RainbowKitProvider>
