@@ -4,6 +4,7 @@ const actions = {
 
 const initialState = {
   addressProviderContract: null,
+  rolesManagerContract: null,
   folderFactoryContract: null,
   getFolderHandlerContract: null,
 };
