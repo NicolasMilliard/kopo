@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useContractRead, useContractWrite, usePrepareContractWrite } from 'wagmi';
-import { addressProviderContract } from '../../utils/connectKopoAddressProvider';
-import { folderHandlerContract } from '../../utils/connectKopoFolderHandler';
+import { folderHandlerContract } from '../../utils/contracts';
 
 const SafeMint = () => {
   const [recipient, setRecipient] = useState('');
@@ -55,11 +54,7 @@ const TransferOwnership = () => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <input
-          id="owner"
-          placeholder="Enter 0x address of new owner"
-          onChange={(e) => setRecipient(e.target.value)}
-        />
+        <input id="owner" placeholder="Enter 0x address of new owner" onChange={(e) => setRecipient(e.target.value)} />
         <button
           type="submit"
           className="mt-8 bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
@@ -92,26 +87,10 @@ const OnERC721Received = () => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <input
-          id="operator"
-          placeholder="Enter 0x address of operator"
-          onChange={(e) => setOperator(e.target.value)}
-        />
-        <input
-          id="from"
-          placeholder="Enter 0x address of from"
-          onChange={(e) => setFrom(e.target.value)}
-        />
-        <input
-          id="token_id"
-          placeholder="Enter tokenId"
-          onChange={(e) => setTokenId(e.target.value)}
-        />
-        <input
-          id="data"
-          placeholder="Enter data"
-          onChange={(e) => setData(e.target.value)}
-        />
+        <input id="operator" placeholder="Enter 0x address of operator" onChange={(e) => setOperator(e.target.value)} />
+        <input id="from" placeholder="Enter 0x address of from" onChange={(e) => setFrom(e.target.value)} />
+        <input id="token_id" placeholder="Enter tokenId" onChange={(e) => setTokenId(e.target.value)} />
+        <input id="data" placeholder="Enter data" onChange={(e) => setData(e.target.value)} />
         <button
           type="submit"
           className="mt-8 bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
