@@ -30,7 +30,7 @@ const loadContract = (addr, abi) => {
 
 const KopoProvider = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { chain, chains } = useNetwork();
+  const { chain } = useNetwork();
 
   /**
    * Load all contracts.
