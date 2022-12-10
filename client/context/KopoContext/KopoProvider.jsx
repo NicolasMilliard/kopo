@@ -6,6 +6,7 @@ import addressProviderContractArtifact from '../../artifacts/contracts/KopoAddre
 import folderFactoryContractArtifact from '../../artifacts/contracts/KopoFolderFactory.sol/KopoFolderFactory.json';
 import folderHandlerContractArtifact from '../../artifacts/contracts/KopoFolderHandler.sol/KopoFolderHandler.json';
 import rolesManagerContractArtifact from '../../artifacts/contracts/KopoRolesManager.sol/KopoRolesManager.json';
+import documentHandlerContractArtifact from '../../artifacts/contracts/KopoDocumentHandler.sol/KopoDocumentHandler.json';
 
 import KopoContext from './KopoContext';
 import { actions, initialState, reducer } from './state';
@@ -67,6 +68,10 @@ const KopoProvider = (props) => {
         return loadContract(address, folderHandlerContractArtifact.abi);
       };
 
+      // Document handler
+      const documentHandlerAddress = await addressProviderContract.documentHandlerContractAddress();
+      const documentHandlerContract = loadContract(documentHandlerAddress, documentHandlerContractArtifact.abi);
+
       dispatch({
         type: actions.INIT,
         data: {
@@ -74,6 +79,7 @@ const KopoProvider = (props) => {
           rolesManagerContract: rolesManagerContract,
           folderFactoryContract: folderFactoryContract,
           getFolderHandlerContract: getFolderHandlerContract,
+          documentHandlerContract: documentHandlerContract
         },
       });
     } catch (error) {
