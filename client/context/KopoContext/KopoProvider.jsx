@@ -38,6 +38,8 @@ const KopoProvider = (props) => {
   const init = useCallback(async () => {
     let addressProviderContract;
 
+    if (!chain) return;
+
     // Address Provider
     if (chain.name === 'Localhost') {
       addressProviderContract = loadContract(
