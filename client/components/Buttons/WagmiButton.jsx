@@ -10,7 +10,12 @@ let WagmiButton = () => {
   const { disconnect } = useDisconnect();
 
   return (
-    <ConnectButton showBalance={false} chainStatus="none" label="Connecter mon portefeuille" accountStatus="address" />
+    <ConnectButton
+      showBalance={false}
+      chainStatus="none"
+      label="Mon espace"
+      accountStatus="address"
+    />
   );
 };
 
