@@ -8,7 +8,7 @@ import '@rainbow-me/rainbowkit/styles.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/global.css';
 
-import Layout from '../components/Layout';
+import Layout from '../components/Layout/Layout';
 import { KopoProvider } from '../context/KopoContext';
 
 const { chains, provider } = configureChains([chain.localhost, chain.polygonMumbai], [publicProvider()]);
