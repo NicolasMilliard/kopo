@@ -3,10 +3,10 @@ import { useCallback, useEffect, useReducer } from 'react';
 import { useNetwork } from 'wagmi';
 
 import addressProviderContractArtifact from '../../artifacts/contracts/KopoAddressProvider.sol/KopoAddressProvider.json';
+import documentHandlerContractArtifact from '../../artifacts/contracts/KopoDocumentHandler.sol/KopoDocumentHandler.json';
 import folderFactoryContractArtifact from '../../artifacts/contracts/KopoFolderFactory.sol/KopoFolderFactory.json';
 import folderHandlerContractArtifact from '../../artifacts/contracts/KopoFolderHandler.sol/KopoFolderHandler.json';
 import rolesManagerContractArtifact from '../../artifacts/contracts/KopoRolesManager.sol/KopoRolesManager.json';
-import documentHandlerContractArtifact from '../../artifacts/contracts/KopoDocumentHandler.sol/KopoDocumentHandler.json';
 
 import KopoContext from './KopoContext';
 import { actions, initialState, reducer } from './state';
@@ -79,7 +79,7 @@ const KopoProvider = (props) => {
           rolesManagerContract: rolesManagerContract,
           folderFactoryContract: folderFactoryContract,
           getFolderHandlerContract: getFolderHandlerContract,
-          documentHandlerContract: documentHandlerContract
+          documentHandlerContract: documentHandlerContract,
         },
       });
     } catch (error) {
