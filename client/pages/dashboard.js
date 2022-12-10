@@ -102,8 +102,8 @@ const Dashboard = () => {
             <>
               <h1 className="text-3xl text-center">Vous avez {folders.length} {folders.length === 1 ? 'projet' : 'projets'} en cours</h1>
               <div className='flex flex-col items-center max-w-2md'>
-                <FoldersList folders={folders} />
                 <Link href="/create-folder" className='bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg'>Créer un nouveau projet</Link>
+                <FoldersList folders={folders} />
               </div>
             </>
         }
