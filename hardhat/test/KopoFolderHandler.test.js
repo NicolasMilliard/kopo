@@ -8,6 +8,7 @@ describe('KopoFolderHandler Contract', () => {
   let verified2;
   let kopoAddressProvider;
   let kopoFolderContract;
+  const metadataCID = 'ipfs://zb2rhe5P4gXftAwvA4eXQ5HJwsER2owDyS9sKaQRRVQPn93bA';
 
   /**
    * @dev To launch every test, the address provider needs to be depoyed
@@ -94,13 +95,13 @@ describe('KopoFolderHandler Contract', () => {
    */
   describe('Minting NFT', async () => {
     it('should mint a NFT to the contract owner.', async () => {
-      await expect(kopoFolderContract.safeMint(owner.address))
+      await expect(kopoFolderContract.safeMint(owner.address, metadataCID))
         .to.emit(kopoFolderContract, 'Transfer')
         .withArgs(hre.ethers.constants.AddressZero, owner.address, hre.ethers.BigNumber.from(0));
     });
 
     it('should prevent minting a NFT if not owner (POV: hacker).', async () => {
-      await expect(kopoFolderContract.connect(hacker).safeMint(hacker.address)).to.be.revertedWith(
+      await expect(kopoFolderContract.connect(hacker).safeMint(hacker.address, metadataCID)).to.be.revertedWith(
         'Ownable: caller is not the owner',
       );
     });
@@ -109,11 +110,28 @@ describe('KopoFolderHandler Contract', () => {
       let MAX_SUPPLY = await kopoFolderContract.MAX_SUPPLY();
 
       for (i = 0; i < MAX_SUPPLY; i++) {
-        await kopoFolderContract.safeMint(owner.address);
+        await kopoFolderContract.safeMint(owner.address, metadataCID);
       }
 
       /* Trying to mint one too many NFT. */
-      await expect(kopoFolderContract.safeMint(hacker.address)).to.be.revertedWith('max supply reached');
+      await expect(kopoFolderContract.safeMint(hacker.address, metadataCID)).to.be.revertedWith('max supply reached');
+    });
+  });
+
+  /**
+   * Testing retrieving NFT.
+   */
+  describe('Retrieving NFT', async () => {
+    it('should retrieve the proper token URI.', async () => {
+      const tx = await kopoFolderContract.safeMint(owner.address, metadataCID);
+      const wait = await tx.wait();
+      const tokenId = wait.events[0].args.tokenId;
+      expect(await kopoFolderContract.tokenURI(tokenId)).to.be.equal(metadataCID);
+    });
+
+    it('should fail retrieving an invalid token id.', async () => {
+      const tokenId = 0x666;
+      await expect(kopoFolderContract.tokenURI(tokenId)).to.be.revertedWith('token does not exist');
     });
   });
 });

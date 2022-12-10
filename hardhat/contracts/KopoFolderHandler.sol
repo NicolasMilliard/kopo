@@ -26,12 +26,11 @@ contract KopoFolderHandler is ERC721, IERC721Receiver, Ownable {
    * @dev The max supply is here for future use. If we need to mint more than
    * one NFT by folder, for instance, for more complex Defi schemes, this
    * will be possible.
-   * It's a uint256 because a whole new 256 bits is allocated anyway so why not
-   * use it completely.
    */
   uint256 public constant MAX_SUPPLY = 1;
   KopoAddressProvider private immutable addressProvider;
   string public folderName;
+  mapping(uint256 => string) tokens;
 
   event NameChanged(address _from, string _oldname, string _name);
 
@@ -62,11 +61,20 @@ contract KopoFolderHandler is ERC721, IERC721Receiver, Ownable {
    * travel on the blockchain, no restrictions.
    * Emits a transfer event.
    */
-  function safeMint(address _to) external onlyOwner {
+  function safeMint(address _to, string calldata CID) external onlyOwner {
     require(tokenIds.current() < MAX_SUPPLY, 'max supply reached');
     uint256 tokenId = tokenIds.current();
     tokenIds.increment();
+    tokens[tokenId] = CID;
     _safeMint(_to, tokenId);
+  }
+
+  /**
+   * Return the proper URI for the token..
+   */
+  function tokenURI(uint256 _tokenId) public view override returns (string memory) {
+    require(tokenIds.current() > _tokenId, 'token does not exist');
+    return tokens[_tokenId];
   }
 
   /**
