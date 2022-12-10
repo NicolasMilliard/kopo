@@ -1,12 +1,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
-// import { toast } from 'react-toastify';
 import WagmiButton from '../components/Buttons/WagmiButton';
 import EstimateFinancialAid from '../components/Buttons/EstimateFinancialAid';
 import kopoImage from '../images/kopo-renovation-energetique.svg';
 
 const Index = () => {
-  // const notify = () => toast('Hello Kopo!');
   return (
     <>
       <Link href="/dashboard">Go to Dashboard</Link>
@@ -33,12 +31,6 @@ const Index = () => {
           </div>
         </div>
       </div>
-      {/* <button
-        onClick={notify}
-        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-      >
-        Toastify test
-      </button> */}
     </>
   );
 };

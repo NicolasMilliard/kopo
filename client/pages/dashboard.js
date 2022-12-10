@@ -1,23 +1,22 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
-import FoldersList from '../components/Folders/FoldersList';
-import EstimateFinancialAid from '../components/Buttons/EstimateFinancialAid';
+import Dashboard from '../components/Dashboard/Dashboard';
 
 import { useKopo } from '../context/KopoContext';
 
-const Dashboard = () => {
+const dashboard = () => {
   const {
-    state: { rolesManagerContract, folderFactoryContract },
+    state: { rolesManagerContract },
   } = useKopo();
-  const { address, isConnected } = useAccount();
+  const { address } = useAccount();
   const [currentAccount, setCurrentAccount] = useState('');
   const [isVerified, setIsVerified] = useState();
-  const [folders, setFolders] = useState([]);
+  const [userRole, setUserRole] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  // Check if user is verify
   const getUserVerifiedStatus = async () => {
     try {
       const contract = rolesManagerContract;
@@ -25,13 +24,11 @@ const Dashboard = () => {
 
       setIsLoading(true);
 
-      const tx = await contract.getUserVerifiedStatus(currentAccount);
+      const verifyStatus = await contract.getUserVerifiedStatus(currentAccount);
+      setIsVerified(verifyStatus);
 
       setIsLoading(false);
       setIsSuccess(true);
-
-      return tx;
-
     } catch (error) {
       setIsSuccess(false);
       setIsLoading(false);
@@ -39,22 +36,19 @@ const Dashboard = () => {
     }
   }
 
-  const checkUserCreatedFolders = async () => {
+  // Check user role
+  const checkUserRole = async () => {
     try {
-      const contract = folderFactoryContract;
+      const contract = rolesManagerContract;
       if (!contract) return;
 
       setIsLoading(true);
 
-      const eventFilter = contract.filters.NewFolder();
-      const events = await contract.queryFilter(eventFilter);
-      let allEvents = [];
+      const role = await contract.getUserRole(currentAccount);
+      setUserRole(role);
 
-      for (let i = 0; i < events.length; i++) {
-        allEvents.push({ sender: events[i].args[0], newFolder: events[i].args[1], folderId: events[i].args[2] });
-      }
-
-      setFolders(allEvents);
+      setIsLoading(false);
+      setIsSuccess(true);
 
     } catch (error) {
       setIsSuccess(false);
@@ -63,19 +57,15 @@ const Dashboard = () => {
     }
   }
 
-  // If user is connected, check if he's verified
+  // If user is connected, check if he's verified and if he has folder(s)
   const checkCurrentAccount = () => {
-    if (isConnected) {
+    if (address) {
       setCurrentAccount(address);
-      setIsVerified(getUserVerifiedStatus);
-      checkUserCreatedFolders();
-      console.log("isConnected: " + isConnected);
-    } else {
-      console.log("pas connecté: " + isConnected);
+      getUserVerifiedStatus();
+      checkUserRole();
     }
   };
 
-  // Check when isConnected and getUserVerifiedStatus are updated
   useEffect(() => {
     checkCurrentAccount();
   }, [rolesManagerContract]);
@@ -83,33 +73,12 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col items-center justify-center mt-40">
       <Head>
-        <title>Tableau de bord</title>
+        <title>Tableau de bord - Kopo</title>
         <meta name="description" content="Tableau de bord - Kopo" />
       </Head>
-
-      <section>
-        {
-          folders.length === 0 ?
-            <>
-              <h1 className="text-3xl text-center mb-8">Vous n'avez pas de projet en cours</h1>
-              <div className='flex items-center max-w-2md'>
-                <Link href="/create-folder" className='bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg'>Créer un nouveau projet</Link>
-                <EstimateFinancialAid />
-              </div>
-
-            </>
-            :
-            <>
-              <h1 className="text-3xl text-center">Vous avez {folders.length} {folders.length === 1 ? 'projet' : 'projets'} en cours</h1>
-              <div className='flex flex-col items-center max-w-2md'>
-                <Link href="/create-folder" className='bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg'>Créer un nouveau projet</Link>
-                <FoldersList folders={folders} />
-              </div>
-            </>
-        }
-      </section>
+      <Dashboard currentAccount={currentAccount} isVerified={isVerified} role={userRole} />
     </div>
   );
 };
 
-export default Dashboard;
+export default dashboard;

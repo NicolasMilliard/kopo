@@ -11,6 +11,7 @@ require('@nomiclabs/hardhat-etherscan');
  */
 require('./tasks/accounts');
 require('./tasks/verifyUser');
+require('./tasks/updateUserRole');
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
