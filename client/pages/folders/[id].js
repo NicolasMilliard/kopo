@@ -45,6 +45,10 @@ const Folder = ({ id }) => {
     })();
   }, [folderFactoryContract, id, folderId]);
 
+  const mintNft = () => {
+    console.log(1);
+  };
+
   if (!isLoading && !isValidFolder)
     return (
       <div>Attention! Ce n'est pas un dossier Kopo et peut-être une contrefaçon. Merci de le signaler à Kopo.</div>
@@ -57,7 +61,9 @@ const Folder = ({ id }) => {
 
       <div>
         Création d'un NFT de ce dossier pour la finance décentralisée
-        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Créer le NFT</button>
+        <button onClick={mintNft} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+          Créer le NFT
+        </button>
       </div>
     </div>
   );
