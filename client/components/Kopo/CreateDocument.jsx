@@ -19,7 +19,7 @@ const CreateDocument = () => {
   const [createObjectURL, setCreateObjectURL] = useState(null);
 
   /**
-   * For the moment we only accept images. PDF and other forms of documents
+   * For the moment we only accept images. PDF and other formats will be accepted
    * in a future release.
    */
   const uploadToClient = (event) => {
@@ -51,33 +51,44 @@ const CreateDocument = () => {
   };
 
   return (
-    <div>
-      {createObjectURL && <img src={createObjectURL} />}
-      <div>
-        <input type="file" name="document" onChange={uploadToClient} accept="image/*" />
-      </div>
-      <div>
-        <input type="text" name="documentName" value="Nom du document" />
-      </div>
-      <div>
-        <input type="text" name="oblige" value="Addresse de l'obligé" />
-      </div>
-      <div>
+    <form className='flex flex-col max-w-md mx-auto mt-40'>
+      <h1 className='text-3xl mb-8'>Envoyer votre document</h1>
+      <label className='block mb-8' htmlFor='document'>
+        <span className='block text-sm font-medium mb-2'>Document</span>
+        <input
+          type="file"
+          id="document"
+          name="document"
+          onChange={uploadToClient}
+          accept="image/*"
+          className='file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:cursor-pointer file:text-sm file:text-white file:font-bold file:bg-green-500 hover:file:bg-green-700'
+        />
+      </label>
+      <label className='block mb-8' htmlFor="oblige">
+        <span className='block text-sm font-medium mb-2'>Obligé</span>
+        <select name="oblige" id="oblige">
+          <option value="1">0x1 - EDF</option>
+          <option value="2">0x2 - Carrefour</option>
+          <option value="3">0x3 - Casino</option>
+        </select>
+      </label>
+      <button
+        type="submit"
+        className="mb-8 bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
+        onClick={uploadToServer}
+      >
+        Soumettre le document
+      </button>
+      <div className='max-w-md mb-8'>
         <tt>
-          Attention, ceci est une maquette. Dans cette version de développement, le document sera envoyé sur IPFS en
+          ⚠️ Dans cette version de développement, le document sera envoyé sur IPFS en
           clair. Toute personne écoutant la blockchain peut récupérer le document.
         </tt>
       </div>
       <div>
-        <button
-          type="submit"
-          className="mt-8 bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
-          onClick={uploadToServer}
-        >
-          Soumettre le document
-        </button>
+        {createObjectURL && <img src={createObjectURL} alt="Prévisualisation du document" className='rounded-xl mb-8' />}
       </div>
-    </div>
+    </form >
   );
 };
 
