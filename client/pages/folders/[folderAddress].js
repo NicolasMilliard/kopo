@@ -1,7 +1,9 @@
 import Link from 'next/link';
+
 import { useEffect, useState } from 'react';
 
 import ReturnToDashboard from '../../components/Buttons/ReturnToDashboard';
+import MintFolder from '../../components/Dashboard/MintFolder';
 import { useKopo } from '../../context/KopoContext';
 
 const Folder = ({ folderAddress }) => {
@@ -25,7 +27,9 @@ const Folder = ({ folderAddress }) => {
 
         // Retrieve information about the folder.
         setFolderId(await contract.folderId());
-        setFolderName(await contract.folderName());
+        //setFolderName(await contract.folderName());
+        // TODO Fix this.
+        setFolderName('Test folder name');
 
         setIsLoading(false);
       } catch (error) {
@@ -33,7 +37,7 @@ const Folder = ({ folderAddress }) => {
         console.log('Wrong address or wrong contract ABI.');
       }
     })();
-  }, [getFolderHandlerContract, folderAddress, setFolderId]);
+  }, [getFolderHandlerContract, folderAddress, setFolderId, setFolderName]);
 
   /**
    * Check that the folder contract address is a legitimate address.
@@ -47,10 +51,6 @@ const Folder = ({ folderAddress }) => {
       if (addr === folderAddress) setIsValidFolder(true);
     })();
   }, [folderFactoryContract, folderAddress, folderId]);
-
-  const mintNft = () => {
-    console.log(1);
-  };
 
   /**
    * Display an alert if this is not a legitimate folder.
@@ -76,12 +76,7 @@ const Folder = ({ folderAddress }) => {
       <div>Numéro de dossier: {folderId}</div>
       <div>Nom du dossier: {folderName}</div>
 
-      <div>
-        Création d'un NFT de ce dossier pour la finance décentralisée
-        <button onClick={mintNft} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-          Créer un NFT du dossier
-        </button>
-      </div>
+      {folderName && <MintFolder folderAddress={folderAddress} folderId={folderId} folderName={folderName} />}
     </div>
   );
 };
