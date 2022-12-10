@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import CreateDocument from '../components/Kopo/CreateDocument';
+import CreateDocument from '../components/Dashboard/CreateDocument';
 
 const CreateDocumentPage = () => {
   return (
