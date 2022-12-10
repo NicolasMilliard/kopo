@@ -4,9 +4,7 @@ import { useEffect, useState } from 'react';
 import ReturnToDashboard from '../../components/Buttons/ReturnToDashboard';
 import { useKopo } from '../../context/KopoContext';
 
-//import { folderHandlerContract } from '../../utils/contracts';
-
-const Folder = ({ id }) => {
+const Folder = ({ folderAddress }) => {
   const {
     state: { getFolderHandlerContract, folderFactoryContract },
   } = useKopo();
@@ -23,7 +21,7 @@ const Folder = ({ id }) => {
       if (!getFolderHandlerContract) return;
 
       try {
-        const contract = await getFolderHandlerContract(id);
+        const contract = await getFolderHandlerContract(folderAddress);
 
         // Retrieve information about the folder.
         setFolderId(await contract.folderId());
@@ -35,7 +33,7 @@ const Folder = ({ id }) => {
         console.log('Wrong address or wrong contract ABI.');
       }
     })();
-  }, [getFolderHandlerContract, id, setFolderId]);
+  }, [getFolderHandlerContract, folderAddress, setFolderId]);
 
   /**
    * Check that the folder contract address is a legitimate address.
@@ -46,9 +44,9 @@ const Folder = ({ id }) => {
       if (!folderId) return;
 
       const addr = await folderFactoryContract.registeredFolders(folderId);
-      if (addr === id) setIsValidFolder(true);
+      if (addr === folderAddress) setIsValidFolder(true);
     })();
-  }, [folderFactoryContract, id, folderId]);
+  }, [folderFactoryContract, folderAddress, folderId]);
 
   const mintNft = () => {
     console.log(1);
@@ -69,7 +67,7 @@ const Folder = ({ id }) => {
       </div>
       <div>
         <Link
-          href="/create-document/${id}"
+          href={`/folders/${folderAddress}/create-document`}
           className="bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
         >
           Soumettre un document
@@ -89,11 +87,12 @@ const Folder = ({ id }) => {
 };
 
 export async function getServerSideProps(context) {
-  const { id } = context.params; // TODO Sanitize id to avoid non address.
+  // TODO Sanitize folder to avoid non address. There is already a security check though.
+  const { folderAddress } = context.params;
 
   return {
     props: {
-      id: id,
+      folderAddress: folderAddress,
     },
   };
 }
