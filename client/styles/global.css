@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Folders */
 .kopo-folder-container {
   position: relative;
   width: 170px;
@@ -31,4 +32,13 @@
 
 .kopo-folder-step {
   font-size: 12px;
+}
+
+/* Smart Contracts */
+.kopo-smart-contract {
+  background-color: #d9d9d9;
+  width: 160px;
+  border-radius: 1em;
+  padding: 1em;
+  margin: 0.5em 1em 0.5em 0;
 }

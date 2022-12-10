@@ -68,7 +68,7 @@ const dashboard = () => {
 
   useEffect(() => {
     checkCurrentAccount();
-  }, [rolesManagerContract]);
+  }, [rolesManagerContract, currentAccount]);
 
   return (
     <div className="flex flex-col items-center justify-center mt-40">
