@@ -7,6 +7,7 @@ const initialState = {
   rolesManagerContract: null,
   folderFactoryContract: null,
   getFolderHandlerContract: null,
+  documentHandlerContract: null,
 };
 
 const reducer = (state, action) => {
