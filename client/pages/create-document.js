@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import CreateFolder from '../components/Kopo/CreateFolder';
+import CreateDocument from '../components/Kopo/CreateDocument';
 
 const CreateDocumentPage = () => {
   return (
@@ -10,7 +10,7 @@ const CreateDocumentPage = () => {
       </Head>
 
       <section>
-        <CreateFolder />
+        <CreateDocument />
       </section>
     </div>
   );
