@@ -1,11 +1,11 @@
 import Head from 'next/head';
 import CreateFolder from '../components/Kopo/CreateFolder';
 
-const CreateFolderPage = () => {
+const CreateDocumentPage = () => {
   return (
     <div>
       <Head>
-        <title>Création d'un nouveau dossier</title>
+        <title>Envoi d'une nouvelle pièce au dossier</title>
         <meta name="description" content="Création d'un nouveau dossier - Kopo" />
       </Head>
 
@@ -16,4 +16,4 @@ const CreateFolderPage = () => {
   );
 };
 
-export default CreateFolderPage;
+export default CreateDocumentPage;

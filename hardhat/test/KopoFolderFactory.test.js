@@ -54,7 +54,7 @@ describe('KopoFolderHandler Contract', () => {
     });
 
     it('batch create a new folder contracts (POV: verified).', async () => {
-      const amount = 20;
+      const amount = 10;
       await kopoFolderFactoryContract.connect(verified1).batchCreateFolders(amount);
     });
 

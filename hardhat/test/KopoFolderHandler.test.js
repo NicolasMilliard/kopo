@@ -65,6 +65,31 @@ describe('KopoFolderHandler Contract', () => {
   });
 
   /**
+   * Functionality testing.
+   */
+  describe('Functionalities', async () => {
+    it("should change the folder's name", async () => {
+      const newName = "Folder's name";
+      await expect(kopoFolderContract.setFolderName(newName))
+        .to.emit(kopoFolderContract, 'NameChanged')
+        .withArgs(owner.address, '', newName);
+    });
+
+    it('shoud get the proper name', async () => {
+      const newName = "Folder's name";
+      kopoFolderContract.setFolderName(newName);
+      expect(await kopoFolderContract.folderName()).to.be.equal(newName);
+    });
+
+    it('should forbid anyone from changing the name (POV: hacker)', async () => {
+      const newName = "Folder's name";
+      await expect(kopoFolderContract.connect(hacker).setFolderName(newName)).to.be.revertedWith(
+        'Ownable: caller is not the owner',
+      );
+    });
+  });
+
+  /**
    * Testing minting Folder NFT.
    */
   describe('Minting NFT', async () => {

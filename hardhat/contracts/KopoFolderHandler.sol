@@ -31,6 +31,9 @@ contract KopoFolderHandler is ERC721, IERC721Receiver, Ownable {
    */
   uint256 public constant MAX_SUPPLY = 1;
   KopoAddressProvider private immutable addressProvider;
+  string public folderName;
+
+  event NameChanged(address _from, string _oldname, string _name);
 
   /** @dev Calls KopoRolesManager to check. */
   modifier isVerified(address _addr) {
@@ -41,6 +44,16 @@ contract KopoFolderHandler is ERC721, IERC721Receiver, Ownable {
   constructor(address _addressProvider, bytes32 _folderId) ERC721('KopoFolderHandler', 'KFH') {
     folderId = _folderId;
     addressProvider = KopoAddressProvider(_addressProvider);
+  }
+
+  /**
+   * Set the folder's name.
+   * @param _newname The name of the volder.
+   * Emits a NameChanged event.
+   */
+  function setFolderName(string calldata _newname) external onlyOwner {
+    emit NameChanged(msg.sender, folderName, _newname);
+    folderName = _newname;
   }
 
   /** Mint a token that represents the folder.

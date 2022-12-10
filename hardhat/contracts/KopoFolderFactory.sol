@@ -14,6 +14,7 @@ import './KopoRolesManager.sol';
 contract KopoFolderFactory {
   KopoAddressProvider private immutable addressProvider;
   mapping(bytes32 => address) public registeredFolders;
+
   event NewFolder(address _from, address _contract, bytes32 _folderId);
 
   /** @dev Calls KopoRolesManager to check. */
