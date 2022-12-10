@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import CreateFolder from '../components/Kopo/CreateFolder';
+import CreateFolder from '../components/Dashboard/CreateFolder';
 
 const CreateFolderPage = () => {
   return (
