@@ -67,7 +67,7 @@ const CreateDocument = () => {
       <label className='block mb-8' htmlFor="oblige">
         <span className='block text-sm font-medium mb-2'>Obligé</span>
         <select name="oblige" id="oblige">
-          <option value="1">0x1 - EDF</option>
+          <option value="0x0558c5015Dd72a0f154F5D06DA466bFe1779402B">TEST NICO</option>
           <option value="2">0x2 - Carrefour</option>
           <option value="3">0x3 - Casino</option>
         </select>
