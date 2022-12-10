@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Router from 'next/router';
 import { useState } from 'react';
+import ReturnToDashboard from '../components/Buttons/ReturnToDashboard';
 
 import { useKopo } from '../context/KopoContext';
 
@@ -44,10 +45,11 @@ const CreateFolder = () => {
     <div>
       <Head>
         <title>Création d'un nouveau dossier</title>
-        <meta name="description" content=">Création d'un nouveau dossier" />
+        <meta name="description" content="Création d'un nouveau dossier - Kopo" />
       </Head>
 
       <section>
+        <ReturnToDashboard />
         {!isLoading && !isSuccess && (
           <div>
             <div>Bonjour, c'est ici pour créer un nouveau dossier.</div>

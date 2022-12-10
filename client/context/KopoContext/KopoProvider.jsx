@@ -52,9 +52,9 @@ const KopoProvider = (props) => {
     }
 
     try {
-      // Folder factory
+      // Roles manager
       const rolesManagerAddress = await addressProviderContract.rolesManagerContractAddress();
-      const rolesManagerContract = loadContract(rolesManagerAddress, folderFactoryContractArtifact.abi);
+      const rolesManagerContract = loadContract(rolesManagerAddress, rolesManagerContractArtifact.abi);
 
       // Folder factory
       const folderFactoryAddress = await addressProviderContract.folderFactoryContractAddress();
