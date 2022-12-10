@@ -10,7 +10,7 @@ const CreateDocumentPage = ({ folderAddress }) => {
       </Head>
 
       <section>
-        <CreateDocument />
+        <CreateDocument folderAddress={folderAddress} />
       </section>
     </div>
   );
