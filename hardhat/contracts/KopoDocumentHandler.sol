@@ -37,7 +37,7 @@ contract KopoDocumentHandler is ERC721 {
 
   mapping(string => TokenRequest) tokenRequests;
 
-  event TokenRequested(address _from, string _documentCID, address _toOblige, address _toFolder);
+  event TokenRequested(address _from, string _documentCID, address indexed _toOblige, address indexed _toFolder);
   event TokenRejected(string _documentCID, address _from);
 
   /**
