@@ -1,6 +1,6 @@
 import Router from 'next/router';
 import { useState } from 'react';
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
 
 import { useKopo } from '../../context/KopoContext';
 
@@ -31,7 +31,7 @@ const CreateFolder = () => {
     } catch (error) {
       setIsSuccess(false);
       setIsLoading(false);
-      toast.error("La création du dossier a échouée.", {
+      toast.error('La création du dossier a échouée.', {
         position: 'top-right',
         autoClose: 5000,
         closeOnClick: true,
@@ -55,9 +55,9 @@ const CreateFolder = () => {
             <form onSubmit={handleSubmit}>
               <button
                 type="submit"
-                className="mt-8 bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
+                className="bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
               >
-                Nouveau dossier
+                Créer un nouveau projet
               </button>
             </form>
           </div>
