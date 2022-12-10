@@ -34,7 +34,7 @@ const dashboard = () => {
       setIsLoading(false);
       console.log(error);
     }
-  }
+  };
 
   // Check user role
   const checkUserRole = async () => {
@@ -49,13 +49,12 @@ const dashboard = () => {
 
       setIsLoading(false);
       setIsSuccess(true);
-
     } catch (error) {
       setIsSuccess(false);
       setIsLoading(false);
       console.log(error);
     }
-  }
+  };
 
   // If user is connected, check if he's verified and if he has folder(s)
   const checkCurrentAccount = () => {
