@@ -69,6 +69,9 @@ const Dashboard = () => {
       setCurrentAccount(address);
       setIsVerified(getUserVerifiedStatus);
       checkUserCreatedFolders();
+      console.log("isConnected: " + isConnected);
+    } else {
+      console.log("pas connecté: " + isConnected);
     }
   };
 
@@ -77,19 +80,13 @@ const Dashboard = () => {
     checkCurrentAccount();
   }, [rolesManagerContract]);
 
-  const newProject = () => {
-    if (isVerified) {
-      return 'Vous êtes vérifié';
-    }
-    return "Vous n'êtes pas vérifié";
-  };
-
   return (
     <div className="flex flex-col items-center justify-center mt-40">
       <Head>
         <title>Tableau de bord</title>
         <meta name="description" content="Tableau de bord - Kopo" />
       </Head>
+
       <section>
         {
           folders.length === 0 ?
