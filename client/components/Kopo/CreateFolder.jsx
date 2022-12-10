@@ -1,5 +1,6 @@
 import Router from 'next/router';
 import { useState } from 'react';
+import { toast } from "react-toastify";
 
 import { useKopo } from '../../context/KopoContext';
 
@@ -30,6 +31,13 @@ const CreateFolder = () => {
     } catch (error) {
       setIsSuccess(false);
       setIsLoading(false);
+      toast.error("La création du dossier a échouée.", {
+        position: 'top-right',
+        autoClose: 5000,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+      });
       console.log(error);
     }
   };
