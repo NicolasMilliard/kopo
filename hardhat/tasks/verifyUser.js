@@ -4,7 +4,7 @@ const { task } = require('hardhat/config');
  * Verify a user.
  * @dev hh verifyUser
  */
-task('verifyUser', 'Veridy a user')
+task('verifyUser', 'Verify a user')
   .addPositionalParam('roleManagerAddress')
   .addPositionalParam('destWallet')
   .setAction(async (args) => {
