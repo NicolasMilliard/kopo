@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DocumentDetails from './DocumentDetails';
 
-const DocumentsList = ({ documents }) => {
+const DocumentsList = ({ documents, currentAccount }) => {
   const [documentDetails, setDocumentDetails] = useState([]);
 
   // Get all documents names
@@ -51,6 +51,7 @@ const DocumentsList = ({ documents }) => {
           toOblige={document._toOblige}
           name={getName(document._documentCID)}
           description={getDescription(document._documentCID)}
+          validator={currentAccount}
         />
       ))}
     </div>
