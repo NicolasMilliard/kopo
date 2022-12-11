@@ -32,7 +32,7 @@ contract KopoFolderHandler is ERC721, IERC721Receiver, Ownable {
   string public folderName;
   mapping(uint256 => string) tokens;
 
-  event NameChanged(address _from, string _oldname, string _name);
+  event NameChanged(address indexed _from, string _oldname, string indexed _name);
 
   /** @dev Calls KopoRolesManager to check. */
   modifier isVerified(address _addr) {

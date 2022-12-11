@@ -15,7 +15,7 @@ contract KopoFolderFactory {
   KopoAddressProvider private immutable addressProvider;
   mapping(bytes32 => address) public registeredFolders;
 
-  event NewFolder(address _from, address _contract, bytes32 _folderId);
+  event NewFolder(address indexed _from, address indexed _contract, bytes32 indexed _folderId);
 
   /** @dev Calls KopoRolesManager to check. */
   modifier isVerified(address _addr) {

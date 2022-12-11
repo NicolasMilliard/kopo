@@ -92,6 +92,20 @@ const CreateDocument = ({ folderAddress }) => {
     const client = new NFTStorage({ token: process.env.NFT_STORAGE_API_KEY });
 
     const imageCid = await client.storeBlob(image);
+    if (!imageCid) {
+      toast.error(
+        "L'envoi du document sur Nft.Storage a échoué. Il s'agit d'un compte gratuit, il peut y avoir des echecs. Merci de ré-essayer.",
+        {
+          position: 'top-right',
+          autoClose: 5000,
+          closeOnClick: true,
+          pauseOnFocusLoss: true,
+          pauseOnHover: true,
+        },
+      );
+      setIsLoading(false);
+      return;
+    }
     console.log(`ImageCID: ${imageCid}`);
     setIsLoadingImageCid(imageCid);
 
@@ -106,6 +120,21 @@ const CreateDocument = ({ folderAddress }) => {
     const blob = new Blob([jsonse], { type: 'application/json' });
 
     const documentCid = await client.storeBlob(blob);
+    if (!documentCid) {
+      toast.error(
+        "L'envoi du document sur Nft.Storage a échoué. Il s'agit d'un compte gratuit, il peut y avoir des echecs. Merci de ré-essayer.",
+        {
+          position: 'top-right',
+          autoClose: 5000,
+          closeOnClick: true,
+          pauseOnFocusLoss: true,
+          pauseOnHover: true,
+        },
+      );
+      setIsLoading(false);
+      // TODO Refactor the function. It should also delete the previous document from IPFS. No longer needed.
+      return;
+    }
     console.log(`Json CID: ${documentCid}`);
     setIsLoadingDocumentCid(documentCid);
 
