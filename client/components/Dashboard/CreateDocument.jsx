@@ -45,7 +45,7 @@ const CreateDocument = ({ folderAddress }) => {
 
     /* Check that all conditions are met before sending the token request. */
     if (!createObjectURL) {
-      toast.error('Il manque une image.', {
+      toast.error('Veuillez sélectionner un document', {
         position: 'top-right',
         autoClose: 5000,
         closeOnClick: true,
@@ -56,7 +56,7 @@ const CreateDocument = ({ folderAddress }) => {
     }
 
     if (!description) {
-      toast.error('Il manque une description.', {
+      toast.error('Veuillez ajouter une description.', {
         position: 'top-right',
         autoClose: 5000,
         closeOnClick: true,
@@ -67,7 +67,7 @@ const CreateDocument = ({ folderAddress }) => {
     }
 
     if (!oblige) {
-      toast.error('Il faut sélectionner un obligé.', {
+      toast.error('Veuillez sélectionner un obligé.', {
         position: 'top-right',
         autoClose: 5000,
         closeOnClick: true,
@@ -84,7 +84,7 @@ const CreateDocument = ({ folderAddress }) => {
     const imageCid = await client.storeBlob(image);
     if (!imageCid) {
       toast.error(
-        "L'envoi du document sur Nft.Storage a échoué. Il s'agit d'un compte gratuit, il peut y avoir des echecs. Merci de ré-essayer.",
+        "L'envoi du document sur Nft.Storage a échoué. Merci de réessayer.",
         {
           position: 'top-right',
           autoClose: 5000,
@@ -112,7 +112,7 @@ const CreateDocument = ({ folderAddress }) => {
     const documentCid = await client.storeBlob(blob);
     if (!documentCid) {
       toast.error(
-        "L'envoi du document sur Nft.Storage a échoué. Il s'agit d'un compte gratuit, il peut y avoir des echecs. Merci de ré-essayer.",
+        "L'envoi du document sur Nft.Storage a échoué. Merci de réessayer.",
         {
           position: 'top-right',
           autoClose: 5000,
@@ -143,21 +143,26 @@ const CreateDocument = ({ folderAddress }) => {
   return (
     <div>
       {isSuccess && (
-        <div>
-          <tt>Document envoyé avec succès. Il est maintenant en cours de traitement.</tt>
-          <Link
-            href={`/folders/${folderAddress}`}
-            className="bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
-          >
-            Retour au dossier.
-          </Link>
+        <div className='w-screen py-8 lg:px-40 xl:px-60'>
+          <div className='flex-col items-center flex w-full'>
+            <h3 className='text-2xl mb-2 text-center'>Document envoyé avec succès.</h3>
+            <p className='mb-2'>Il est maintenant en cours de traitement.</p>
+            <Link
+              href={`/folders/${folderAddress}`}
+              className="max-w-xs bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
+            >
+              Retour au dossier
+            </Link>
+          </div>
         </div>
       )}
       {isLoading && (
-        <div>
-          Envoi du document...
-          <div>Image CID: {loadingImageCid}</div>
-          <div>Document CID: {loadingDocumentCid}</div>
+        <div className='w-screen py-8 lg:px-40 xl:px-60'>
+          <div className='flex-col flex w-full'>
+            <h3 className='text-2xl mb-8 text-center'>Envoi du document en cours...</h3>
+            <div className='mb-2'><span className='font-semibold'>Génération du CID de l'image&nbsp;:</span> {loadingImageCid}</div>
+            <div><span className='font-semibold'>Génération du CID du document&nbsp;:</span> {loadingDocumentCid}</div>
+          </div>
         </div>
       )}
       {!isLoading && !isSuccess && (
@@ -189,7 +194,7 @@ const CreateDocument = ({ folderAddress }) => {
             <span className="block text-sm font-medium mb-2">Obligé</span>
             <select name="oblige" id="oblige" onChange={(e) => setOblige(e.target.value)}>
               <option value="">---</option>
-              <option value="0x5C4AcB6f5696f01D41728a2053c8CC26dA19bfB3">Oblige Test</option>
+              <option value="0x5C4AcB6f5696f01D41728a2053c8CC26dA19bfB3">Obligé Test</option>
             </select>
           </label>
           <button

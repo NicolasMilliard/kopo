@@ -7,19 +7,34 @@
   position: relative;
   width: 170px;
   height: 110px;
-  background-color: #d9d9d9;
+  background-color: #f0fdf4;
+  border: 2px solid #22c55e;
   border-radius: 0 1em 1em 1em;
+}
+
+.kopo-folder-container:hover {
+  color: #ffffff;
+  background-color: #22c55e;
+  transform: scale(1.05);
+  transition: 0.2s transform ease-in-out;
+}
+
+.kopo-folder-container:hover::before {
+  background-color: #22c55e;
 }
 
 .kopo-folder-container:before {
   content: '';
   position: absolute;
   top: -16px;
-  left: 0;
+  left: -2px;
   width: 50%;
   height: 16px;
+  border-top: 2px solid #22c55e;
+  border-left: 2px solid #22c55e;
+  border-right: 2px solid #22c55e;
   border-radius: 0 1em 0 0;
-  background-color: #d9d9d9;
+  background-color: #f0fdf4;
 }
 
 .kopo-folder-wrapper {
@@ -36,7 +51,8 @@
 
 /* Smart Contracts */
 .kopo-smart-contract {
-  background-color: #d9d9d9;
+  background-color: #f0fdf4;
+  border: 2px solid #22c55e;
   width: 160px;
   border-radius: 1em;
   padding: 1em;
