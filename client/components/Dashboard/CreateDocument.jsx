@@ -161,7 +161,7 @@ const CreateDocument = ({ folderAddress }) => {
         </div>
       )}
       {!isLoading && !isSuccess && (
-        <form className="flex flex-col max-w-md mx-auto mt-40">
+        <form className="flex flex-col max-w-md mx-auto mt-20">
           <h1 className="text-3xl mb-8">Envoyer votre document</h1>
           <label className="block mb-8" htmlFor="document">
             <span className="block text-sm font-medium mb-2">Document</span>
@@ -181,7 +181,7 @@ const CreateDocument = ({ folderAddress }) => {
               type="text"
               id="description"
               name="description"
-              placeholder="ici"
+              placeholder="Description"
               onChange={(e) => setDescription(e.target.value)}
             />
           </label>

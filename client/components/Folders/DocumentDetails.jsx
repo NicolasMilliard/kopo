@@ -1,13 +1,15 @@
 import React from 'react';
+import { NFTStorage } from 'nft.storage';
+
 import { useKopo } from '../../context/KopoContext';
 
-const DocumentDetails = ({ CID, from, toFolder, name, description }) => {
+const DocumentDetails = ({ CID, from, toFolder, name, description, validator }) => {
   const {
     state: { documentHandlerContract },
   } = useKopo();
 
   // Fetch JSON from _documentCID to get image URI
-  const getImageURI = async (CID) => {
+  const getImageURI = async () => {
     fetch(`https://${CID}.ipfs.nftstorage.link/`)
       .then((res) => res.json())
       .then((data) => {
@@ -16,24 +18,41 @@ const DocumentDetails = ({ CID, from, toFolder, name, description }) => {
   };
 
   // Accept the document to safeMint it
-  const acceptDocument = async (CID, _metadataCID) => {
+  const acceptDocument = async () => {
     try {
       const contract = documentHandlerContract;
       if (!contract) return;
 
+      const client = new NFTStorage({ token: process.env.NFT_STORAGE_API_KEY });
+
+      // Create _metadataCID
+      const metadataCID = {
+        name: name,
+        description: description,
+        validator: validator,
+      }
+
+      const jsonse = JSON.stringify(metadataCID);
+
+      const blob = new Blob([jsonse], { type: 'application/json' });
+
+      const _metadataCID = await client.storeBlob(blob);
+
       contract.safeMint(CID, _metadataCID);
+      console.log('success to do with toast');
     } catch (error) {
       console.log(error);
     }
   };
 
   // Reject the document (rejectTokenRequest)
-  const rejectDocument = async (CID) => {
+  const rejectDocument = async () => {
     try {
       const contract = documentHandlerContract;
       if (!contract) return;
 
       contract.rejectTokenRequest(CID);
+      console.log('success to do with toast');
     } catch (error) {
       console.log(error);
     }
@@ -51,14 +70,14 @@ const DocumentDetails = ({ CID, from, toFolder, name, description }) => {
         <p>{name}</p>
         <p>{description}</p>
         <div className="flex">
-          <button onClick={() => getImageURI(CID)} className="mr-8">
+          <button onClick={() => getImageURI()} className="mr-8">
             Visualiser
           </button>
-          <button onClick={() => acceptDocument(CID, 'test')} className="mr-8">
+          <button onClick={() => acceptDocument()} className="mr-8">
             Valider
           </button>
           <br />
-          <button onClick={() => rejectDocument(CID)} className="mr-8">
+          <button onClick={() => rejectDocument()} className="mr-8">
             Rejeter
           </button>
           <br />

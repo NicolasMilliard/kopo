@@ -63,23 +63,25 @@ const Folder = ({ folderAddress }) => {
     );
 
   return (
-    <div>
-      <div>
-        <ReturnToDashboard />
-      </div>
-      <div>
+    <div className='w-screen py-8 lg:px-40 xl:px-60'>
+      <ReturnToDashboard />
+      <div className='flex flex-col items-center mt-8'>
+        <h1 className='text-3xl mb-2'>{folderName}</h1>
+        <h4 className='mb-8 italic'>N° de dossier : {folderId}</h4>
         <Link
           href={`/folders/${folderAddress}/create-document`}
-          className="bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
+          className="mb-8 bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
         >
           Soumettre un document
         </Link>
+        <ApprovedDocumentList folderAddress={folderAddress} />
+        <RejectedDocumentList folderAddress={folderAddress} />
+      </div>
+
+      <div className='flex flex-col items-center mt-16 bg-green-50 py-8 rounded-3xl drop-shadow'>
+        <h2 className='text-xl mb-8'>Besoin d'un financement pour votre projet&nbsp;?</h2>
         {folderName && <MintFolder folderAddress={folderAddress} folderId={folderId} folderName={folderName} />}
       </div>
-      <div>Numéro de dossier: {folderId}</div>
-      <div>Nom du dossier: {folderName}</div>
-      <ApprovedDocumentList folderAddress={folderAddress} />
-      <RejectedDocumentList folderAddress={folderAddress} />
     </div>
   );
 };
