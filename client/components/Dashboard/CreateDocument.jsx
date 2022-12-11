@@ -6,16 +6,6 @@ import { toast } from 'react-toastify';
 
 import { useKopo } from '../../context/KopoContext';
 
-const uploadNFT = async (nft) => {
-  console.log('Uploading Metadata to IPFS ....');
-  const client = new NFTStorage({ token: process.env.NFT_STORAGE_API_KEY });
-  const metadata = await client.store(nft);
-  console.log(metadata);
-  console.log('Metadata URI: ', metadata.url);
-
-  return metadata;
-};
-
 const CreateDocument = ({ folderAddress }) => {
   const {
     state: { documentHandlerContract },
@@ -148,8 +138,6 @@ const CreateDocument = ({ folderAddress }) => {
       console.log(error);
       setIsLoading(false);
     }
-
-    // TODO If successful, send the request to KopoDocumentHandler.
   };
 
   return (
