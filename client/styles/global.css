@@ -2,6 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Fonts */
+@font-face {
+  font-family: "Libre Baskerville";
+  src: url(../public/fonts/LibreBaskerville-Regular.ttf);
+}
+
+@font-face {
+  font-family: "Rubik";
+  src: url(../public/fonts/Rubik-Regular.ttf);
+}
+
+/* Général */
+body {
+  font-family: "Rubik";
+  background-color: #fefbf2;
+}
+
+h1 {
+  font-family: "Libre Baskerville";
+}
+
+button {
+  letter-spacing: 0.5px;
+}
+
 /* Folders */
 .kopo-folder-container {
   position: relative;
