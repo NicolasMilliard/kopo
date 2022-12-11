@@ -19,6 +19,10 @@ contract KopoDocumentHandler is ERC721 {
   Counters.Counter private tokenIds;
   KopoAddressProvider private immutable addressProvider;
 
+  /**
+   * CID will be a bytes32 and the base58 conversion to get the CID will
+   * be done offchain. Because of time constraints, this is handled as a string.
+   */
   mapping(uint256 => string) tokens;
 
   enum RequestStatus {

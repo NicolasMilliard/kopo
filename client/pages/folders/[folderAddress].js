@@ -3,7 +3,9 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import ReturnToDashboard from '../../components/Buttons/ReturnToDashboard';
-import MintFolder from '../../components/Dashboard/MintFolder';
+import ApprovedDocumentList from '../../components/Folders/ApprovedDocumentList';
+import MintFolder from '../../components/Folders/MintFolder';
+import RejectedDocumentList from '../../components/Folders/RejectedDocumentList';
 import { useKopo } from '../../context/KopoContext';
 
 const Folder = ({ folderAddress }) => {
@@ -72,11 +74,12 @@ const Folder = ({ folderAddress }) => {
         >
           Soumettre un document
         </Link>
+        {folderName && <MintFolder folderAddress={folderAddress} folderId={folderId} folderName={folderName} />}
       </div>
       <div>Numéro de dossier: {folderId}</div>
       <div>Nom du dossier: {folderName}</div>
-
-      {folderName && <MintFolder folderAddress={folderAddress} folderId={folderId} folderName={folderName} />}
+      <ApprovedDocumentList folderAddress={folderAddress} />
+      <RejectedDocumentList folderAddress={folderAddress} />
     </div>
   );
 };
