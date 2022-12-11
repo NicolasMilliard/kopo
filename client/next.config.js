@@ -6,5 +6,6 @@ module.exports = {
     KOPO_NFT_LOGO: process.env.KOPO_NFT_LOGO,
     KOPO_URL: process.env.KOPO_URL,
     MAX_NFT_BY_FOLDER: process.env.MAX_NFT_BY_FOLDER,
+    KOPO_GENESIS: process.env.KOPO_GENESIS,
   },
 };

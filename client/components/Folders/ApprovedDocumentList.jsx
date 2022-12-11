@@ -20,7 +20,7 @@ const ApprovedDocumentList = ({ folderAddress }) => {
 
         /* Retrieve the list of Tranfer events to our folder contracts. */
         const eventFilter = contract.filters.Transfer(null, folderAddress, null);
-        const events = await contract.queryFilter(eventFilter);
+        const events = await contract.queryFilter(eventFilter, Number(process.env.KOPO_GENESIS));
 
         for (let i = 0; i < events.length; i++) {
           /* Update the entry in the dict. */

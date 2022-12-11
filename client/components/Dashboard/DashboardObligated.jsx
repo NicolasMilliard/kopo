@@ -19,11 +19,10 @@ const DashboardObligated = ({ currentAccount }) => {
 
       // Get all events with currentAccount set as OBLIGE
       const eventFilter = contract.filters.TokenRequested(null, null, currentAccount, null);
-      const events = await contract.queryFilter(eventFilter);
+      const events = await contract.queryFilter(eventFilter, Number(process.env.KOPO_GENESIS));
       let allEvents = [];
 
       for (let i = 0; i < events.length; i++) {
-
         // Check document status: must be at "pending" (1)
         const getStatus = await contract.tokenRequests(events[i].args[1]);
 
