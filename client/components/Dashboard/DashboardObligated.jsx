@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import DocumentsList from '../Folders/DocumentsList';
 
 import { useKopo } from '../../context/KopoContext';
 
-const DashboardObligated = () => {
+const DashboardObligated = ({ currentAccount }) => {
   const {
     state: { documentHandlerContract },
   } = useKopo();
 
-  const falseEvent = [{
-    _from: '0x',
-    _documentCID: 'testCID',
-    _toOblige: '0x125BA2dC7567990A6b455E2F5dbF95d58b352db5',
-    _toFolder: '0x'
-  }];
+  const [documents, setDocuments] = useState([]);
 
   // Check if obligated has document(s) to check
   const checkDocuments = async () => {
@@ -20,56 +16,32 @@ const DashboardObligated = () => {
       const contract = documentHandlerContract;
       if (!contract) return;
 
-      const eventFilter = contract.filters.TokenRequested();
+      const eventFilter = contract.filters.TokenRequested(null, null, currentAccount, null);
       const events = await contract.queryFilter(eventFilter);
+      let allEvents = []
 
-      console.log('eventFilter: ' + JSON.stringify(eventFilter));
-      console.log('events: ' + events);
+      for (let i = 0; i < events.length; i++) {
+        allEvents.push({
+          _from: events[i].args[0],
+          _documentCID: events[i].args[1],
+          _toOblige: events[i].args[2],
+          _toFolder: events[i].args[3],
+        })
+      }
 
+      setDocuments(allEvents);
     } catch (error) {
       console.log(error);
     }
   }
 
-  // Accept the document -> safeMint
-  const acceptDocument = async () => {
-    try {
-      const contract = documentHandlerContract;
-      if (!contract) return;
-
-      contract.safeMint('_documentCID', '_metadataCID');
-
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  // Reject the document -> rejectTokenRequest
-  const rejectDocument = async () => {
-    try {
-      const contract = documentHandlerContract;
-      if (!contract) return;
-
-      contract.rejectTokenRequest('_documentCID');
-
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
+  useEffect(() => {
+    checkDocuments();
+  }, [documentHandlerContract]);
 
   return (
     <section>
-      <button onClick={checkDocuments}>Console events</button><br />
-      <button onClick={acceptDocument}>Test accept</button><br />
-      <button onClick={rejectDocument}>Test reject</button><br />
-      <ul>
-        {falseEvent.map(event => (
-          <li key={event._documentCID}>{event._from} - {event._toOblige} - {event._toFolder}</li>
-        ))}
-      </ul>
-
-
+      <DocumentsList documents={documents} />
     </section>
   )
 }

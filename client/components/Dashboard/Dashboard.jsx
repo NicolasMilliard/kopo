@@ -5,10 +5,6 @@ import DashboardBeneficiary from './DashboardBeneficiary';
 import DashboardObligated from './DashboardObligated';
 
 const Dashboard = ({ currentAccount, isVerified, role }) => {
-  console.log('currentAccount: ' + currentAccount);
-  console.log('isVerified: ' + isVerified);
-  console.log('role: ' + role);
-
   return (
     <>
       {/* If user is not connected */}
@@ -28,7 +24,7 @@ const Dashboard = ({ currentAccount, isVerified, role }) => {
       {/* If user is connected, verified and got the role 0 (BENEFICIARE) */}
       {currentAccount && isVerified && role === 0 && <DashboardBeneficiary />}
       {/* If user is connected, verified and got the role 2 (OBLIGE) */}
-      {currentAccount && isVerified && role === 2 && <DashboardObligated />}
+      {currentAccount && isVerified && role === 2 && <DashboardObligated currentAccount={currentAccount} />}
     </>
   );
 };
