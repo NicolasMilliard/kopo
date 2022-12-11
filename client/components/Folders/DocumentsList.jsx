@@ -41,19 +41,21 @@ const DocumentsList = ({ documents, currentAccount }) => {
   }, [documents]);
 
   return (
-    <div className='flex'>
-      {documents.map(document => (
-        <DocumentDetails
-          key={document._documentCID}
-          CID={document._documentCID}
-          from={document._from}
-          toFolder={document._toFolder}
-          toOblige={document._toOblige}
-          name={getName(document._documentCID)}
-          description={getDescription(document._documentCID)}
-          validator={currentAccount}
-        />
-      ))}
+    <div className='flex justify-center items-center'>
+      <div className='flex flex-wrap'>
+        {documents.map(document => (
+          <DocumentDetails
+            key={document._documentCID}
+            CID={document._documentCID}
+            from={document._from}
+            toFolder={document._toFolder}
+            toOblige={document._toOblige}
+            name={getName(document._documentCID)}
+            description={getDescription(document._documentCID)}
+            validator={currentAccount}
+          />
+        ))}
+      </div>
     </div>
   )
 }

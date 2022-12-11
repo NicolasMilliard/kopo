@@ -87,7 +87,7 @@ const DocumentDetails = ({ CID, from, toFolder, name, description, validator }) 
   };
 
   return (
-    <div className="bg-green-200 rounded-xl p-4 mr-8">
+    <div className="bg-green-200 rounded-xl p-4 mx-8 mb-8">
       <h3 className="font-semibold text-xl mb-2">
         Dossier {toFolder.slice(0, 5)}...{toFolder.slice(toFolder.length - 4)}
       </h3>
