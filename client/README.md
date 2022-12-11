@@ -45,8 +45,8 @@ Strong support and frequent updates.
 
 [Wagmi](https://wagmi.sh/)
 
-Wagmi is used in this project to support the initial connection with the wallet and the Dapp.
-It already supports various chains and wallets which saved us time.
+Wagmi is used in this project to support the initial connection with the wallet and the Dapp. It already supports
+various chains and wallets which saved us time.
 
 # Rainbowkit
 
@@ -60,14 +60,18 @@ RainbowKit handles the choice of the wallet, it supports many different wallets:
 - Coinbase Wallet
 - Argent
 
-As we want the project to be used by the most people possible, it was important to support as many wallets and types of connection as possible.
+As we want the project to be used by the most people possible, it was important to support as many wallets and types of
+connection as possible.
 
 ## Tailwind
 
 [Tailwind](https://www.tailwindapp.com/)
 
+Tailwind offers many advantages as it makes you write less custom CSS, keep them small.
+
 ## Vercel
 
 [Vercel](https://vercel.com/)
 
-Because of its Github integration, native support of Next.js made Vercel the perfect platform to host the first version of Kopo.
+Because of its Github integration, native support of Next.js made Vercel the perfect platform to host the first version
+of Kopo.
