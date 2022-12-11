@@ -6,9 +6,6 @@ node_modules
 .pnp.js
 hardhat/.openzeppelin
 
-# Smart Contracts artifacts
-client/artifacts
-
 # Dev
 .next
 build-info
