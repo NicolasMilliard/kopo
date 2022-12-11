@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import chevron from '../../images/icons/left-chevron.svg';
+import chevron from '../../public/images/icons/left-chevron.svg';
 
 const ReturnToDashboard = () => {
   return (

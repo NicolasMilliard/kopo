@@ -1,8 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import WagmiButton from '../components/Buttons/WagmiButton';
 import EstimateFinancialAid from '../components/Buttons/EstimateFinancialAid';
-import kopoImage from '../images/kopo-renovation-energetique.svg';
+import kopoImage from '../public/images/kopo-renovation-energetique.svg';
 
 const Index = () => {
   return (
