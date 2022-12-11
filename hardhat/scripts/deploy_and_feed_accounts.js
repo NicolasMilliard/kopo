@@ -40,6 +40,7 @@ const main = async () => {
 
   /* Adding users and roles for test. */
   console.log();
+  await kopoRolesManager.verifyUser(oblige.address);
   await kopoRolesManager.updateUserRole(oblige.address, 2);
   console.log(`[+] New oblige: ${oblige.address}`);
   await kopoRolesManager.verifyUser(verified.address);
