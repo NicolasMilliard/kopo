@@ -40,10 +40,11 @@ const RejectedDocumentList = ({ folderAddress }) => {
         /* Now listening on the blockchain to dynamically insert new tokens. */
         contract.on('TokenRejected', (cid, from, to) => {
           /* Update the entry in the dict. */
+          console.log(cid);
           setRejectedDocuments((prev) => ({
             ...prev,
-            [cid['hash'].toString()]: {
-              id: cid['hash'].toString(),
+            [cid.toString()]: {
+              id: cid.toString(),
               status: REJECTED,
             },
           }));
