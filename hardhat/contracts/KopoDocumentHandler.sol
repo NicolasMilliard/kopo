@@ -44,10 +44,10 @@ contract KopoDocumentHandler is ERC721 {
    *  This mapping handles tokens requests. This to avoid the same request being
    * sent multiple times.
    */
-  mapping(string => TokenRequest) tokenRequests;
+  mapping(string => TokenRequest) public tokenRequests;
 
   event TokenRequested(address _from, string _documentCID, address indexed _toOblige, address indexed _toFolder);
-  event TokenRejected(string indexed _documentCID, address _from, address indexed _toFolder);
+  event TokenRejected(string _documentCID, address _from, address indexed _toFolder);
 
   /**
    * @dev Calls KopoRolesManager to check.
@@ -100,7 +100,8 @@ contract KopoDocumentHandler is ERC721 {
    */
   function tokenURI(uint256 _tokenId) public view override returns (string memory) {
     require(bytes(tokens[_tokenId]).length != 0, 'token does not exist');
-    return string.concat('ipfs://', tokens[_tokenId]);
+    /* We don't need to add ipfs:// here because these NFT are onlt going to a Kopo Folder, saving a few wei. */
+    return tokens[_tokenId];
   }
 
   /**
@@ -136,6 +137,8 @@ contract KopoDocumentHandler is ERC721 {
    */
   function rejectTokenRequest(string calldata _documentCID) external {
     require(tokenRequests[_documentCID].to == msg.sender, 'not proper oblige');
+    require(tokenRequests[_documentCID].status == RequestStatus.pending, 'invalid status');
+
     tokenRequests[_documentCID].status = RequestStatus.rejected;
     emit TokenRejected(_documentCID, tokenRequests[_documentCID].from, tokenRequests[_documentCID].folder);
   }

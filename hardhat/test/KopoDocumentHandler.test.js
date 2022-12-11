@@ -146,6 +146,13 @@ describe('KopoDocumentHandler Contract', () => {
         'not proper oblige',
       );
     });
+
+    it('should revert when rejecting a token twice (POV: oblige).', async () => {
+      await kopoDocumentContract.connect(oblige1).rejectTokenRequest(documentCID);
+      await expect(kopoDocumentContract.connect(oblige1).rejectTokenRequest(documentCID)).to.be.revertedWith(
+        'invalid status',
+      );
+    });
   });
 
   /**
@@ -174,7 +181,7 @@ describe('KopoDocumentHandler Contract', () => {
     it('should retrieve a proper IPFS link from an NFT.', async () => {
       await kopoDocumentContract.connect(oblige1).safeMint(documentCID, metadataCID);
       const link = await kopoDocumentContract.tokenURI(0);
-      expect(link).to.be.equal('ipfs://' + metadataCID);
+      expect(link).to.be.equal(metadataCID);
     });
 
     it('should revert if token does not exist.', async () => {
