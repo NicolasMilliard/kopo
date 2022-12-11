@@ -8,10 +8,10 @@ const Contracts = () => {
   const {
     state: { addressProviderContract, rolesManagerContract, folderFactoryContract, documentHandlerContract },
   } = useKopo();
-  const [addressProvider, setAddressProvider] = useState('');
-  const [roleManager, setRoleManager] = useState('');
-  const [folderFactory, setFolderFactory] = useState('');
-  const [documentHandler, setDocumentHandler] = useState('');
+  const [addressProvider, setAddressProvider] = useState('0xaaf65BCa7bB2CeD7C27A9751c51E2FcCd05bA475');
+  const [roleManager, setRoleManager] = useState('0x3eE5B775c2BA871C59332E4A3BAbE19ED75DDE99');
+  const [folderFactory, setFolderFactory] = useState('0x6D4041c73d5Fb7dF00B2FcB1E14b7BC626Ff2160');
+  const [documentHandler, setDocumentHandler] = useState('0x2765c1e980A83BB3A7B068A7e1217C5d200047ff');
 
   useEffect(() => {
     (async () => {
@@ -56,10 +56,7 @@ const Contracts = () => {
         </p>
         <div className="flex">
           {/* AddressProvider */}
-          <Link
-            href="https://mumbai.polygonscan.com/address/0xf014A82beA2F3716456A9Ea4512E82326d5b0C74"
-            target="_blank"
-          >
+          <Link href={`https://mumbai.polygonscan.com/address/${addressProvider}`} target="_blank">
             <div className="kopo-smart-contract hover:drop-shadow-md">
               <p className="font-semibold">AddressProvider</p>
               <p>
@@ -68,7 +65,7 @@ const Contracts = () => {
             </div>
           </Link>
           {/* RolesManager */}
-          <Link href="#" target="_blank">
+          <Link href={`https://mumbai.polygonscan.com/address/${roleManager}`} target="_blank">
             <div className="kopo-smart-contract hover:drop-shadow-md">
               <p className="font-semibold">RolesManager</p>
               <p>
@@ -77,7 +74,7 @@ const Contracts = () => {
             </div>
           </Link>
           {/* FolderFactory */}
-          <Link href="#" target="_blank">
+          <Link href={`https://mumbai.polygonscan.com/address/${folderFactory}`} target="_blank">
             <div className="kopo-smart-contract hover:drop-shadow-md">
               <p className="font-semibold">FolderFactory</p>
               <p>
@@ -86,7 +83,7 @@ const Contracts = () => {
             </div>
           </Link>
           {/* DocumentHandler */}
-          <Link href="#" target="_blank">
+          <Link href={`https://mumbai.polygonscan.com/address/${documentHandler}`} target="_blank">
             <div className="kopo-smart-contract hover:drop-shadow-md">
               <p className="font-semibold">DocumentHandler</p>
               <p>
