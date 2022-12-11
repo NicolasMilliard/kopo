@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import DocumentsList from '../Folders/DocumentsList';
 import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
+import DocumentsList from '../Folders/DocumentsList';
 
 import { useKopo } from '../../context/KopoContext';
 
@@ -39,10 +39,22 @@ const DashboardObligated = ({ currentAccount }) => {
         }
       }
       setDocuments(allEvents);
+
+      // Listen for new documents.
+      contract.on('TokenRequested', (from, documentCID, to, folder) => {
+        /* Update the entry in the dict. */
+        const event = {
+          _from: from,
+          _documentCID: documentCID,
+          _toOblige: to,
+          _toFolder: folder,
+        };
+        setDocuments((prev) => [...prev, event]);
+      });
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     checkDocuments();
@@ -50,11 +62,11 @@ const DashboardObligated = ({ currentAccount }) => {
 
   return (
     <section>
-      {documents.length > 0 ?
+      {documents.length > 0 ? (
         <DocumentsList documents={documents} currentAccount={currentAccount} />
-        :
-        <div className='flex flex-col items-center'>
-          <h1 className='text-2xl mb-8'>Vous n'avez pas de documents en attente.</h1>
+      ) : (
+        <div className="flex flex-col items-center">
+          <h1 className="text-2xl mb-8">Vous n'avez pas de documents en attente.</h1>
           <Link
             href="/"
             className="bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
@@ -62,9 +74,9 @@ const DashboardObligated = ({ currentAccount }) => {
             Retourner à la page d'accueil
           </Link>
         </div>
-      }
+      )}
     </section>
-  )
-}
+  );
+};
 
-export default DashboardObligated
+export default DashboardObligated;
