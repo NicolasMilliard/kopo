@@ -6,6 +6,7 @@ import ReturnToDashboard from '../../components/Buttons/ReturnToDashboard';
 import ApprovedDocumentList from '../../components/Folders/ApprovedDocumentList';
 import MintFolder from '../../components/Folders/MintFolder';
 import RejectedDocumentList from '../../components/Folders/RejectedDocumentList';
+import Button from '../../components/Buttons/Button';
 import { useKopo } from '../../context/KopoContext';
 
 const Folder = ({ folderAddress }) => {
@@ -59,7 +60,14 @@ const Folder = ({ folderAddress }) => {
    */
   if (!isLoading && !isValidFolder)
     return (
-      <div>Attention! Ce n'est pas un dossier Kopo et peut-être une contrefaçon. Merci de le signaler à Kopo.</div>
+      <div className='w-screen py-8 lg:px-40 xl:px-60'>
+        <ReturnToDashboard />
+        <div className='flex flex-col items-center'>
+          <h1 className='text-3xl mb-8'>Attention&nbsp;!</h1>
+          <h2 className='max-w-md mb-8'>Vous essayez d'accéder à un dossier qui n'a pas été créé depuis Kopo. Il s'agit peut-être d'une contrefaçon.</h2>
+          <Button text="Signaler à Kopo" />
+        </div>
+      </div>
     );
 
   return (
