@@ -57,10 +57,10 @@ const ApprovedDocumentList = ({ folderAddress }) => {
       )}
       {approvedDocuments && Object.keys(approvedDocuments).length > 0 && (
         <div>
-          <h1 className="font-bold">Documents approuvés</h1>
+          <h1 className="font-bold mb-4">Documents approuvés</h1>
           <ul>
             {Object.entries(approvedDocuments).map(([key, value]) => (
-              <li key={key}>
+              <li key={key} className="mb-4">
                 <ApprovedDocument document={value} />
               </li>
             ))}

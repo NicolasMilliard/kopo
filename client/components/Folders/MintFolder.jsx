@@ -2,6 +2,7 @@ import { NFTStorage } from 'nft.storage';
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { useKopo } from '../../context/KopoContext';
+import { toast } from 'react-toastify';
 
 const MintFolder = ({ folderAddress, folderId, folderName }) => {
   const { address } = useAccount();
@@ -68,6 +69,13 @@ const MintFolder = ({ folderAddress, folderId, folderName }) => {
       setIsLoading(false);
       setIsSuccess(true);
     } catch (error) {
+      toast.error('La création du NFT a échouée.', {
+        position: 'top-right',
+        autoClose: 5000,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+      });
       console.log(error);
       setIsLoading(false);
       setIsVisible(true);
@@ -86,7 +94,7 @@ const MintFolder = ({ folderAddress, folderId, folderName }) => {
           Créer un NFT du dossier
         </button>
       )}
-      {isLoading && <div>Emission du NFT. Merci de valider la transaction.</div>}
+      {isLoading && <div>Emission du NFT en cours... Merci de valider la transaction.</div>}
     </div>
   );
 };

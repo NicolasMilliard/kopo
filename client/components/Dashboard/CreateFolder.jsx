@@ -62,8 +62,14 @@ const CreateFolder = () => {
             </form>
           </div>
         )}
-        {isSuccess && <div>Dossier créé, redirection...</div>}
-        {isLoading && <div>En attente de la requête...</div>}
+        {
+          isSuccess &&
+          <div className='bg-green-200 p-4 rounded-3xl'>Dossier créé, redirection en cours...</div>
+        }
+        {
+          isLoading &&
+          <div className='bg-green-200 p-4 rounded-3xl'>En attente de la validation de la requête...</div>
+        }
       </section>
     </>
   );

@@ -23,13 +23,11 @@ const DashboardObligated = ({ currentAccount }) => {
       let allEvents = [];
 
       for (let i = 0; i < events.length; i++) {
-        console.log(events[i].args[1]);
 
         // Check document status: must be at "pending" (1)
         const getStatus = await contract.tokenRequests(events[i].args[1]);
 
         if (getStatus.status == 1) {
-          console.log(getStatus.status);
           allEvents.push({
             _from: events[i].args[0],
             _documentCID: events[i].args[1],
