@@ -23,19 +23,19 @@ const DashboardObligated = ({ currentAccount }) => {
 
       for (let i = 0; i < events.length; i++) {
 
-        await checkDocumentsValidated(events[i].args[1]);
+        // await checkDocumentsValidated(events[i].args[1]);
 
         // Check if a document has been rejected
-        if (await checkDocumentsRejected(events[i].args[1])) {
-          // if (await checkDocumentsValidated(events[i].args[1])) {
-          allEvents.push({
-            _from: events[i].args[0],
-            _documentCID: events[i].args[1],
-            _toOblige: events[i].args[2],
-            _toFolder: events[i].args[3],
-          })
-          // }
-        }
+        // if (await checkDocumentsRejected(events[i].args[1])) {
+        // if (await checkDocumentsValidated(events[i].args[1])) {
+        allEvents.push({
+          _from: events[i].args[0],
+          _documentCID: events[i].args[1],
+          _toOblige: events[i].args[2],
+          _toFolder: events[i].args[3],
+        })
+        // }
+        // }
       }
 
       setDocuments(allEvents);
@@ -49,7 +49,7 @@ const DashboardObligated = ({ currentAccount }) => {
     const contract = documentHandlerContract;
     if (!contract) return;
 
-    const eventFilter = contract.filters.TokenRejected(_documentCID, null, null);
+    const eventFilter = contract.filters.TokenRejected(null, null, null);
     const events = await contract.queryFilter(eventFilter);
 
     // This document don't have to be listed (already rejected)
@@ -68,7 +68,7 @@ const DashboardObligated = ({ currentAccount }) => {
     const events = await contract.queryFilter(eventFilter);
 
     for (let i = 0; i < events.length; i++) {
-      // console.log(events[i]);
+      console.log(events[i]);
     }
 
     // console.log(tokenId[0].args);
