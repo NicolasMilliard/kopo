@@ -146,6 +146,13 @@ describe('KopoDocumentHandler Contract', () => {
         'not proper oblige',
       );
     });
+
+    it('should revert when rejecting a token twice (POV: oblige).', async () => {
+      await kopoDocumentContract.connect(oblige1).rejectTokenRequest(documentCID);
+      await expect(kopoDocumentContract.connect(oblige1).rejectTokenRequest(documentCID)).to.be.revertedWith(
+        'invalid status',
+      );
+    });
   });
 
   /**
