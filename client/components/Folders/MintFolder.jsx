@@ -79,7 +79,10 @@ const MintFolder = ({ folderAddress, folderId, folderName }) => {
       {isMinted && <div>Le nombre maximal de NFT par dossier est atteint.</div>}
       {isSuccess && <div>Succès! Le NFT est maintenant dans votre portefeuille.</div>}
       {!isMinted && isVisible && (
-        <button onClick={mintNft} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+        <button
+          onClick={mintNft}
+          className="bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
+        >
           Créer un NFT du dossier
         </button>
       )}
