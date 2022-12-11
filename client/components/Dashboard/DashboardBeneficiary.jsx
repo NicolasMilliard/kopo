@@ -17,7 +17,7 @@ const DashboardBeneficiary = () => {
       if (!contract) return;
 
       const eventFilter = contract.filters.NewFolder();
-      const events = await contract.queryFilter(eventFilter);
+      const events = await contract.queryFilter(eventFilter, Number(process.env.KOPO_GENESIS));
       let allEvents = [];
 
       for (let i = 0; i < events.length; i++) {
