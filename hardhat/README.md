@@ -10,14 +10,10 @@
 # Mumbai
 
 ```console
-[+] Deployer orig balance: 0.389635120254902962
-
-[+] KopoAddressProvider: 0xb47c869E04FEd318aA3AB0D61Cb094bDf74269D9
-[+] KopoRolesManager: 0xCf7521029c6023e713d6D1C9F4cCAc0B45877121
-[+] KopoDocumentHandler: 0x7e59Cb25d0606b1dB7332F9D29A856095d85a7AD
-[+] KopoFolderFactory: 0x6594A0F6579425bcDA80b49a38225e03D3657311
-
-[+] Deployer new balance: 0.340123328254902962
+[+] KopoAddressProvider: 0x8AE5612e4d236bB8c037e328cB38f125F356E907
+[+] KopoRolesManager: 0xCB52FFB211a8Eea05B0282f91B89398A524ba4A1
+[+] KopoDocumentHandler: 0x633085c5A8a1f64a0612b51fe11D0AE0feEBc3d7
+[+] KopoFolderFactory: 0x00b1A51673cEECC44A0084200f0f9C534Db7F270
 ```
 
 # Deploy
@@ -43,7 +39,7 @@ $ hh coverage
 -----------------------------------|----------|----------|----------|----------|----------------|
 File                               |  % Stmts | % Branch |  % Funcs |  % Lines |Uncovered Lines |
 -----------------------------------|----------|----------|----------|----------|----------------|
- contracts/                        |      100 |    99.14 |      100 |      100 |                |
+ contracts/                        |      100 |    99.15 |      100 |      100 |                |
   KopoAddressProvider.sol          |      100 |      100 |      100 |      100 |                |
   KopoAddressProvider_testonly.sol |      100 |      100 |      100 |      100 |                |
   KopoDocumentHandler.sol          |      100 |      100 |      100 |      100 |                |
@@ -51,7 +47,7 @@ File                               |  % Stmts | % Branch |  % Funcs |  % Lines |
   KopoFolderHandler.sol            |      100 |      100 |      100 |      100 |                |
   KopoRolesManager.sol             |      100 |      100 |      100 |      100 |                |
 -----------------------------------|----------|----------|----------|----------|----------------|
-All files                          |      100 |    99.14 |      100 |      100 |                |
+All files                          |      100 |    99.15 |      100 |      100 |                |
 -----------------------------------|----------|----------|----------|----------|----------------|
 ```
 
@@ -62,4 +58,6 @@ KopoFolderFactory.sol could not be fully covered by tests because of this requir
     require(registeredFolders[folderId] == address(0), 'already registered');
 ```
 
-To test the same folder ID twice, one would need to have the same block.timestamp twice. This could be possible from a smart contract or from a miner. Unfortunately, Hardhat does not cover manipulating this value. It is only possible to go in the future, not in the past.
+To test the same folder ID twice, one would need to have the same block.timestamp twice. This could be possible from a
+smart contract or from a miner. Unfortunately, Hardhat does not cover manipulating this value. It is only possible to go
+in the future, not in the past.

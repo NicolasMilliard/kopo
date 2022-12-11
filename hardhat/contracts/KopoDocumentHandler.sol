@@ -21,7 +21,8 @@ contract KopoDocumentHandler is ERC721 {
 
   /**
    * CID will be a bytes32 and the base58 conversion to get the CID will
-   * be done offchain. Because of time constraints, this is handled as a string.
+   * be done offchain. Because of time constraints, this is handled as a string
+   * at the moment.
    */
   mapping(uint256 => string) tokens;
 
@@ -39,6 +40,10 @@ contract KopoDocumentHandler is ERC721 {
     RequestStatus status;
   }
 
+  /**
+   *  This mapping handles tokens requests. This to avoid the same request being
+   * sent multiple times.
+   */
   mapping(string => TokenRequest) tokenRequests;
 
   event TokenRequested(address _from, string _documentCID, address indexed _toOblige, address indexed _toFolder);
@@ -63,7 +68,7 @@ contract KopoDocumentHandler is ERC721 {
   }
 
   /**
-   * @dev Calls KopoFolderFactory to check.
+   * @dev Calls KopoFolderFactory to check if the folder was produced by our factory.
    * @param _addr Address of the folder to check.
    */
   modifier isValidFolder(address _addr) {

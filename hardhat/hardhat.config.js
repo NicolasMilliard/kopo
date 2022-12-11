@@ -44,7 +44,11 @@ module.exports = {
     },
     mumbai: {
       url: process.env.MUMBAI_ENDPOINT,
-      accounts: [process.env.DEPLOY_KEY_MUMBAI],
+      accounts: {
+        mnemonic: process.env.WALLET_DEV_MNEMONIC,
+        accountsBalance: '1000000000000000000000',
+        count: 10,
+      },
       gas: 2100000,
       gasPrice: 8000000000,
     },
