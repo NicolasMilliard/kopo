@@ -26,7 +26,7 @@ const ApprovedDocument = ({ document }) => {
     <>
       <div className="bg-green-500">
         <div>ID: {document.id}</div>
-        <div>Documents approuvés: {description}</div>
+        <div>Documents approuvé: {description}</div>
       </div>
     </>
   );
