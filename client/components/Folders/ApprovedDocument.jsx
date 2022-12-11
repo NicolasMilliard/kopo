@@ -6,27 +6,36 @@ const ApprovedDocument = ({ document }) => {
   const {
     state: { documentHandlerContract },
   } = useKopo();
-  const [description, setDescription] = useState('');
+  const [documentDetails, setDocumentDetails] = useState({});
 
-  const retrieveDocument = async (document) => {
+  // Get document details
+  const getDocumentDetails = async () => {
     try {
       const documentCID = await documentHandlerContract.tokenURI(document.id);
-      setDescription(documentCID);
+
+      await fetch(`https://${documentCID}.ipfs.nftstorage.link/`)
+        .then(response => response.json())
+        .then(result => {
+          setDocumentDetails({ name: result.name, description: result.description, validator: result.validator });
+        });
     } catch (error) {
       // Token does not exist.
       return;
     }
-  };
+
+  }
 
   useEffect(() => {
-    retrieveDocument(document);
-  }, [document, documentHandlerContract]);
+    getDocumentDetails();
+  }, [document]);
 
   return (
     <>
-      <div className="bg-green-500">
+      <div className="bg-green-200 p-4 rounded-3xl">
         <div>ID: {document.id}</div>
-        <div>Documents approuvé: {description}</div>
+        <div>Document approuvé: {documentDetails.name}</div>
+        <div>Description: {documentDetails.description}</div>
+        <div>Approuvé par: {documentDetails.validator}</div>
       </div>
     </>
   );
