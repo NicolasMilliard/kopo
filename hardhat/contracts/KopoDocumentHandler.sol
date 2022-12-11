@@ -100,7 +100,8 @@ contract KopoDocumentHandler is ERC721 {
    */
   function tokenURI(uint256 _tokenId) public view override returns (string memory) {
     require(bytes(tokens[_tokenId]).length != 0, 'token does not exist');
-    return string.concat('ipfs://', tokens[_tokenId]);
+    /* We don't need to add ipfs:// here because these NFT are onlt going to a Kopo Folder, saving a few wei. */
+    return tokens[_tokenId];
   }
 
   /**

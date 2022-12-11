@@ -181,7 +181,7 @@ describe('KopoDocumentHandler Contract', () => {
     it('should retrieve a proper IPFS link from an NFT.', async () => {
       await kopoDocumentContract.connect(oblige1).safeMint(documentCID, metadataCID);
       const link = await kopoDocumentContract.tokenURI(0);
-      expect(link).to.be.equal('ipfs://' + metadataCID);
+      expect(link).to.be.equal(metadataCID);
     });
 
     it('should revert if token does not exist.', async () => {
