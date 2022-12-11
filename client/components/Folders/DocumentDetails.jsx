@@ -1,5 +1,6 @@
 import React from 'react';
 import { NFTStorage } from 'nft.storage';
+import { toast } from 'react-toastify';
 
 import { useKopo } from '../../context/KopoContext';
 
@@ -41,6 +42,13 @@ const DocumentDetails = ({ CID, from, toFolder, name, description, validator }) 
       contract.safeMint(CID, _metadataCID);
       console.log('success to do with toast');
     } catch (error) {
+      toast.error('La validation du document a échouée.', {
+        position: 'top-right',
+        autoClose: 5000,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+      });
       console.log(error);
     }
   };
@@ -54,6 +62,13 @@ const DocumentDetails = ({ CID, from, toFolder, name, description, validator }) 
       contract.rejectTokenRequest(CID);
       console.log('success to do with toast');
     } catch (error) {
+      toast.error('Le rejet du document a échouée.', {
+        position: 'top-right',
+        autoClose: 5000,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+      });
       console.log(error);
     }
   };
