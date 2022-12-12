@@ -35,7 +35,6 @@ const DashboardObligated = ({ currentAccount }) => {
           });
         }
       }
-      console.log(allEvents);
       setDocuments(allEvents);
 
       // Listen for new documents.
@@ -47,7 +46,6 @@ const DashboardObligated = ({ currentAccount }) => {
           _toOblige: to,
           _toFolder: folder,
         };
-        console.log(event);
         setDocuments((prev) => [...prev, event]);
       });
     } catch (error) {
