@@ -35,6 +35,7 @@ const DashboardObligated = ({ currentAccount }) => {
           });
         }
       }
+      console.log(allEvents);
       setDocuments(allEvents);
 
       // Listen for new documents.
@@ -46,6 +47,7 @@ const DashboardObligated = ({ currentAccount }) => {
           _toOblige: to,
           _toFolder: folder,
         };
+        console.log(event);
         setDocuments((prev) => [...prev, event]);
       });
     } catch (error) {
@@ -58,7 +60,7 @@ const DashboardObligated = ({ currentAccount }) => {
   }, [documentHandlerContract]);
 
   return (
-    <section className='w-screen py-8 lg:px-40 xl:px-60'>
+    <section className="w-screen py-8 lg:px-40 xl:px-60">
       {documents.length > 0 ? (
         <DocumentsList documents={documents} currentAccount={currentAccount} />
       ) : (

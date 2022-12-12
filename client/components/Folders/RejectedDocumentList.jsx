@@ -1,4 +1,3 @@
-import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import { useEffect, useState } from 'react';
 
 import { useKopo } from '../../context/KopoContext';
