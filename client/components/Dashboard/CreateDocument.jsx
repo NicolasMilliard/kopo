@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Router from 'next/router';
 import { NFTStorage } from 'nft.storage';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -83,16 +82,13 @@ const CreateDocument = ({ folderAddress }) => {
 
     const imageCid = await client.storeBlob(image);
     if (!imageCid) {
-      toast.error(
-        "L'envoi du document sur Nft.Storage a échoué. Merci de réessayer.",
-        {
-          position: 'top-right',
-          autoClose: 5000,
-          closeOnClick: true,
-          pauseOnFocusLoss: true,
-          pauseOnHover: true,
-        },
-      );
+      toast.error("L'envoi du document sur Nft.Storage a échoué. Merci de réessayer.", {
+        position: 'top-right',
+        autoClose: 5000,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+      });
       setIsLoading(false);
       return;
     }
@@ -111,16 +107,13 @@ const CreateDocument = ({ folderAddress }) => {
 
     const documentCid = await client.storeBlob(blob);
     if (!documentCid) {
-      toast.error(
-        "L'envoi du document sur Nft.Storage a échoué. Merci de réessayer.",
-        {
-          position: 'top-right',
-          autoClose: 5000,
-          closeOnClick: true,
-          pauseOnFocusLoss: true,
-          pauseOnHover: true,
-        },
-      );
+      toast.error("L'envoi du document sur Nft.Storage a échoué. Merci de réessayer.", {
+        position: 'top-right',
+        autoClose: 5000,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+      });
       setIsLoading(false);
       // TODO Refactor the function. It should also delete the previous document from IPFS. No longer needed.
       return;
@@ -143,10 +136,10 @@ const CreateDocument = ({ folderAddress }) => {
   return (
     <div>
       {isSuccess && (
-        <div className='w-screen py-8 lg:px-40 xl:px-60'>
-          <div className='flex-col items-center flex w-full'>
-            <h3 className='text-2xl mb-2 text-center'>Document envoyé avec succès.</h3>
-            <p className='mb-2'>Il est maintenant en cours de traitement.</p>
+        <div className="w-screen py-8 lg:px-40 xl:px-60">
+          <div className="flex-col items-center flex w-full">
+            <h3 className="text-2xl mb-2 text-center">Document envoyé avec succès.</h3>
+            <p className="mb-2">Il est maintenant en cours de traitement.</p>
             <Link
               href={`/folders/${folderAddress}`}
               className="max-w-xs bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
@@ -157,16 +150,16 @@ const CreateDocument = ({ folderAddress }) => {
         </div>
       )}
       {isLoading && (
-        <div className='w-screen py-8 lg:px-40 xl:px-60'>
-          <div className='flex-col flex w-full'>
-            <h3 className='text-2xl mb-8 text-center'>Envoi du document en cours...</h3>
-            <div className='mb-2'>
-              <span className='font-semibold'>Génération du CID de l'image&nbsp;: </span>
+        <div className="w-screen py-8 lg:px-40 xl:px-60">
+          <div className="flex-col flex w-full">
+            <h3 className="text-2xl mb-8 text-center">Envoi du document en cours...</h3>
+            <div className="mb-2">
+              <span className="font-semibold">Génération du CID de l'image&nbsp;: </span>
               {loadingImageCid}
               {loadingImageCid.length > 0 && ' ✔️'}
             </div>
             <div>
-              <span className='font-semibold'>Génération du CID du document&nbsp;: </span>
+              <span className="font-semibold">Génération du CID du document&nbsp;: </span>
               {loadingDocumentCid}
               {loadingDocumentCid.length > 0 && ' ✔️'}
             </div>

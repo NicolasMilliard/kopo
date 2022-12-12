@@ -58,7 +58,7 @@ const DashboardObligated = ({ currentAccount }) => {
   }, [documentHandlerContract]);
 
   return (
-    <section className='w-screen py-8 lg:px-40 xl:px-60'>
+    <section className="w-screen py-8 lg:px-40 xl:px-60">
       {documents.length > 0 ? (
         <DocumentsList documents={documents} currentAccount={currentAccount} />
       ) : (

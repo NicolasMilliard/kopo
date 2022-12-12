@@ -1,5 +1,4 @@
 import { getDefaultWallets, lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import { getDefaultProvider } from 'ethers';
 import { ToastContainer } from 'react-toastify';
 import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
