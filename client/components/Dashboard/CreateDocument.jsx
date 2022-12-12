@@ -160,8 +160,16 @@ const CreateDocument = ({ folderAddress }) => {
         <div className='w-screen py-8 lg:px-40 xl:px-60'>
           <div className='flex-col flex w-full'>
             <h3 className='text-2xl mb-8 text-center'>Envoi du document en cours...</h3>
-            <div className='mb-2'><span className='font-semibold'>Génération du CID de l'image&nbsp;:</span> {loadingImageCid}</div>
-            <div><span className='font-semibold'>Génération du CID du document&nbsp;:</span> {loadingDocumentCid}</div>
+            <div className='mb-2'>
+              <span className='font-semibold'>Génération du CID de l'image&nbsp;: </span>
+              {loadingImageCid}
+              {loadingImageCid.length > 0 && ' ✔️'}
+            </div>
+            <div>
+              <span className='font-semibold'>Génération du CID du document&nbsp;: </span>
+              {loadingDocumentCid}
+              {loadingDocumentCid.length > 0 && ' ✔️'}
+            </div>
           </div>
         </div>
       )}
@@ -169,7 +177,7 @@ const CreateDocument = ({ folderAddress }) => {
         <form className="flex flex-col max-w-md mx-auto mt-20">
           <h1 className="text-3xl mb-8">Envoyer votre document</h1>
           <label className="block mb-8" htmlFor="document">
-            <span className="block text-sm font-medium mb-2">Document</span>
+            <span className="block text-md font-medium mb-2">Document</span>
             <input
               type="file"
               id="document"
@@ -180,9 +188,9 @@ const CreateDocument = ({ folderAddress }) => {
             />
           </label>
           <label className="block mb-8" htmlFor="description">
-            <span className="block text-sm font-medium mb-2">Description du fichier</span>
+            <span className="block text-md font-medium mb-2">Description du fichier</span>
             <input
-              className="placeholder-gray-500 placeholder-opacity-100"
+              className="placeholder:text-slate-400 block bg-white w-full border border-slate-100 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-green-500 focus:ring-green-500 focus:ring-1 sm:text-sm"
               type="text"
               id="description"
               name="description"
@@ -191,8 +199,13 @@ const CreateDocument = ({ folderAddress }) => {
             />
           </label>
           <label className="block mb-8" htmlFor="oblige">
-            <span className="block text-sm font-medium mb-2">Obligé</span>
-            <select name="oblige" id="oblige" onChange={(e) => setOblige(e.target.value)}>
+            <span className="block text-md font-medium mb-2">Obligé</span>
+            <select
+              name="oblige"
+              id="oblige"
+              onChange={(e) => setOblige(e.target.value)}
+              className="placeholder:text-slate-400 block bg-white w-full border border-slate-100 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-green-500 focus:ring-green-500 focus:ring-1 sm:text-sm"
+            >
               <option value="">---</option>
               <option value="0x5C4AcB6f5696f01D41728a2053c8CC26dA19bfB3">Obligé Test</option>
             </select>

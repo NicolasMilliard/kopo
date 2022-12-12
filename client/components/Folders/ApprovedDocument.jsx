@@ -22,7 +22,6 @@ const ApprovedDocument = ({ document }) => {
       // Token does not exist.
       return;
     }
-
   }
 
   useEffect(() => {
@@ -32,10 +31,10 @@ const ApprovedDocument = ({ document }) => {
   return (
     <>
       <div className="bg-green-200 p-4 rounded-3xl">
-        <div>ID: {document.id}</div>
-        <div>Document approuvé: {documentDetails.name}</div>
-        <div>Description: {documentDetails.description}</div>
-        <div>Approuvé par: {documentDetails.validator}</div>
+        <div>ID&nbsp;: {document.id}</div>
+        <div>Document approuvé&nbsp;: {documentDetails.name}</div>
+        <div>Description&nbsp;: {documentDetails.description}</div>
+        <div>Approuvé par&nbsp;: {documentDetails.validator}</div>
       </div>
     </>
   );
