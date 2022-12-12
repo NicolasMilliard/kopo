@@ -11,15 +11,15 @@ const RejectedDocument = ({ document }) => {
   // Get document details
   const getDocumentDetails = async () => {
     try {
-      const documentCID = await documentHandlerContract.tokenURI(document.id);
+      const url = `https://${document.id}.ipfs.nftstorage.link/`;
 
-      await fetch(`https://${documentCID}.ipfs.nftstorage.link/`)
+      await fetch(url)
         .then((response) => response.json())
         .then((result) => {
-          setDocumentDetails({ name: result.name, description: result.description, validator: result.validator });
+          setDocumentDetails({ name: result.name, description: result.description, validator: document.validator });
         });
     } catch (error) {
-      // Token does not exist.
+      console.log(error);
       return;
     }
   };
