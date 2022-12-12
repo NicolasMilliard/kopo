@@ -25,12 +25,13 @@ const RejectedDocumentList = ({ folderAddress }) => {
 
         for (let i = 0; i < events.length; i++) {
           /* Update the entry in the dict. */
-          const documentCID = events[i].args._documentCID;
+          const documentCID = events[i].args._documentCID.toString();
           if (documentCID) {
             setRejectedDocuments((prev) => ({
               ...prev,
-              [documentCID.toString()]: {
-                id: documentCID.toString(),
+              [documentCID]: {
+                id: documentCID,
+                validator: events[i].args._from,
                 status: REJECTED,
               },
             }));
@@ -40,11 +41,11 @@ const RejectedDocumentList = ({ folderAddress }) => {
         /* Now listening on the blockchain to dynamically insert new tokens. */
         contract.on('TokenRejected', (cid, from, to) => {
           /* Update the entry in the dict. */
-          console.log(cid);
           setRejectedDocuments((prev) => ({
             ...prev,
             [cid.toString()]: {
               id: cid.toString(),
+              validator: from,
               status: REJECTED,
             },
           }));
