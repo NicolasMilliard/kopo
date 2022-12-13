@@ -51,7 +51,9 @@ const DashboardObligated = ({ currentAccount }) => {
 
           allEvents.push(newEvent);
           console.log(allEvents);
-          setDocuments(allEvents);
+          window.location.reload();
+          // setDocuments((prev) => [...prev, newEvent]);
+          // setDocuments(allEvents);
         } else {
           console.log('not a new event');
         }
