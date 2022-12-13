@@ -1,8 +1,12 @@
 import Link from 'next/link';
+import Button from '../Buttons/Button';
+import ButtonLoader from '../Buttons/ButtonLoader';
+
 import { NFTStorage } from 'nft.storage';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useAccount } from 'wagmi';
+
 import { useKopo } from '../../context/KopoContext';
 
 const MintFolder = ({ folderAddress, folderId, folderName }) => {
@@ -102,14 +106,9 @@ const MintFolder = ({ folderAddress, folderId, folderName }) => {
         </div>
       )}
       {!isMinted && isVisible && (
-        <button
-          onClick={mintNft}
-          className="bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
-        >
-          Créer un NFT du dossier
-        </button>
+        <Button text="Créer un NFT du dossier" customFunction={mintNft} />
       )}
-      {isLoading && <div>Emission du NFT en cours... Merci de valider la transaction.</div>}
+      {isLoading && <ButtonLoader text="Emission du NFT en cours..." />}
     </div>
   );
 };
