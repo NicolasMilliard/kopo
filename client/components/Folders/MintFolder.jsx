@@ -89,7 +89,7 @@ const MintFolder = ({ folderAddress, folderId, folderName }) => {
   return (
     <div className="flex flex-col items-center">
       {isMinted && <div>Le nombre maximal de NFT par dossier est atteint.</div>}
-      {isSuccess && <div>Succès! Le NFT est maintenant dans votre portefeuille.</div>}
+      {isSuccess && <div>Succès&nbsp;! Le NFT est maintenant dans votre portefeuille.</div>}
       {isMinted && (
         <div className="mt-4">
           <Link
