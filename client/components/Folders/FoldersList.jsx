@@ -2,7 +2,6 @@ import Link from 'next/link';
 import React from 'react';
 
 const FoldersList = ({ folders }) => {
-  // console.log(folders);
   return (
     <div className="flex flex-wrap mt-20 mb-8">
       {folders.map((folder) => (
