@@ -23,7 +23,7 @@ const DashboardBeneficiary = () => {
 
       // Folders details
       const eventFilter = contract.filters.NewFolder(address, null, null);
-      const events = await contract.queryFilter(eventFilter, 0); // Number(process.env.KOPO_GENESIS)
+      const events = await contract.queryFilter(eventFilter, Number(process.env.KOPO_GENESIS));
 
       let allEvents = [];
 
