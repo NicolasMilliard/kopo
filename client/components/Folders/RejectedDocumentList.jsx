@@ -19,7 +19,7 @@ const RejectedDocumentList = ({ folderAddress }) => {
         if (!contract) return;
 
         /* Retrieve the list of Tranfer events to our folder contracts. */
-        const eventFilter = contract.filters.TokenRejected(null, null, folderAddress);
+        const eventFilter = contract.filters.TokenRejected(null, null, null, folderAddress);
         const events = await contract.queryFilter(eventFilter, Number(process.env.KOPO_GENESIS));
 
         for (let i = 0; i < events.length; i++) {
@@ -38,12 +38,12 @@ const RejectedDocumentList = ({ folderAddress }) => {
         }
 
         /* Now listening on the blockchain to dynamically insert new tokens. */
-        contract.on('TokenRejected', (cid, from, to) => {
+        contract.on(eventFilter, (documentCID, fromOblige, from, toFolder) => {
           /* Update the entry in the dict. */
           setRejectedDocuments((prev) => ({
             ...prev,
-            [cid.toString()]: {
-              id: cid.toString(),
+            [documentCID.toString()]: {
+              id: documentCID.toString(),
               validator: from,
               status: REJECTED,
             },
