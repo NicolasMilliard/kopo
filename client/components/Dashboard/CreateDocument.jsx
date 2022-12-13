@@ -192,7 +192,7 @@ const CreateDocument = ({ folderAddress }) => {
             />
           </label>
           <label className="block mb-8" htmlFor="oblige">
-            <span className="block text-md font-medium mb-2">Obligé</span>
+            <span className="block text-md font-medium mb-2">Sélection de l'obligé</span>
             <select
               name="oblige"
               id="oblige"
