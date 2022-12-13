@@ -1,20 +1,23 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 import { useEffect, useState } from 'react';
 
 import Button from '../../components/Buttons/Button';
+import editIcon from '../../public/images/icons/edit.svg';
 import ReturnToDashboard from '../../components/Buttons/ReturnToDashboard';
 import ApprovedDocumentList from '../../components/Folders/ApprovedDocumentList';
 import MintFolder from '../../components/Folders/MintFolder';
 import PendingDocumentList from '../../components/Folders/PendingDocumentList';
 import RejectedDocumentList from '../../components/Folders/RejectedDocumentList';
+import { toast } from 'react-toastify';
 import { useKopo } from '../../context/KopoContext';
 
 const Folder = ({ folderAddress }) => {
   const {
     state: { getFolderHandlerContract, folderFactoryContract },
   } = useKopo();
-  const [folderName, setFolderName] = useState(null);
+  const [folderName, setFolderName] = useState('Votre dossier');
   const [folderId, setFolderId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isValidFolder, setIsValidFolder] = useState(false);
@@ -31,9 +34,12 @@ const Folder = ({ folderAddress }) => {
 
         // Retrieve information about the folder.
         setFolderId(await contract.folderId());
-        //setFolderName(await contract.folderName());
-        // TODO Fix this.
-        setFolderName('Test folder name');
+
+        // Check if folder has a name
+        const hasName = await contract.folderName();
+        if (hasName.length > 0) {
+          setFolderName(hasName);
+        }
 
         setIsLoading(false);
       } catch (error) {
@@ -56,6 +62,33 @@ const Folder = ({ folderAddress }) => {
     })();
   }, [folderFactoryContract, folderAddress, folderId]);
 
+  // Handle folder name
+  const handleName = (e) => {
+    e.preventDefault();
+    setFolderName(e.target.value);
+  }
+
+  // Update folder name
+  const updateFolderName = async () => {
+    if (!getFolderHandlerContract) return;
+
+    try {
+      const contract = await getFolderHandlerContract(folderAddress);
+      contract.setFolderName(folderName);
+      setIsLoading(false);
+    } catch (error) {
+      toast.error('Le changement de nom du dossier a échoué', {
+        position: 'top-right',
+        autoClose: 5000,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+      });
+      console.log(error);
+      setIsLoading(false);
+    }
+  }
+
   /**
    * Display an alert if this is not a legitimate folder.
    */
@@ -77,7 +110,20 @@ const Folder = ({ folderAddress }) => {
     <div className="w-screen py-8 lg:px-40 xl:px-60">
       <ReturnToDashboard />
       <div className="flex flex-col items-center mt-8">
-        <h1 className="text-3xl mb-2">{folderName}</h1>
+        <label className="relative block mb-4">
+          <span className="sr-only">{folderName}</span>
+          <button onClick={updateFolderName} className="absolute inset-y-0 right-2 flex items-center pl-2">
+            <Image src={editIcon} alt="Edit" className='kopo-edit-folder-name' />
+          </button>
+          <input
+            className="text-3xl max-w-md placeholder:text-black block bg-[#fefbf2] w-full border-none rounded-md py-2 pr-9 pl-3 focus:outline-none focus:border-green-500 kopo-folder-name-input"
+            defaultValue={folderName}
+            type="text"
+            name="folderName"
+            onChange={handleName}
+          />
+        </label>
+
         <h4 className="mb-8 italic">N° de dossier : {folderId}</h4>
         <Link
           href={`/folders/${folderAddress}/create-document`}
