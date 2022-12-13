@@ -47,7 +47,7 @@ contract KopoDocumentHandler is ERC721 {
   mapping(string => TokenRequest) public tokenRequests;
 
   event TokenRequested(address _from, string _documentCID, address indexed _toOblige, address indexed _toFolder);
-  event TokenRejected(string _documentCID, address _from, address indexed _toFolder);
+  event TokenRejected(string _documentCID, address _fromOblige, address indexed _from, address indexed _toFolder);
 
   /**
    * @dev Calls KopoRolesManager to check.
@@ -140,7 +140,7 @@ contract KopoDocumentHandler is ERC721 {
     require(tokenRequests[_documentCID].status == RequestStatus.pending, 'invalid status');
 
     tokenRequests[_documentCID].status = RequestStatus.rejected;
-    emit TokenRejected(_documentCID, tokenRequests[_documentCID].from, tokenRequests[_documentCID].folder);
+    emit TokenRejected(_documentCID, msg.sender, tokenRequests[_documentCID].from, tokenRequests[_documentCID].folder);
   }
 
   /**

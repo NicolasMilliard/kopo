@@ -30,7 +30,7 @@ const RejectedDocumentList = ({ folderAddress }) => {
               ...prev,
               [documentCID]: {
                 id: documentCID,
-                validator: events[i].args._from,
+                validator: events[i].args._fromOblige,
                 status: REJECTED,
               },
             }));
