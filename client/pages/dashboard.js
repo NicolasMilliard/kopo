@@ -21,6 +21,7 @@ const dashboard = () => {
     try {
       const contract = rolesManagerContract;
       if (!contract) return;
+      if (!currentAccount) return;
 
       setIsLoading(true);
 
@@ -41,6 +42,7 @@ const dashboard = () => {
     try {
       const contract = rolesManagerContract;
       if (!contract) return;
+      if (!currentAccount) return;
 
       setIsLoading(true);
 
