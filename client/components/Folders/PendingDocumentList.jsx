@@ -39,6 +39,9 @@ const PendingDocumentList = ({ folderAddress }) => {
 
         /* Now listening on the blockchain to dynamically insert new tokens. */
         contract.on('TokenRequested', (from, cid, toOblige, toFolder) => {
+          /* Filter events not to us. */
+          if (toFolder !== folderAddress) return;
+
           /* Update the entry in the dict. */
           setPendingDocuments((prev) => ({
             ...prev,
@@ -54,12 +57,17 @@ const PendingDocumentList = ({ folderAddress }) => {
     })();
   }, [documentHandlerContract, folderAddress]);
 
+  /**
+   * Wait for a status for a token.
+   */
   useEffect(() => {
     (async () => {
       try {
         const contract = documentHandlerContract;
         if (!contract) return;
         if (!address) return;
+
+        contract.on('TokenRequested', (from, cid, toOblige, toFolder) => {});
       } catch (error) {
         console.log(error);
       }

@@ -39,6 +39,9 @@ const RejectedDocumentList = ({ folderAddress }) => {
 
         /* Now listening on the blockchain to dynamically insert new tokens. */
         contract.on('TokenRejected', (cid, from, to) => {
+          /* Filter events not to us. */
+          if (toFolder !== folderAddress) return;
+
           /* Update the entry in the dict. */
           setRejectedDocuments((prev) => ({
             ...prev,

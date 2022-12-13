@@ -35,6 +35,9 @@ const ApprovedDocumentList = ({ folderAddress }) => {
 
         /* Now listening on the blockchain to dynamically insert new tokens. */
         contract.on('Transfer', (from, to, tokenId) => {
+          /* Filter events not to us. */
+          if (to !== folderAddress) return;
+
           /* Update the entry in the dict. */
           setApprovedDocuments((prev) => ({
             ...prev,
