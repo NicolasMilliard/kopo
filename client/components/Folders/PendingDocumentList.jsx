@@ -11,7 +11,9 @@ const PendingDocumentList = ({ folderAddress }) => {
   const [pendingDocuments, setPendingDocuments] = useState({});
   const { address } = useAccount();
 
-  /* Retrieve rejected documents. */
+  /**
+   * Retrieve pending documents and listen for new documents.
+   */
   useEffect(() => {
     (async () => {
       try {
@@ -24,6 +26,10 @@ const PendingDocumentList = ({ folderAddress }) => {
         const events = await contract.queryFilter(eventFilter, Number(process.env.KOPO_GENESIS));
 
         for (let i = 0; i < events.length; i++) {
+          /* Get status and skip the one not pending. */
+          const tokenRequest = await contract.tokenRequests(events[i].args[1]);
+          if (tokenRequest.status !== 1) continue;
+
           /* Update the entry in the dict. */
           const documentCID = events[i].args._documentCID.toString();
           if (documentCID) {
@@ -38,9 +44,9 @@ const PendingDocumentList = ({ folderAddress }) => {
         }
 
         /* Now listening on the blockchain to dynamically insert new tokens. */
-        contract.on('TokenRequested', (from, cid, toOblige, toFolder) => {
-          /* Filter events not to us. */
-          if (toFolder !== folderAddress) return;
+        contract.on(eventFilter, async (from, cid, toOblige, toFolder) => {
+          const tokenRequest = await contract.tokenRequests(cid);
+          if (tokenRequest.status !== 1) return;
 
           /* Update the entry in the dict. */
           setPendingDocuments((prev) => ({
@@ -58,7 +64,7 @@ const PendingDocumentList = ({ folderAddress }) => {
   }, [documentHandlerContract, folderAddress]);
 
   /**
-   * Wait for a status for a token.
+   * Wait for a token to be rejected, and remove it from pending.
    */
   useEffect(() => {
     (async () => {
@@ -67,12 +73,43 @@ const PendingDocumentList = ({ folderAddress }) => {
         if (!contract) return;
         if (!address) return;
 
-        contract.on('TokenRequested', (from, cid, toOblige, toFolder) => {});
+        const eventFilter = contract.filters.TokenRejected(null, null, null, folderAddress);
+        contract.on(eventFilter, (documentCID, fromOblige, from, toFolder) => {
+          if (documentCID.toString() in pendingDocuments) {
+            let prev = { ...PendingDocument };
+            delete prev[documentCID.toString()];
+            setPendingDocuments(prev);
+          }
+        });
       } catch (error) {
         console.log(error);
       }
     })();
-  }, [documentHandlerContract, folderAddress]);
+  }, [documentHandlerContract, folderAddress, pendingDocuments]);
+
+  /**
+   * Wait for a token to be accepted, and remove it from pending.
+   */
+  useEffect(() => {
+    (async () => {
+      try {
+        const contract = documentHandlerContract;
+        if (!contract) return;
+        if (!address) return;
+
+        const eventFilter = contract.filters.TokenApproved(null, null, null, folderAddress);
+        contract.on(eventFilter, (documentCID, fromOblige, from, toFolder) => {
+          if (documentCID.toString() in pendingDocuments) {
+            let prev = { ...PendingDocument };
+            delete prev[documentCID.toString()];
+            setPendingDocuments(prev);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [documentHandlerContract, folderAddress, pendingDocuments]);
 
   return (
     <div>

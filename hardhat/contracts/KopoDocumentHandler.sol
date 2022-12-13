@@ -48,6 +48,7 @@ contract KopoDocumentHandler is ERC721 {
 
   event TokenRequested(address _from, string _documentCID, address indexed _toOblige, address indexed _toFolder);
   event TokenRejected(string _documentCID, address _fromOblige, address indexed _from, address indexed _toFolder);
+  event TokenApproved(string _documentCID, address _fromOblige, address indexed _from, address indexed _toFolder);
 
   /**
    * @dev Calls KopoRolesManager to check.
@@ -165,5 +166,7 @@ contract KopoDocumentHandler is ERC721 {
      * @dev Mint the NFT and emit the Transfer event.
      */
     _safeMint(tokenRequests[_documentCID].folder, tokenId);
+
+    emit TokenApproved(_documentCID, msg.sender, tokenRequests[_documentCID].from, tokenRequests[_documentCID].folder);
   }
 }

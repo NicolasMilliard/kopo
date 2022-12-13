@@ -11,7 +11,9 @@ const ApprovedDocumentList = ({ folderAddress }) => {
   } = useKopo();
   const [approvedDocuments, setApprovedDocuments] = useState({});
 
-  /* Retrieve approved documents. */
+  /**
+   * Retrieve approved documents and listen for new approved documents.
+   */
   useEffect(() => {
     (async () => {
       try {
