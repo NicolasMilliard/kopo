@@ -127,3 +127,8 @@ button {
 .kopo-oblige-document-container {
   width: 420px;
 }
+
+/* Dashboard bénéficiaire */
+.kopo-beneficiaire-document-container {
+  width: 570px;
+}

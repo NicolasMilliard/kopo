@@ -118,7 +118,7 @@ const PendingDocumentList = ({ folderAddress }) => {
           <h1 className="font-bold mb-4">Documents en attente&nbsp;:</h1>
           <ul>
             {Object.entries(pendingDocuments).map(([key, value]) => (
-              <li key={key} className="mb-4">
+              <li key={key} className="mb-4 kopo-beneficiaire-document-container">
                 <PendingDocument document={value} />
               </li>
             ))}
