@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 
-const RejectedDocument = ({ document }) => {
+import { useKopo } from '../../context/KopoContext';
+
+const PendingDocument = ({ document }) => {
   const [documentDetails, setDocumentDetails] = useState({});
 
   // Get document details
@@ -11,7 +13,7 @@ const RejectedDocument = ({ document }) => {
       await fetch(url)
         .then((response) => response.json())
         .then((result) => {
-          setDocumentDetails({ name: result.name, description: result.description, validator: document.validator });
+          setDocumentDetails({ name: result.name, description: result.description, oblige: document.oblige });
         });
     } catch (error) {
       console.log(error);
@@ -25,14 +27,14 @@ const RejectedDocument = ({ document }) => {
 
   return (
     <>
-      <div className="bg-red-200 p-4 rounded-3xl">
+      <div className="bg-yellow-200 p-4 rounded-3xl">
         <div>ID&nbsp;: {document.id}</div>
-        <div>Document refusé&nbsp;: {documentDetails.name}</div>
+        <div>Document en attente&nbsp;: {documentDetails.name}</div>
         <div>Description&nbsp;: {documentDetails.description}</div>
-        <div>Refusé par&nbsp;: {documentDetails.validator}</div>
+        <div>Obligé&nbsp;: {documentDetails.oblige}</div>
       </div>
     </>
   );
 };
 
-export default RejectedDocument;
+export default PendingDocument;
