@@ -6,7 +6,7 @@ import kopoImage from '../public/images/kopo-renovation-energetique.svg';
 const Index = () => {
   return (
     <>
-      <div className='mx-4 py-8 lg:px-40 xl-px60'>
+      <div className='mx-4 py-8 lg:px-40 xl:px-60'>
         <div className='flex items-center justify-center'>
           <div>
             <h1 className='text-3xl mb-8 max-w-md'>Kopo&nbsp;: votre rénovation énergétique en toute simplicité</h1>
