@@ -1,8 +1,8 @@
 import { NFTStorage } from 'nft.storage';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { useAccount } from 'wagmi';
 import { useKopo } from '../../context/KopoContext';
-import { toast } from 'react-toastify';
 
 const MintFolder = ({ folderAddress, folderId, folderName }) => {
   const { address } = useAccount();
@@ -30,7 +30,7 @@ const MintFolder = ({ folderAddress, folderId, folderName }) => {
         setIsVisible(true);
       }
     })();
-  }, [getFolderHandlerContract, isSuccess]);
+  }, [getFolderHandlerContract, isSuccess, address]);
 
   const mintNft = async () => {
     if (!folderId || !folderName) {
