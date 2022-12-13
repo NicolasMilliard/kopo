@@ -87,21 +87,20 @@ const MintFolder = ({ folderAddress, folderId, folderName }) => {
   };
 
   return (
-    <div className='flex flex-col items-center'>
+    <div className="flex flex-col items-center">
       {isMinted && <div>Le nombre maximal de NFT par dossier est atteint.</div>}
       {isSuccess && <div>Succès! Le NFT est maintenant dans votre portefeuille.</div>}
-      {isSuccess ||
-        (isMinted && (
-          <div className="mt-4">
-            <Link
-              href={openSea}
-              target="_blank"
-              className="bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
-            >
-              Voir le NFT sur OpenSea (testnet)
-            </Link>
-          </div>
-        ))}
+      {isMinted && (
+        <div className="mt-4">
+          <Link
+            href={openSea}
+            target="_blank"
+            className="bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
+          >
+            Voir le NFT sur OpenSea (testnet)
+          </Link>
+        </div>
+      )}
       {!isMinted && isVisible && (
         <button
           onClick={mintNft}
