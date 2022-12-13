@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import DocumentDetails from './DocumentDetails';
 
 const DocumentsList = ({ documents, currentAccount }) => {
@@ -10,13 +10,17 @@ const DocumentsList = ({ documents, currentAccount }) => {
 
     for (let i = 0; i < documents.length; i++) {
       await fetch(`https://${documents[i]._documentCID}.ipfs.nftstorage.link/`)
-        .then(response => response.json())
-        .then(result => {
-          allDocuments.push({ documentCID: documents[i]._documentCID, documentName: result.name, documentDescription: result.description });
+        .then((response) => response.json())
+        .then((result) => {
+          allDocuments.push({
+            documentCID: documents[i]._documentCID,
+            documentName: result.name,
+            documentDescription: result.description,
+          });
         });
     }
     setDocumentDetails(allDocuments);
-  }
+  };
 
   // Get a specific name
   const getName = (_documentCID) => {
@@ -25,7 +29,7 @@ const DocumentsList = ({ documents, currentAccount }) => {
         return documentDetails[i].documentName;
       }
     }
-  }
+  };
 
   // Get a specific description
   const getDescription = (_documentCID) => {
@@ -34,16 +38,16 @@ const DocumentsList = ({ documents, currentAccount }) => {
         return documentDetails[i].documentDescription;
       }
     }
-  }
+  };
 
   useEffect(() => {
     setDocumentsDetails();
   }, [documents]);
 
   return (
-    <div className='flex justify-center items-center'>
-      <div className='flex flex-wrap'>
-        {documents.map(document => (
+    <div className="flex justify-center items-center">
+      <div className="flex flex-wrap">
+        {documents.map((document) => (
           <DocumentDetails
             key={document._documentCID}
             CID={document._documentCID}
@@ -57,7 +61,7 @@ const DocumentsList = ({ documents, currentAccount }) => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DocumentsList
+export default DocumentsList;

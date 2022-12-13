@@ -25,12 +25,13 @@ const RejectedDocumentList = ({ folderAddress }) => {
         for (let i = 0; i < events.length; i++) {
           /* Update the entry in the dict. */
           const documentCID = events[i].args._documentCID.toString();
+          console.log(events[i]);
           if (documentCID) {
             setRejectedDocuments((prev) => ({
               ...prev,
               [documentCID]: {
                 id: documentCID,
-                validator: events[i].args._from,
+                validator: events[i].args._fromOblige,
                 status: REJECTED,
               },
             }));

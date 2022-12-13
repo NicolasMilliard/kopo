@@ -138,7 +138,7 @@ describe('KopoDocumentHandler Contract', () => {
     it('should properly reject a token request (POV: oblige).', async () => {
       await expect(kopoDocumentContract.connect(oblige1).rejectTokenRequest(documentCID))
         .to.emit(kopoDocumentContract, 'TokenRejected')
-        .withArgs(documentCID, verified1.address, folderAddress);
+        .withArgs(documentCID, oblige1.address, verified1.address, folderAddress);
     });
 
     it('should revert when rejecting a token request and not oblige (POV: hacker).', async () => {
