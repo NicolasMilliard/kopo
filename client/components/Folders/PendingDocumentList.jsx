@@ -54,6 +54,18 @@ const PendingDocumentList = ({ folderAddress }) => {
     })();
   }, [documentHandlerContract, folderAddress]);
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const contract = documentHandlerContract;
+        if (!contract) return;
+        if (!address) return;
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [documentHandlerContract, folderAddress]);
+
   return (
     <div>
       {pendingDocuments && Object.keys(pendingDocuments).length > 0 && (

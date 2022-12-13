@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useKopo } from '../../context/KopoContext';
 
-const RejectedDocument = ({ document }) => {
+const PendingDocument = ({ document }) => {
   const [documentDetails, setDocumentDetails] = useState({});
 
   // Get document details
@@ -37,4 +37,4 @@ const RejectedDocument = ({ document }) => {
   );
 };
 
-export default RejectedDocument;
+export default PendingDocument;
