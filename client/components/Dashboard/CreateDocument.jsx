@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Router from 'next/router';
 import { NFTStorage } from 'nft.storage';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -92,7 +93,6 @@ const CreateDocument = ({ folderAddress }) => {
       setIsLoading(false);
       return;
     }
-    console.log(`ImageCID: ${imageCid}`);
     setIsLoadingImageCid(imageCid);
 
     const nft = {
@@ -118,7 +118,6 @@ const CreateDocument = ({ folderAddress }) => {
       // TODO Refactor the function. It should also delete the previous document from IPFS. No longer needed.
       return;
     }
-    console.log(`Json CID: ${documentCid}`);
     setIsLoadingDocumentCid(documentCid);
 
     /* Now, minting the NFT. */
@@ -127,6 +126,9 @@ const CreateDocument = ({ folderAddress }) => {
       const wait = await tx.wait();
       setIsLoading(false);
       setIsSuccess(true);
+
+      // Redirect to the event's page.
+      Router.push(`/folders/${folderAddress}`);
     } catch (error) {
       console.log(error);
       setIsLoading(false);
