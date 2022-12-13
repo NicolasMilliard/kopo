@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { NFTStorage } from 'nft.storage';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -13,6 +14,7 @@ const MintFolder = ({ folderAddress, folderId, folderName }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [openSea, setOpenSea] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -25,6 +27,8 @@ const MintFolder = ({ folderAddress, folderId, folderName }) => {
         await contract.tokenURI(process.env.MAX_NFT_BY_FOLDER - 1);
         setIsMinted(true);
         setIsVisible(false);
+        const tokenUrl = `https://testnets.opensea.io/fr/assets/mumbai/${folderAddress}/0`;
+        setOpenSea(tokenUrl);
       } catch (error) {
         setIsMinted(false);
         setIsVisible(true);
@@ -86,6 +90,17 @@ const MintFolder = ({ folderAddress, folderId, folderName }) => {
     <div>
       {isMinted && <div>Le nombre maximal de NFT par dossier est atteint.</div>}
       {isSuccess && <div>Succès! Le NFT est maintenant dans votre portefeuille.</div>}
+      {isSuccess ||
+        (isMinted && (
+          <div className="mt-4">
+            <Link
+              href={openSea}
+              className="bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
+            >
+              Voir le NFT sur OpenSea (testnet)
+            </Link>
+          </div>
+        ))}
       {!isMinted && isVisible && (
         <button
           onClick={mintNft}
