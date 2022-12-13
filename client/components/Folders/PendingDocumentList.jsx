@@ -78,7 +78,7 @@ const PendingDocumentList = ({ folderAddress }) => {
     <div>
       {pendingDocuments && Object.keys(pendingDocuments).length > 0 && (
         <div>
-          <h1 className="font-bold mb-4">Documents en attente:</h1>
+          <h1 className="font-bold mb-4">Documents en attente&nbsp;:</h1>
           <ul>
             {Object.entries(pendingDocuments).map(([key, value]) => (
               <li key={key} className="mb-4">

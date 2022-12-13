@@ -40,14 +40,6 @@ const DocumentDetails = ({ CID, from, toFolder, name, description, validator }) 
       const _metadataCID = await client.storeBlob(blob);
 
       contract.safeMint(CID, _metadataCID);
-
-      // toast.success('Le document a bien été validé !', {
-      //   position: 'top-right',
-      //   autoClose: 5000,
-      //   closeOnClick: true,
-      //   pauseOnFocusLoss: true,
-      //   pauseOnHover: true
-      // });
     } catch (error) {
       toast.error('La validation du document a échouée.', {
         position: 'top-right',
@@ -67,13 +59,6 @@ const DocumentDetails = ({ CID, from, toFolder, name, description, validator }) 
       if (!contract) return;
 
       contract.rejectTokenRequest(CID);
-      // toast.success('Le document a bien été rejeté !', {
-      //   position: 'top-right',
-      //   autoClose: 5000,
-      //   closeOnClick: true,
-      //   pauseOnFocusLoss: true,
-      //   pauseOnHover: true
-      // });
     } catch (error) {
       toast.error('Le rejet du document a échouée.', {
         position: 'top-right',
@@ -87,7 +72,7 @@ const DocumentDetails = ({ CID, from, toFolder, name, description, validator }) 
   };
 
   return (
-    <div className="bg-green-200 rounded-xl p-4 mx-8 mb-8">
+    <div className="bg-gray-100 rounded-xl p-4 mx-8 mb-8 kopo-oblige-document-container">
       <h3 className="font-semibold text-xl mb-2">
         Dossier {toFolder.slice(0, 5)}...{toFolder.slice(toFolder.length - 4)}
       </h3>
