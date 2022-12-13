@@ -7,7 +7,7 @@ import CreateFolder from './CreateFolder';
 
 const DashboardBeneficiary = () => {
   const {
-    state: { folderFactoryContract },
+    state: { folderFactoryContract, getFolderHandlerContract },
   } = useKopo();
   const [folders, setFolders] = useState([]);
   const { address } = useAccount();
@@ -17,14 +17,27 @@ const DashboardBeneficiary = () => {
     try {
       const contract = folderFactoryContract;
       if (!contract) return;
+      if (!getFolderHandlerContract) return;
+
       if (!address) return;
 
+      // Folders details
       const eventFilter = contract.filters.NewFolder(address, null, null);
-      const events = await contract.queryFilter(eventFilter, Number(process.env.KOPO_GENESIS));
+      const events = await contract.queryFilter(eventFilter, 0); // Number(process.env.KOPO_GENESIS)
+
       let allEvents = [];
 
       for (let i = 0; i < events.length; i++) {
-        allEvents.push({ sender: events[i].args[0], newFolder: events[i].args[1], folderId: events[i].args[2] });
+        let sender = events[i].args[0];
+        let newFolder = events[i].args[1];
+        let folderId = events[i].args[2];
+
+        // Get folder name
+        let folderHandlerContract = getFolderHandlerContract(newFolder);
+        let folderNameFromContract = await folderHandlerContract.folderName();
+
+        // If folderNameFromContract is empty, it'll we displayed with a basic name
+        allEvents.push({ sender: sender, newFolder: newFolder, folderId: folderId, folderName: folderNameFromContract });
       }
 
       setFolders(allEvents);
@@ -35,7 +48,7 @@ const DashboardBeneficiary = () => {
 
   useEffect(() => {
     checkUserCreatedFolders();
-  }, [folderFactoryContract]);
+  }, [folderFactoryContract, getFolderHandlerContract]);
 
   return (
     <section>

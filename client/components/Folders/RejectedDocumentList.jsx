@@ -59,7 +59,7 @@ const RejectedDocumentList = ({ folderAddress }) => {
     <div>
       {rejectedDocuments && Object.keys(rejectedDocuments).length > 0 && (
         <div>
-          <h1 className="font-bold mb-4">Documents rejetés:</h1>
+          <h1 className="font-bold mb-4">Documents rejetés&nbsp;:</h1>
           <ul>
             {Object.entries(rejectedDocuments).map(([key, value]) => (
               <li key={key} className="mb-4">
