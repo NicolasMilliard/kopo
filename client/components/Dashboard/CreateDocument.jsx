@@ -1,3 +1,4 @@
+import { ethers } from 'ethers';
 import Link from 'next/link';
 import Router from 'next/router';
 import Button from '../Buttons/Button';
@@ -124,7 +125,11 @@ const CreateDocument = ({ folderAddress }) => {
 
     /* Now, minting the NFT. */
     try {
-      const tx = await documentHandlerContract.requestToken(documentCid, oblige, folderAddress);
+      const tx = await documentHandlerContract.requestToken(documentCid, oblige, folderAddress, {
+        maxPriorityFeePerGas: ethers.utils.parseUnits('50', 'gwei'),
+        maxFeePerGas: ethers.utils.parseUnits('50', 'gwei'),
+        gasLimit: 2000000,
+      });
       const wait = await tx.wait();
       setIsLoading(false);
       setIsSuccess(true);
@@ -207,10 +212,7 @@ const CreateDocument = ({ folderAddress }) => {
               <option value="0x5C4AcB6f5696f01D41728a2053c8CC26dA19bfB3">Obligé Test</option>
             </select>
           </label>
-          {
-            !isLoading &&
-            <Button text="Soumettre le document" customFunction={tokenRequest} />
-          }
+          {!isLoading && <Button text="Soumettre le document" customFunction={tokenRequest} />}
           <div className="max-w-md mt-2 mb-8">
             <tt>
               ⚠️ Dans cette version de développement, le document sera envoyé sur IPFS en clair. Toute personne écoutant
