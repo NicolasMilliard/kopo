@@ -1,7 +1,11 @@
 import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
 import CreateDocument from '../../../components/Dashboard/CreateDocument';
+import chevron from '../../../public/images/icons/left-chevron.svg';
 
 const CreateDocumentPage = ({ folderAddress }) => {
+  console.log(folderAddress);
   return (
     <div>
       <Head>
@@ -9,7 +13,11 @@ const CreateDocumentPage = ({ folderAddress }) => {
         <meta name="description" content="Création d'un nouveau dossier - Kopo" />
       </Head>
 
-      <section>
+      <section className="mx-4 py-8 lg:px-40 xl:px-60">
+        <Link href={`/folders/${folderAddress}`} className='flex items-center'>
+          <Image src={chevron} alt="<" width="8" className='mr-1' />
+          Retour au dossier
+        </Link>
         <CreateDocument folderAddress={folderAddress} />
       </section>
     </div>

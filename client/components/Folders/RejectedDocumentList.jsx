@@ -62,7 +62,7 @@ const RejectedDocumentList = ({ folderAddress }) => {
           <h1 className="font-bold mb-4">Documents rejetés&nbsp;:</h1>
           <ul>
             {Object.entries(rejectedDocuments).map(([key, value]) => (
-              <li key={key} className="mb-4">
+              <li key={key} className="mb-4 kopo-beneficiaire-document-container">
                 <RejectedDocument document={value} />
               </li>
             ))}

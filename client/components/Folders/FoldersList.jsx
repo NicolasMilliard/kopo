@@ -2,7 +2,6 @@ import Link from 'next/link';
 import React from 'react';
 
 const FoldersList = ({ folders }) => {
-  // console.log(folders);
   return (
     <div className="flex flex-wrap mt-20 mb-8">
       {folders.map((folder) => (
@@ -12,9 +11,9 @@ const FoldersList = ({ folders }) => {
               <h3 className="kopo-folder-title">
                 {
                   folder.folderName.length > 0 ?
-                    <span>{folder.folderName}</span>
+                    <p className='truncate'>{folder.folderName}</p>
                     :
-                    <span>Votre dossier</span>
+                    <p>Votre dossier</p>
                 }
               </h3>
               <h4 className='italic mt-2 text-sm'>{folder.folderId.slice(0, 5)}...{folder.folderId.slice(folder.folderId.length - 4)}</h4>

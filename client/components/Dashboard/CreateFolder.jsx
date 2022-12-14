@@ -1,6 +1,8 @@
 import Router from 'next/router';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import Button from '../Buttons/Button';
+import ButtonLoader from '../Buttons/ButtonLoader';
 
 import { useKopo } from '../../context/KopoContext';
 
@@ -42,33 +44,19 @@ const CreateFolder = () => {
     }
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    await createFolder();
-  };
-
   return (
     <>
       <section>
         {!isLoading && !isSuccess && (
-          <div>
-            <form onSubmit={handleSubmit}>
-              <button
-                type="submit"
-                className="bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
-              >
-                Créer un nouveau projet
-              </button>
-            </form>
-          </div>
+          <Button text="Créer un nouveau projet" customFunction={createFolder} />
         )}
         {
           isSuccess &&
-          <div className='bg-green-200 p-4 rounded-3xl'>Dossier créé, redirection en cours...</div>
+          <div className='text-green-700 py-2 px-4 rounded-3xl'>Dossier créé, redirection en cours...</div>
         }
         {
           isLoading &&
-          <div className='bg-green-200 p-4 rounded-3xl'>En attente de la validation de la requête...</div>
+          <ButtonLoader text="Création du dossier en cours..." />
         }
       </section>
     </>

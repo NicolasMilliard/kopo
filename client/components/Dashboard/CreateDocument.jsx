@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import Router from 'next/router';
+import Button from '../Buttons/Button';
+
 import { NFTStorage } from 'nft.storage';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -45,7 +47,7 @@ const CreateDocument = ({ folderAddress }) => {
 
     /* Check that all conditions are met before sending the token request. */
     if (!createObjectURL) {
-      toast.error('Veuillez sélectionner un document', {
+      toast.error('Veuillez sélectionner un document.', {
         position: 'top-right',
         autoClose: 5000,
         closeOnClick: true,
@@ -138,7 +140,7 @@ const CreateDocument = ({ folderAddress }) => {
   return (
     <div>
       {isSuccess && (
-        <div className="w-screen py-8 lg:px-40 xl:px-60">
+        <div className="w-full py-8 lg:px-40 xl:px-60">
           <div className="flex-col items-center flex w-full">
             <h3 className="text-2xl mb-2 text-center">Document envoyé avec succès.</h3>
             <p className="mb-2">Il est maintenant en cours de traitement.</p>
@@ -152,7 +154,7 @@ const CreateDocument = ({ folderAddress }) => {
         </div>
       )}
       {isLoading && (
-        <div className="w-screen py-8 lg:px-40 xl:px-60">
+        <div className="w-full py-8 lg:px-40 xl:px-60">
           <div className="flex-col flex w-full">
             <h3 className="text-2xl mb-8 text-center">Envoi du document en cours...</h3>
             <div className="mb-2">
@@ -205,14 +207,11 @@ const CreateDocument = ({ folderAddress }) => {
               <option value="0x5C4AcB6f5696f01D41728a2053c8CC26dA19bfB3">Obligé Test</option>
             </select>
           </label>
-          <button
-            type="submit"
-            className="mb-8 bg-green-500 text-white font-bold py-2 px-4 rounded-xl drop-shadow-md hover:bg-green-700 hover:drop-shadow-lg"
-            onClick={tokenRequest}
-          >
-            Soumettre le document
-          </button>
-          <div className="max-w-md mb-8">
+          {
+            !isLoading &&
+            <Button text="Soumettre le document" customFunction={tokenRequest} />
+          }
+          <div className="max-w-md mt-2 mb-8">
             <tt>
               ⚠️ Dans cette version de développement, le document sera envoyé sur IPFS en clair. Toute personne écoutant
               la blockchain peut récupérer le document.

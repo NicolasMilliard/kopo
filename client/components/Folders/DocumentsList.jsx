@@ -5,7 +5,7 @@ const DocumentsList = ({ documents, currentAccount }) => {
   const [documentDetails, setDocumentDetails] = useState([]);
 
   // Get all documents names
-  const setDocumentsDetails = async () => {
+  const getDocumentsDetails = async () => {
     let allDocuments = [];
 
     for (let i = 0; i < documents.length; i++) {
@@ -41,7 +41,7 @@ const DocumentsList = ({ documents, currentAccount }) => {
   };
 
   useEffect(() => {
-    setDocumentsDetails();
+    getDocumentsDetails();
   }, [documents]);
 
   return (

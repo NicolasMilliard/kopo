@@ -33,20 +33,31 @@ const DashboardObligated = ({ currentAccount }) => {
             _toOblige: events[i].args[2],
             _toFolder: events[i].args[3],
           });
+
+          console.log(events[i].args[1]);
         }
       }
       setDocuments(allEvents);
 
-      // Listen for new documents.
+      // Listen for new documents
       contract.on('TokenRequested', (from, documentCID, to, folder) => {
-        /* Update the entry in the dict. */
-        const event = {
-          _from: from,
-          _documentCID: documentCID,
-          _toOblige: to,
-          _toFolder: folder,
-        };
-        setDocuments((prev) => [...prev, event]);
+        console.log('listenning...');
+        let newEvent = { _from: from, _documentCID: documentCID, _toOblige: to, _toFolder: folder }
+
+        const existingIds = allEvents.map((checkEvent) => checkEvent._documentCID);
+
+        if (!existingIds.includes(newEvent._documentCID)) {
+          console.log('this is a new event');
+
+          allEvents.push(newEvent);
+          console.log(allEvents);
+          window.location.reload();
+          // setDocuments((prev) => [...prev, newEvent]);
+          // setDocuments(allEvents);
+        } else {
+          console.log('not a new event');
+        }
+        console.log(newEvent._documentCID);
       });
     } catch (error) {
       console.log(error);
