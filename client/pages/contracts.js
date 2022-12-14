@@ -8,10 +8,10 @@ const Contracts = () => {
   const {
     state: { addressProviderContract, rolesManagerContract, folderFactoryContract, documentHandlerContract },
   } = useKopo();
-  const [addressProvider, setAddressProvider] = useState('0x2a9f306104FC072B55a92873C27E22b342e4142F');
-  const [roleManager, setRoleManager] = useState('0x87E99a8C2Df539Ae604c96617154922cf5559721');
-  const [folderFactory, setFolderFactory] = useState('0xd6DDEbb683FD409235790D70CCE0F2012A44C48D');
-  const [documentHandler, setDocumentHandler] = useState('0xF5Fb4d374D82E17178e4222160eAAF49c4bdD4fE');
+  const [addressProvider, setAddressProvider] = useState('0xdd276bead77565D96612d98851e7a7a4de762519');
+  const [roleManager, setRoleManager] = useState('0x526F5470C97dba07BA781EA3D824aBe361ED19C6');
+  const [folderFactory, setFolderFactory] = useState('0xfc13aEE3341cA68db8670C5e4Ed64c068c1e2F84');
+  const [documentHandler, setDocumentHandler] = useState('0x47a9dB8BCD26335B7e466e89432bdf4a79ff71c9');
 
   useEffect(() => {
     (async () => {

@@ -10,10 +10,10 @@
 # Mumbai
 
 ```console
-[+] KopoAddressProvider: 0x2a9f306104FC072B55a92873C27E22b342e4142F
-[+] KopoRolesManager: 0x87E99a8C2Df539Ae604c96617154922cf5559721
-[+] KopoDocumentHandler: 0xF5Fb4d374D82E17178e4222160eAAF49c4bdD4fE
-[+] KopoFolderFactory: 0xd6DDEbb683FD409235790D70CCE0F2012A44C48D
+[+] KopoAddressProvider: 0xdd276bead77565D96612d98851e7a7a4de762519
+[+] KopoRolesManager: 0x526F5470C97dba07BA781EA3D824aBe361ED19C6
+[+] KopoDocumentHandler: 0x47a9dB8BCD26335B7e466e89432bdf4a79ff71c9
+[+] KopoFolderFactory: 0xfc13aEE3341cA68db8670C5e4Ed64c068c1e2F84
 ```
 
 # Deploy
