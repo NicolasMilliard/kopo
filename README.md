@@ -18,10 +18,10 @@ The code is split in two parts:
 Smart contract addresses on Mumbai:
 
 - KopoAddressProvider:
-  [0xdb07f03bFbfE4cBCa00dC8118e1ACF84cbdDDb74](https://mumbai.polygonscan.com/address/0xdb07f03bFbfE4cBCa00dC8118e1ACF84cbdDDb74)
+  [0xdd276bead77565D96612d98851e7a7a4de762519](https://mumbai.polygonscan.com/address/0xdd276bead77565D96612d98851e7a7a4de762519)
 - KopoRolesManager:
-  [0x78370bebE49370Bc594494A50e81DdDc1D252eB5](https://mumbai.polygonscan.com/address/0x78370bebE49370Bc594494A50e81DdDc1D252eB5)
+  [0x526F5470C97dba07BA781EA3D824aBe361ED19C6](https://mumbai.polygonscan.com/address/0x526F5470C97dba07BA781EA3D824aBe361ED19C6)
 - KopoDocumentHandler:
-  [0x8f0997Aa8Cee631c8cE9ce02Fd44c33dE7989e42](https://mumbai.polygonscan.com/address/0x8f0997Aa8Cee631c8cE9ce02Fd44c33dE7989e42)
+  [0x47a9dB8BCD26335B7e466e89432bdf4a79ff71c9](https://mumbai.polygonscan.com/address/0x47a9dB8BCD26335B7e466e89432bdf4a79ff71c9)
 - KopoFolderFactory:
-  [0x96fAc9063c91a9dB3A82F56bC22e9C6E4573Fcd6](https://mumbai.polygonscan.com/address/0x96fAc9063c91a9dB3A82F56bC22e9C6E4573Fcd6)
+  [0xfc13aEE3341cA68db8670C5e4Ed64c068c1e2F84](https://mumbai.polygonscan.com/address/0xfc13aEE3341cA68db8670C5e4Ed64c068c1e2F84)
